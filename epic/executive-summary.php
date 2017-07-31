@@ -10,12 +10,12 @@
 			ABQTownHall is the nexus of civic responsibilities and technology.
 
 		<p>Mission Statement</p>
-			To encourage participation and facilitate change by informing constituents and connecting them with their
-			representatives.
+			To preserve democratic values and facilitate change by creating an informed, connected, and participating
+			constituent.
 
 		<p>Vision Statement</p>
-			Our vision is that ABQTownHall will serve as a non-partisan platform that empowers citizens, improve
-			representation, and creates a healthy democracy.
+			Our vision is for ABQTownHall to serve as a non-partisan platform that engages citizens, improves
+			representation, and helps maintain a healthy democracy.
 
 		<p>Initiatives</p>
 
