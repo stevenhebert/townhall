@@ -7,7 +7,7 @@
 	<body>
 		<h1>Executive Summary</h1>
 		<p>Unique Selling Point</p>
-			ABQTownHall is the nexus of civic responsibilities and technology.
+			ABQTownHall is the nexus of civic responsibilities, technology, and local governance.
 
 		<p>Mission Statement</p>
 			To preserve democratic values and facilitate change by creating an informed, connected, and participating
