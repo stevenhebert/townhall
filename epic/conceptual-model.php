@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<h1>Conceptual Model</h1>
-		<p>Profile</p>
+		<p>profile</p>
 		<ul>
 			<li>profileId int autoincrement</li>
 			<li>profileDistrictId int</li>
@@ -30,21 +30,20 @@
 			<li>typeCode string</li>
 		</ul>
 
-		<p>District</p>
+		<p>district</p>
 		<ul>
 			<li>districtId int autoincrement</li>
 			<li>districtNumber string</li>
 			<li>districtGeom geometry</li>
-
 		</ul>
 
 
-		<p>Post</p>
+		<p>post</p>
 		<ul>
-			<li></li>
+			<li>postId int autoincrement</li>
 
 		</ul>
-		<p>Vote</p>
+		<p>vote</p>
 		<ul>
 			<li></li>
 
