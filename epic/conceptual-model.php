@@ -39,6 +39,8 @@
 			<li>postProfileId int</li>
 			<li>postContent string</li>
 			<li>postDateTime datetime</li>
+			<li>postDistrictId int</li>
+			<li>postSticky tinyint</li>
 		</ul>
 
 		<p>vote</p>
@@ -46,6 +48,16 @@
 			<li>votePostId int</li>
 			<li>voteProfileId int</li>
 			<li>voteUpOrDown tinyint</li>
+		</ul>
+
+		<p>Relations</p>
+		<ul>
+			<li>One profile has one district, but one district is on many profile (1 to n)o</li>
+			<li>One post has one district, but one district can be on many posts (1 to n)</li>
+			<li>Many profiles can vote on many posts (m to n)</li>
+			<li>Each post has one profile, but a profile can have many posts (1 to n)</li>
+			<li>One profile can have many votes, but only vote per post (1 to n)</li>
+			<li>One post can have many votes (1 to n)</li>
 		</ul>
 
 	</body>
