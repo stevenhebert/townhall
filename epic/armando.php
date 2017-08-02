@@ -19,7 +19,3 @@
 			in a user friendly user website where he can get answers to his concerns and questions.</p>
 	</body>
 </html>
-
-
--106.5994598456202   35.2048679   0
--106.5995458   35.20492409   0
