@@ -18,7 +18,7 @@
 			Macbook in his leisure. Although limited in his choice of ISP's, Armando employs the lesser of the two evils
 			as his provider, Comcast.</p>
 
-		<p><strong>Attitudes and Behaviors:</strong> Armando is native Buquerquno with a green chili like passion for his
+		<p><strong>Attitudes and Behaviors:</strong> Armando is native Buquerquno with a green chile like passion for his
 			hometown. This passion fuels his career choice as well as his work ethic. Although his credentials could land
 			him a higher government position, he prefers his council-ship as it allows him to work directly with his
 			constituents.</p>
