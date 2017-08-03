@@ -26,7 +26,7 @@
 
 		<p><strong>Frustrations and Needs:</strong> Armando is constantly juggling requests from businesses and his
 			constituents, he has a PR analyst Gene who he uses sparingly to help with communications when he has too much
-			on his plate. Constrained by the cities dwindling budget, Armando is constantly searching for smarter solutions
+			on his plate. Constrained by the city's dwindling budget, Armando is constantly searching for smarter solutions
 			to satisfy his districts requests.</p>
 
 
