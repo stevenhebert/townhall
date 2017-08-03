@@ -31,7 +31,7 @@
 
 
 		<p><strong>Goals:</strong> Armando is always curious how his policies and statements are interpreted by his
-			consituents. He hosts bi-monthly townhalls but the hours aren't accessible to a large portion of his
+			constituents. He hosts bi-monthly town halls but the hours aren't accessible to a large portion of his
 			constituents. Ideally, Armando would have a communication tool that works with everybody schedule so he
 			effectively address the issues important to his community.</p>
 
