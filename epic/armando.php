@@ -13,7 +13,7 @@
 		<p><strong>Profession:</strong> Armando is Albuquerque's 2nd district representative. His district is
 			one of the most populated areas in the city and covers most of the downtown-commercial area.</p>
 
-		<p><strong>Technology:</strong> Armando uses a city-issued blackberry for work related communications and
+		<p><strong>Technology:</strong> Armando uses a city-issued Android for work related communications and
 			a iPhone for personal communication. Likewise, his office is equipped with a Windows 10 machine but he uses a
 			Macbook in his leisure. Although limited in his choice of ISP's, Armando employs the lesser of the two evils
 			as his provider, Comcast.</p>
