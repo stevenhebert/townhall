@@ -2,10 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Jenny's Persona</title>
+		<title>Persona Jenny</title>
 	</head>
 	<body>
-		<h2>Persona</h2>
+		<h1>Persona</h1>
 		<p><strong>Name:</strong> Jenny Jenkins
 		<p>
 		<p><strong>Age:</strong> 24</p>
