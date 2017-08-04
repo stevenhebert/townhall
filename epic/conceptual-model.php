@@ -58,7 +58,8 @@
 			<li>One post has one district (1 to 1)</li>
 			<li>Many profiles can vote on many posts (m to n)</li>
 			<li>Each post has one profile, but a profile can have many posts (1 to n)</li>
-		</ul>
+
+			<img src="images/townhall-erd.jpg" alt="townhall-erd"/>
 
 	</body>
 </html>
