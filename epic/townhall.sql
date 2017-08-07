@@ -5,17 +5,15 @@ DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS district;
 
 -- table district
-CREATE TABLE district {
+CREATE TABLE district (
 districtId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 districtGeom GEOMETRY NOT NULL,
 districtName VARCHAR(255),
-INDEX(districtId)
-FOREIGN KEY(postDistrictId) REFERENCES profile
-PRIMARY KEY(postParentID)
-}
+PRIMARY KEY(districtId)
+);
 
 -- table profile
-CREATE TABLE profile {
+CREATE TABLE profile (
 profileId INT UNSIGNED AUTOINCREMENT NOT NULL,
 profileDistrictId INT,
 profileActivationToken CHAR(32),
@@ -35,10 +33,10 @@ UNIQUE(profileEmail),
 UNIQUE(profileUserName),
 INDEX(postProfileId),
 PRIMARY KEY(profileId)
-}
+);
 
 -- table post
-CREATE TABLE post {
+CREATE TABLE post (
 postParentId INT UNSIGNED AUTOINCREMENT NOT NULL,
 postProfileId INT NOT NULL,
 postContent VARCHAR(255) NOT NULL,
@@ -47,14 +45,14 @@ postDistrictId TINYINT NOT NULL,
 INDEX(postProfileId)
 FOREIGN KEY(postProfileId) REFERENCES profile(profileId),
 PRIMARY KEY(postParentId)
-}
+);
 
 -- table vote
-CREATE TABLE vote {
+CREATE TABLE vote (
 votePostId INT UNSIGNED AUTOINCREMENT NOT NULL,
 voteProfileId INT NOT NULL,
 voteValue TINYINT NOT NULL,
 INDEX(voteProfileId),
 FOREIGN KEY(voteProfileId) REFERENCES profile(profileId),
 PRIMARY KEY(votePostId)
-}
+);
