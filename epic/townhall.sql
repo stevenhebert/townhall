@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS district;
 CREATE TABLE post {
 postParentId INT UNSIGNED AUTOINCREMENT NOT NULL,
 postProfileId INT NOT NULL,
-postContent VARCHAR(140) NOT NULL,
-postDateTime DATETIME
+postContent VARCHAR(255) NOT NULL,
+postDateTime DATETIME(6) NOT NULL,
 postDistrictId TINYINT NOT NULL,
 INDEX(postProfileId)
 FOREIGN KEY(postProfileId) REFERENCES profile(profileId),
