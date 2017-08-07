@@ -51,6 +51,44 @@ class Post  {
 	 * @var string $postDateTime
 	 **/
 	private $postDateTime;
+	/**
+	 * constructor for Post
+	 **/
+
+	/**
+	 * accessor for post id
+	 *
+	 * @return int | null value of post id
+	 **/
+	public function getPostId() : int {
+		return($this->postId);
+	}
+	/**
+	 * mutator method for post id
+	 *
+	 * @param int | null $newPostId new value of post id
+	 * @throws \RangeException if $newPostId is not positive
+	 * @throws \TypeError if $newPostId is not an integer
+	 **/
+	public function setPostId(?int $newPostId) : void {
+		//if post id is null immediately return it
+		if($newPostId === null) {
+			$this->postId = null;
+			return;
+		}
+
+		//verify that the post id is positive
+		if($newPostId <= 0) {
+			throw(new \RangeException("post id is not positive"));
+		}
+
+		//convert and store the post id
+		$this->postId = $newPostId;
+	}
+
+
+
+
 
 
 }
