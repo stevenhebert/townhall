@@ -9,6 +9,16 @@ DROP TABLE IF EXISTS district;
 -- table profile
 
 -- table post
+CREATE TABLE post {
+postParentId INT UNSIGNED AUTOINCREMENT NOT NULL,
+postProfileId INT NOT NULL,
+postContent VARCHAR(140) NOT NULL,
+postDateTime DATETIME
+postDistrictId TINYINT NOT NULL,
+INDEX(postProfileId)
+FOREIGN KEY(postProfileId) REFERENCES profile(profileId),
+PRIMARY KEY(postParentId)
+}
 
 -- table vote
 CREATE TABLE vote (
@@ -19,7 +29,3 @@ INDEX(voteProfileId),
 FOREIGN KEY(voteProfileId) REFERENCES profile(profileId),
 PRIMARY KEY(votePostId)
 )
-
-votePostId int autoincrement</li>
-			<li>voteProfileId int</li>
-			<li>voteValue tinyint</li>
