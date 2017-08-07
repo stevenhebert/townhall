@@ -15,6 +15,27 @@ PRIMARY KEY(postParentID)
 }
 
 -- table profile
+CREATE TABLE profile {
+profileId INT UNSIGNED AUTOINCREMENT NOT NULL,
+profileDistrictId INT,
+profileActivationToken CHAR(32),
+profileAddress1 STRING NOT NULL,
+profileAddress2 STRING,
+profileCity STRING NOT NULL,
+profileEmail VARCHAR(128) NOT NULL,
+profileFirstName STRING NOT NULL,
+profileHash CHAR(128) NOT NULL,
+profileLastName STRING NOT NULL,
+profileRepresentative TINYINT,
+profileSalt CHAR(64) NOT NULL,
+profileState STRING NOT NULL,
+profileUserName VARCHAR(32) NOT NULL,
+profileZip VARCHAR(32) NOT NULL,
+UNIQUE(profileEmail),
+UNIQUE(profileUserName),
+INDEX(postProfileId),
+PRIMARY KEY(profileId)
+}
 
 -- table post
 CREATE TABLE post {
@@ -29,11 +50,11 @@ PRIMARY KEY(postParentId)
 }
 
 -- table vote
-CREATE TABLE vote (
+CREATE TABLE vote {
 votePostId INT UNSIGNED AUTOINCREMENT NOT NULL,
 voteProfileId INT NOT NULL,
 voteValue TINYINT NOT NULL,
 INDEX(voteProfileId),
 FOREIGN KEY(voteProfileId) REFERENCES profile(profileId),
 PRIMARY KEY(votePostId)
-)
+}
