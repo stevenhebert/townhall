@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS district;
 CREATE TABLE district (
 districtId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 districtGeom GEOMETRY NOT NULL,
-districtName VARCHAR(255),
+districtName VARCHAR(64),
 PRIMARY KEY(districtId)
 );
 
@@ -17,16 +17,16 @@ CREATE TABLE profile (
 profileId INT UNSIGNED AUTOINCREMENT NOT NULL,
 profileDistrictId INT,
 profileActivationToken CHAR(32),
-profileAddress1 STRING NOT NULL,
-profileAddress2 STRING,
-profileCity STRING NOT NULL,
+profileAddress1 VARCHAR(128) NOT NULL,
+profileAddress2 VARCHAR(128),
+profileCity VARCHAR(128) NOT NULL,
 profileEmail VARCHAR(128) NOT NULL,
-profileFirstName STRING NOT NULL,
+profileFirstName VARCHAR(64) NOT NULL,
 profileHash CHAR(128) NOT NULL,
-profileLastName STRING NOT NULL,
+profileLastName VARCHAR(64) NOT NULL,
 profileRepresentative TINYINT,
 profileSalt CHAR(64) NOT NULL,
-profileState STRING NOT NULL,
+profileState VARCHAR(32) NOT NULL,
 profileUserName VARCHAR(32) NOT NULL,
 profileZip VARCHAR(32) NOT NULL,
 UNIQUE(profileEmail),
