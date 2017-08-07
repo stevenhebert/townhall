@@ -110,7 +110,7 @@ class Post  {
 
 		//convert and store the post district id
 		$this->postDistrictId = $newPostDistrictId;
-		$this->postDistrictId = $newPostDistrictId;
+
 	}
 
 
