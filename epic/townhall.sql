@@ -5,14 +5,14 @@ DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS district;
 
 -- table district
-CREATE TABLE district (
+CREATE TABLE district {
 districtId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 districtGeom GEOMETRY NOT NULL,
 districtName VARCHAR(255),
-INDEX(districtId),
-
-
-)
+INDEX(districtId)
+FOREIGN KEY(postDistrictId) REFERENCES profile
+PRIMARY KEY(postParentID)
+}
 
 -- table profile
 
