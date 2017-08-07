@@ -6,53 +6,62 @@ DROP TABLE IF EXISTS district;
 
 -- table district
 CREATE TABLE district (
-districtId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-districtGeom GEOMETRY NOT NULL,
-districtName VARCHAR(64),
-PRIMARY KEY(districtId)
+	districtId   INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	districtGeom GEOMETRY                    NOT NULL,
+	districtName VARCHAR(64),
+	PRIMARY KEY (districtId)
 );
 
 -- table profile
 CREATE TABLE profile (
-profileId INT UNSIGNED AUTOINCREMENT NOT NULL,
-profileDistrictId INT,
-profileActivationToken CHAR(32),
-profileAddress1 VARCHAR(128) NOT NULL,
-profileAddress2 VARCHAR(128),
-profileCity VARCHAR(128) NOT NULL,
-profileEmail VARCHAR(128) NOT NULL,
-profileFirstName VARCHAR(64) NOT NULL,
-profileHash CHAR(128) NOT NULL,
-profileLastName VARCHAR(64) NOT NULL,
-profileRepresentative TINYINT,
-profileSalt CHAR(64) NOT NULL,
-profileState VARCHAR(32) NOT NULL,
-profileUserName VARCHAR(32) NOT NULL,
-profileZip VARCHAR(32) NOT NULL,
-UNIQUE(profileEmail),
-UNIQUE(profileUserName),
-INDEX(postProfileId),
-PRIMARY KEY(profileId)
+	profileId              INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	profileDistrictId      INT UNSIGNED                NOT NULL,
+	profileActivationToken CHAR(32),
+	profileAddress1        VARCHAR(64)                 NOT NULL,
+	profileAddress2        VARCHAR(64),
+	profileCity            VARCHAR(64)                 NOT NULL,
+	profileEmail           VARCHAR(128)                NOT NULL,
+	profileFirstName       VARCHAR(64)                 NOT NULL,
+	profileHash            CHAR(128)                   NOT NULL,
+	profileLastName        VARCHAR(64)                 NOT NULL,
+	profileRepresentative  TINYINT UNSIGNED,
+	profileSalt            CHAR(64)                    NOT NULL,
+	profileState           CHAR(2)                     NOT NULL,
+	profileUserName        VARCHAR(32)                 NOT NULL,
+	profileZip             VARCHAR(10)                 NOT NULL,
+	UNIQUE (profileEmail),
+	UNIQUE (profileUserName),
+	INDEX (profileDistrictId),
+	FOREIGN KEY (profileDistrictId) REFERENCES district (districtId),
+	PRIMARY KEY (profileId)
 );
 
 -- table post
 CREATE TABLE post (
-postParentId INT UNSIGNED AUTOINCREMENT NOT NULL,
-postProfileId INT NOT NULL,
-postContent VARCHAR(255) NOT NULL,
-postDateTime DATETIME(6) NOT NULL,
-postDistrictId TINYINT NOT NULL,
-INDEX(postProfileId)
-FOREIGN KEY(postProfileId) REFERENCES profile(profileId),
-PRIMARY KEY(postParentId)
+	postId         INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	postDistrictId INT UNSIGNED                NOT NULL,
+	postParentId   INT UNSIGNED,
+	postProfileId  INT UNSIGNED                NOT NULL,
+	postContent    VARCHAR(8192)               NOT NULL,
+	postDateTime   TIMESTAMP(6)                NOT NULL,
+	INDEX (postDistrictId),
+	INDEX (postParentId),
+	INDEX (postProfileId),
+	FOREIGN KEY (postDistrictId) REFERENCES district (districtId),
+	FOREIGN KEY (postParentId) REFERENCES post (postId),
+	FOREIGN KEY (postProfileId) REFERENCES profile (profileId),
+	PRIMARY KEY (postId)
 );
 
 -- table vote
 CREATE TABLE vote (
-votePostId INT UNSIGNED AUTOINCREMENT NOT NULL,
-voteProfileId INT NOT NULL,
-voteValue TINYINT NOT NULL,
-INDEX(voteProfileId),
-FOREIGN KEY(voteProfileId) REFERENCES profile(profileId),
-PRIMARY KEY(votePostId)
+	votePostId    INT UNSIGNED                NOT NULL,
+	voteProfileId INT UNSIGNED                NOT NULL,
+	voteDateTime  TIMESTAMP(6)                NOT NULL,
+	voteValue     TINYINT                     NOT NULL,
+	INDEX (votePostId),
+	INDEX (voteProfileId),
+	FOREIGN KEY (votePostId) REFERENCES post (postId),
+	FOREIGN KEY (voteProfileId) REFERENCES profile (profileId),
+	PRIMARY KEY (votePostId, voteProfileId)
 );
