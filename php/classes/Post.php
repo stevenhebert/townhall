@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\townhall;
+
 
 require_once("autoload.php");
 
@@ -26,15 +26,16 @@ class Post  {
 	 * id of the district of the profile who created post
 	 * This may change if the person moves to a different district,
 	 * so original district will be stored on the post
-	 * @var int $districtId
-	**/
-	private $districtId;
-/**
- * id of the post that this post is responding to.  There
- * may or may not be a parent post.  This class will only
- * have a value if this a response to another post.
- * @var int $postParentId
- **/
+	 * @var int $postDistrictId
+	 **/
+	private $postDistrictId;
+	/**
+	 * id of the post that this post is responding to.  There
+	 * may or may not be a parent post.  This class will only
+	 * have a value if this a response to another post
+	 *
+	 * @var int $postParentId
+	 **/
 	private $postParentId;
 	/**
 	 * id of the profile/person who created the post
@@ -48,7 +49,7 @@ class Post  {
 	private $postContent;
 	/**
 	 * timestamp of the post
-	 * @var string $postDateTime
+	 * @var \DateTime $postDateTime
 	 **/
 	private $postDateTime;
 	/**
@@ -84,6 +85,31 @@ class Post  {
 
 		//convert and store the post id
 		$this->postId = $newPostId;
+	}
+	/**
+	 * accessor method for post district id
+	 * @return int value of post district id
+	 **/
+	public function getPostDistrictId() : int {
+		return($this->postDistrictId);
+	}
+	/**
+	 * mutator method for post district id
+	 *
+	 * @param int $newPostDistrictId new value of post district id
+	 * @throws \RangeException if $newPostDistrictId is not positive
+	 * @throws \TypeError if $newPostDistrictId is not an integer
+	 *
+	 **/
+	public function setPostDistrictId(int $newPostDistrictId) : void {
+
+		//verify the post district id is positive
+		if($newPostDistrictId <= 0) {
+			throw(new \RangeException("post district id is not positive"));
+		}
+
+		//convert and store the post district id
+		$this->postDistrictId = $newPostDistrictId;
 	}
 
 
