@@ -54,7 +54,37 @@ class Post  {
 	private $postDateTime;
 	/**
 	 * constructor for Post
+	 *
+	 * @param int | null $newPostId id of this post or null if a new post
+	 * @param int $newPostDistrictId id of the district the person who made the post lives in at the time of the post
+	 * @param int | null $newPostParentId id of the post being commented on, null if none
+	 * @param int $newPostProfileId id of the person making the post
+	 * @param string $newPostContent content of the new post
+	 * @param timestamp $newPostDateTime timestamp of the post
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 * @Doumentation:  https://php.net/manual/en/language.oop5.decon.php
+	 *
 	 **/
+	public function __construct(?int $newPostId, int $newPostDistrictId, int $newPostParentId, int $newPostProfileId, string $newPostContent, $newPostDateTime = null) {
+		try {
+			$this->setPostId($newPostId);
+			$this->setPostDistrictId($newPostDistrictId);
+			$this->setPostParentId($newPostParentId);
+			$this->setPostProfileId($newPostProfileId);
+			$this->setPostContent($newPostContent);
+			$this->setPostDateTime($newPostDateTime);
+		}
+		//determine what exception type was thrown
+		catch(\InvalidArgumentException | \ RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+
+
 
 	/**
 	 * accessor for post id
