@@ -172,6 +172,42 @@ public function setPostParentId(?int $newPostParentId) : void {
 		$this->postProfileId = $newPostProfileId;
 	}
 
+	/**
+	 * accessor method for post content
+	 *
+	 * @return string value of post content
+	 **/
+	public function getPostContent() : string {
+		return($this->postContent);
+	}
+	/**
+	 * mutator method for post content
+	 *
+	 * @param string $newPostContent new value of post content
+	 * @throws \InvalidArgumentException if $newPostContent is not a string or insecure
+	 * @throws \RangeException if $newPostContent > 8192 characters
+	 * @throws \TypeError if $newPostContent is not a string
+	 *
+	 **/
+	public function setPostContent(string $newPostContent) : void {
+		//verify the post content is secure
+		$newPostContent = trim($newPostContent);
+		$newPostContent = filter_var($newPostContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostContent) === true) {
+			throw(new \InvalidArgumentException("post content is empty or insecure"));
+		}
+
+		//verify the post content will fit in the database
+		if(strlen($newPostContent) > 8192) {
+			throw(new \RangeException("post content too large"));
+		}
+
+		//store the post content
+		$this->postContent = $newPostContent;
+	}
+
+
+
 
 
 
