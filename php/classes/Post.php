@@ -113,7 +113,64 @@ class Post  {
 
 	}
 
+/**
+ * accessor method for post parent id
+ *
+ * @return int | null value of post parent id
+ **/
 
+public function getPostParentId() : int {
+	return($this->postParentId);
+}
+
+/**
+ * mutator method for post parent id
+ *
+ * @param int | null $newPostParentId new value of post parent id
+ * @throws \RangeException if $newPostParentId is not positive
+ * @throws \TypeError if $newPostParentId is not an integer
+ **/
+public function setPostParentId(?int $newPostParentId) : void {
+	//if post parent id is null immediately return it
+	if($newPostParentId === null) {
+		$this->postParentId = null;
+		return;
+	}
+
+	//verify the post parent id is positive
+	if($newPostParentId <= 0) {
+		throw(new \RangeException("post parent id is not positive"));
+	}
+
+	//convert and store the post parent id
+	$this->postParentId = $newPostParentId;
+	}
+
+
+	/**
+	 * accessor method for post profile id
+	 *
+	 * @return int value of post profile id
+	 **/
+	public function getPostProfileId() : int {
+		return($this->postProfileId);
+	}
+	/**mutator method for post profile id
+	 *
+	 * @param int $newPostProfileId new value of post profile id
+	 * @throws \RangeException if $newPostProfileId is not positive
+	 * @throws \TypeError if $newPostProfileId is not an integer
+	 **/
+	public function setPostProfileId(int $newPostProfileId) : void {
+
+		//verify the profile id is positive
+		if($newPostProfileId <= 0 ) {
+			throw(new \RangeException("post profile id is not positive"));
+		}
+
+		//convert and store the profile id
+		$this->postProfileId = $newPostProfileId;
+	}
 
 
 
