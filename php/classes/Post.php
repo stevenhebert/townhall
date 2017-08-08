@@ -205,6 +205,40 @@ public function setPostParentId(?int $newPostParentId) : void {
 		//store the post content
 		$this->postContent = $newPostContent;
 	}
+	/*
+	 * accessor method for postDateTime
+	 *
+	 * @return \DateTime value of post date and time
+	 **/
+	public function getPostDateTime() : \DateTime {
+		return($this->postDateTime);
+	}
+	/**
+	 * mutator method for post date time
+	 *
+	 * @param \DateTime\string\null  $newPostDateTime post date time as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newPostDateTime is not a valid object or string
+	 * @throws \RangeException if $newPostDateTime is a date that does not exist
+	 *
+	 **/
+	public function setPostDateTime($newPostDateTime = null) : void {
+		//base case:  if the date is null, use the current date and time
+		if($newPostDateTime === null) {
+			$this->postDateTime = new \DateTime();
+			return;
+		}
+
+		//store the post date using the ValidateDate trait
+		try {
+			$newPostDateTime = self::validateDateTime($newPostDateTime);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->postDateTime = $newPostDateTime;
+		}
+
+
 
 
 

@@ -345,6 +345,37 @@ class profile {
 	}
 
 	/**
+	 * accessor method for profileFirstName
+	 *
+	 * @return string value of profileFirstName
+	 **/
+	public function getProfileFirstName(): string {
+		return ($this->profileFirstName);
+	}
+
+	/**
+	 * mutator method for profileFirstName
+	 *
+	 * @param string $newProfileFirstName new value of profile
+	 * @throws \InvalidArgumentException if $newProfileFirstName is not a string or insecure
+	 * @throws \TypeError if $newProfileFirstName is not a string
+	 **/
+	public function setProfileFirstName(string $newProfileFirstName): void {
+		// verify the profileFirstName is secure
+		$newProfileFirstName = trim($newProfileFirstName);
+		$newProfileFirstName = filter_var($newProfileFirstName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileFirstName) === true) {
+			throw(new \InvalidArgumentException("profile first name is empty or insecure"));
+		}
+		// verify the profileFirstName fit in the database
+		if(strlen($newProfileFirstName) > 64) {
+			throw(new \RangeException("profile first name content too large"));
+		}
+		// store the profileFirstName
+		$this->profileFirstName = $newProfileFirstName;
+	}
+
+	/**
 	 * accessor method for profileHash
 	 *
 	 * @return string value of profileHash
@@ -376,6 +407,67 @@ class profile {
 	}
 
 	/**
+	 * accessor method for profileLastName
+	 *
+	 * @return string value of profileLastName
+	 **/
+	public function getProfileLastName(): string {
+		return ($this->profileLastName);
+	}
+
+	/**
+	 * mutator method for profileLastName
+	 *
+	 * @param string $newProfileLastName new value of profile
+	 * @throws \InvalidArgumentException if $newProfileLastName is not a string or insecure
+	 * @throws \TypeError if $newProfileLastName is not a string
+	 **/
+	public function setProfileLastName(string $newProfileLastName): void {
+		// verify the profileLastName is secure
+		$newProfileLastName = trim($newProfileLastName);
+		$newProfileLastName = filter_var($newProfileLastName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileLastName) === true) {
+			throw(new \InvalidArgumentException("profile last name is empty or insecure"));
+		}
+		// verify the profileLastName fit in the database
+		if(strlen($newProfileLastName) > 64) {
+			throw(new \RangeException("profile last name content too large"));
+		}
+		// store the profileLastName
+		$this->profileLastName = $newProfileLastName;
+	}
+
+	/**
+	 * accessor method for profileRepresentative
+	 *
+	 * @return int|null value of productId
+	 **/
+	public function getProfileRepresentative(): int {
+		return ($this->profileRepresentative);
+	}
+
+	/**
+	 * mutator method for profileRepresentative
+	 *
+	 * @param int|null $newProfileRepresentative new value of product id
+	 * @throws \RangeException if $newProfileRepresentative is not zero
+	 * @throws \TypeError if $newProfileRepresentative is not an integer
+	 **/
+	public function setProfileRepresentative(?int $newProfileRepresentative): void {
+		//if product representative is null immediately return it
+		if($newProfileRepresentative === null) {
+			$this->profileRepresentative = null;
+			return;
+		}
+		// verify the  profileRepresentative is 0 if not NULL
+		if($newProfileRepresentative = 0) {
+			throw(new \RangeException("profile representative is not zero"));
+		}
+		// convert and store the profileId
+		$this->profileRepresentative = $newProfileRepresentative;
+	}
+
+	/**
 	 * accessor method for profileSalt
 	 *
 	 * @return string value of profileSalt
@@ -389,21 +481,52 @@ class profile {
 	 *
 	 * @param string $newProfileSalt new value of profileSalt
 	 * @throws \InvalidArgumentException if $newProfileSalt is not a string or insecure
-	 * @throws \TypeError if $newProfileSaltis not a string
+	 * @throws \TypeError if $newProfileSalt is not a string
 	 **/
 	public function setProfileSalt(string$newProfileSalt): void {
 		// verify the profileSalt is secure
 		$newProfileSalt = trim($newProfileSalt);
 		$newProfileSalt = filter_var($newProfileSalt, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileSalt) === true) {
-			throw(new \InvalidArgumentException("profile phone is empty or insecure"));
+			throw(new \InvalidArgumentException("profile salt is empty or insecure"));
 		}
 		// verify the profileSalt will fit in the database
 		if(strlen($newProfileSalt) > 64) {
-			throw(new \RangeException("profile phone content too large"));
+			throw(new \RangeException("profile salt content too large"));
 		}
 		// store the profileSalt
 		$this->profileSalt = $newProfileSalt;
+	}
+
+	/**
+	 * accessor method for profileState
+	 *
+	 * @return string value of profileState
+	 **/
+	public function getProfileState(): string {
+		return ($this->profileState);
+	}
+
+	/**
+	 * mutator method for profileState
+	 *
+	 * @param string $newProfileState new value of profileState
+	 * @throws \InvalidArgumentException if $newProfileState is not a string or insecure
+	 * @throws \TypeError if $newProfileState is not a string
+	 **/
+	public function setProfileState(string$newProfileState): void {
+		// verify the profileState is secure
+		$newProfileState = trim($newProfileState);
+		$newProfileState = filter_var($newProfileState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileState) === true) {
+			throw(new \InvalidArgumentException("profile state is empty or insecure"));
+		}
+		// verify the profileState will fit in the database
+		if(strlen($newProfileState) > 2) {
+			throw(new \RangeException("profile state content too large"));
+		}
+		// store the profileState
+		$this->profileState = $newProfileState;
 	}
 
 	/**
@@ -435,6 +558,37 @@ class profile {
 		}
 		// store the profileUserName
 		$this->profileUserName = $newProfileUserName;
+	}
+
+	/**
+	 * accessor method for profileZip
+	 *
+	 * @return string value of profileZip
+	 **/
+	public function getProfileZip(): string {
+		return ($this->profileProfileZip);
+	}
+
+	/**
+	 * mutator method for profileZip
+	 *
+	 * @param string $newProfileZip new value of profileZip
+	 * @throws \InvalidArgumentException if $newProfileZip is not a string or insecure
+	 * @throws \TypeError if $newProfileZip is not a string
+	 **/
+	public function setProfileZip(string $newProfileZip): void {
+		// verify the profileZip is secure
+		$newProfileZip = trim($newProfileZip);
+		$newProfileZip	 = filter_var($newProfileZip	, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileZip) === true) {
+			throw(new \InvalidArgumentException("profile zip is empty or insecure"));
+		}
+		// verify the profileZip will fit in the database
+		if(strlen($newProfileZip) > 10) {
+			throw(new \RangeException("profile zip too large"));
+		}
+		// store the profileZip
+		$this->profileZip = $newProfileZip;
 	}
 
 	/**
