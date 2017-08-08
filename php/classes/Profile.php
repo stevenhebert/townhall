@@ -1,4 +1,4 @@
-<?php
+v<?php
 
 namespace Edu\Cnm\Townhall;
 
@@ -687,7 +687,7 @@ class profile {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistricIt"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"],$row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"],$row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
