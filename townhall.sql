@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS district;
 
 -- table district
 CREATE TABLE district (
-	districtId   INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	districtId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	districtGeom GEOMETRY                    NOT NULL,
 	districtName VARCHAR(64),
 	PRIMARY KEY (districtId)
