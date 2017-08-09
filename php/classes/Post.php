@@ -284,7 +284,7 @@ public function setPostParentId(?int $newPostParentId) : void {
 			$statement = $pdo->prepare($query);
 
 			//bind the member variables to the place holders in the template
-			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s");
+			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
 			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
 			$statement->execute($parameters);
 
@@ -331,7 +331,7 @@ public function setPostParentId(?int $newPostParentId) : void {
 			$statement = $pdo->prepare($query);
 
 			//bind the member variables to thte place holders in the template
-			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s");
+			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
 			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
 			$statement->execute($parameters);
 		}
@@ -562,8 +562,8 @@ public function setPostParentId(?int $newPostParentId) : void {
 			$statement = $pdo->prepare($query);
 
 			//format the dates so that mySQL can use them
-			$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s");
-			$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s");
+			$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
+			$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
 			$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
 			$statement->execute($parameters);
 
