@@ -490,8 +490,46 @@ public function setPostParentId(?int $newPostParentId) : void {
 
 		/** gets the post by content
 		 *
-
+		 * @param \PDO $pdo PDO connection object
+		 * @param string $postContent post content to search for
+		 * @return \SplFixedArray SPLFixedArray of posts found
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError when variables are not the correct data type
 		 **/
+		public static function getPostByPostContent(\PDO $pdo, string $postContent) : \SplFixedArray {
+			//sanitize the description before searching
+			$postContent = trim($postContent);
+			$postContent = filter_var($postContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+			if(empty($postContent) === true) {
+				throw(new \PDOException("post content is invalid"));
+			}
+
+			//escape any mySQL wild cards
+			$postContent = str_replace("_", "\\_", str_replace("%", "\\%", $postContent));
+
+			//create query template
+			$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postContent LIKE :postContent";
+			$statement = $pdo->prepare($query);
+
+			//bind the post content to the place holder in the template
+			$postContent = "%$postContent";
+			$parameters = ["postContent" => $postContent];
+			$statement->execute($parameters);
+
+			//build an array of posts
+			$posts = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+				try {
+					$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
+					$posts[$posts->key()] = $post;
+					$posts->next();
+				} catch(\Exception $exception) {
+					//if the row couldn't be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+				}
+			}
+		}
 
 
 		/** gets an array of posts based on its date
