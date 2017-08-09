@@ -286,7 +286,7 @@ public function setPostParentId(?int $newPostParentId) : void {
 			//bind the member variables to the place holders in the template
 			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s");
 			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
-			$statement->$execute($parameters);
+			$statement->execute($parameters);
 
 			//update the null postId with what mySQL just gave us
 			$this->postId = intval($pdo->lastInsertId());
@@ -294,12 +294,47 @@ public function setPostParentId(?int $newPostParentId) : void {
 
 		/** deletes this post from mySQL
 		 *
+		 * @param \PDO $pdo PDO connection object
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError if $pdo is not a PDO connection object
 		 **/
+		public function delete(\PDO $pdo) : void {
+			//enforce the postId is not null (i.e., don't delete a post that hasn't been inserted).
+			if($this->postId === null) {
+				throw(new \PDOException("unable to delete a post that doesn't exist"));
+			}
+
+			//create a query template
+			$query = "DELETE FROM post WHERE postId = :postId";
+			$statement = $pdo->prepare($query);
+
+			//bind the member variables to the place holder in the template
+			$parameters = ["postId" => $this->postId];
+			$statement->execute($parameters);
+		}
 
 
 		/** updates the post in mySQL
 		 *
+		 * @param \PDO $pdo PDO connection object
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError if $pdo is not a PDO connection object
 		 **/
+		public function update(\PDO $pdo) : void {
+			//enforce the postId is not null (don't update a post that hasn't been inserted
+			if($this->postId === null) {
+				throw(new \PDOException("unable to update post that doesn't exist"));
+			}
+
+			//create query template
+			$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent, postDateTime = :postDateTime";
+			$statement = $pdo->prepare($query);
+
+			//bind the member variables to thte place holders in the template
+			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s");
+			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
+			$statement->execute($parameters);
+		}
 
 		/**gets the post by postId
 		 *
