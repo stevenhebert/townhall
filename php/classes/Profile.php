@@ -642,16 +642,16 @@ class profile {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function update(\PDO $pdo): void {
-		// enforce the profileId is not null (i.e., don't update a profile that hasn't been inserted)
+	public function update(\PDO $pdo) : void {
+		// enforce the profile id is not null (i.e., don't update a profile that hasn't been inserted)
 		if($this->profileId === null) {
 			throw(new \PDOException("unable to update a profile that does not exist"));
 		}
 		// create query template
-		$query = "INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(:profileDistrictId, :profileActivationToken, :profileAddress1, :profileAddress2, :profileCity, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profileRepresentative, :profileSalt, :profileState, :profileUserName, :profileZip)";
+		$query = "UPDATE profile SET profileDistrictId = :profileDistrictId, profileActivationToken = :profileActivationToken, profileAddress1 = :profileAddress1, profileAddress2 = :profileAddress2, profileCity = :profileCity, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileName, profileRepresentative = :profileRepresentative, profileSalt = :profileSalt, profileState = :profileState, profileUserName = :profileUserName, profileZip = :profileZip WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileDistricId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileZip" => $this->profileZip];
+		$parameters = ["profileId" => $this->profileId, "profileDistricId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileZip" => $this->profileZip];
 		$statement->execute($parameters);
 	}
 
