@@ -268,11 +268,69 @@ public function setPostParentId(?int $newPostParentId) : void {
 		$this->postDateTime = $newPostDateTime;
 		}
 
+		/** inserts post into mySQL
+		 *
+		 * @param \PDO $pdo PDO connection object
+		 * @throws \PDOException when mySQL-related errors occur
+		 * @throws \TypeError if $pdo is not a PDO connection object
+		 **/
+		public function insert(\PDO $pdo) : void {
+			//enforce the postId is null. (i.e., don't insert a post that already exists.)
+			if($this->postId !== null) {
+				throw(new \PDOException("not a new post"));
+			}
+			//create a query template
+			$query = "INSERT INTO post(postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime) VALUES (:postId, :postDistrictId, :postParentId, :postProfileId, :postContent, :postDateTime)";
+			$statement = $pdo->prepare($query);
+
+			//bind the member variables to the place holders in the template
+			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s");
+			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
+			$statement->$execute($parameters);
+
+			//update the null postId with what mySQL just gave us
+			$this->postId = intval($pdo->lastInsertId());
+		}
+
+		/** deletes this post from mySQL
+		 *
+		 **/
 
 
+		/** updates the post in mySQL
+		 *
+		 **/
+
+		/**gets the post by postId
+		 *
+		 **/
+
+		/**gets the post by postDistrictId
+		 *
+		 **/
+
+		/** gets the post by postParentId
+		 *
+
+		 **/
+
+		/** gets the post by postprofileid
 
 
+		 **/
 
+
+		/** gets the post by content
+		 *
+
+		 **/
+
+
+		/** gets an array of posts based on its date
+		 *
+
+
+		 **/
 
 
 }
