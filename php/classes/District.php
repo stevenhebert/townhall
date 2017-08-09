@@ -48,7 +48,7 @@ class District {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
-
+public fucntion __construct(?int $new)
 	/**
 	 * accessor for district id
 	 *
@@ -57,7 +57,7 @@ class District {
 	 *
 	 **/
 	public function getDistrictId(): int {
-		return ($this->postId);
+		return ($this->districtId);
 	}
 
 	/**
@@ -70,16 +70,16 @@ class District {
 	 **/
 	public function setDistrictId(int $newDistrictId): void {
 //void if district id is null - assuming this means all polygons have been assigned - want to stop process
-		if(newdistrictId === null) {
-			$this->profileId = null;
+		if($newdistrictId === null) {
+			$this->districtId = null;
 			return;
 		}
 //verify that the districtId is positive
 		if($newDistrictId <= 0) {
-			throw(new \RangeException("district id not positive")):
-	}
+			throw(new \RangeException("district id not positive"));
+		}
 		//convert and store the districtId
-		$this->distrcitId = $newDistrictId;
+		$this->districtId = $newDistrictId;
 	}
 
 
@@ -92,30 +92,55 @@ class District {
 	 * ->-> if the latter, will this accessor actually be used?
 	 *
 	 **/
-	public function $getDistrictId(): geometry {
-		return ($this->districtId);
+	public function getDistrictGeom(): array {
+		return ($this->districtGeom);
 	}
 
-/**
- * mutator for districtGeom
- *
- * @param geometry $newDistrictGeom
- * @throws \InvalidArgumentException if data types are not valid
- * @throws \TypeError if data types violate type hints
- * @throws \Exception if some other exception occurs
- *
- * @notsureif /RangeException thinking this would be the bounds of lat, long coordinates "[180 180, -180 -180}"
- *
- * used for grabbing coordinates from ABQOpenData and INSERTing them into mySQL
- *
- * @needAcheck for verifying the coordinate from a circuit (closed perimeter)
- * @needAflag for multipoint polygons (polgons with holes! e.g.) Baarle Nassue);
- *   assuming this would cause issues with ST_contains
- *
- **/
-public function setDistrictGeom(?int $newDistrictGeom): void {
-// if district Geometry is null there is not district, duh
-	if($newDistrictGeom === null) {
-		$this->districtGeom = null;
-		return;
+	/**
+	 * mutator for districtGeom
+	 *
+	 * @param geometry $newDistrictGeom
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 *
+	 * @notsureif /RangeException thinking this would be the bounds of lat, long coordinates "[180 180, -180 -180]"
+	 *
+	 * used for grabbing coordinates from ABQOpenData and INSERTing them into mySQL
+	 *
+	 * @@@@needAcheck for verifying the coordinate from a circuit (closed perimeter)
+	 *
+	 * @needAflag for multipoint polygons (polgons with holes! e.g.) Baarle Nassue);
+	 *   assuming this would cause issues with ST_contains
+	 *
+	 * cant be null
+	 * cant be empty
+	 *
+	 *
+	 *
+	 **/
+	/**   public function setDistrictGeom(array $newDistrictGeom): void {
+	 * if(empty($newDistrictGeom) === true) {
+	 * throw(new \InvalidArgumentException())}
+	 * }
+	 **/
+
+
+	public function isValidLatitude(float $newLat): bool {
+		if($newLat < -90 || $newLat > 90) {
+			throw(new \RangeException("lat not within valid range"));
+		} else {
+			return true;
+		}
 	}
+
+	public function isValidLongitude(float $newLong): bool {
+		if($newLong < -180 || $newLong > 180) {
+			throw(new \RangeException("long not within valid range"));
+		} else {
+			return true;
+		}
+	}
+
+}
+
