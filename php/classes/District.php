@@ -48,7 +48,9 @@ class District {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
-public fucntion __construct(?int $new)
+public fucntion __construct(?int $newDistric) {
+
+}
 	/**
 	 * accessor for district id
 	 *
@@ -100,47 +102,51 @@ public fucntion __construct(?int $new)
 	 * mutator for districtGeom
 	 *
 	 * @param geometry $newDistrictGeom
-	 * @throws \InvalidArgumentException if data types are not valid
-	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
-	 *
-	 * @notsureif /RangeException thinking this would be the bounds of lat, long coordinates "[180 180, -180 -180]"
-	 *
-	 * used for grabbing coordinates from ABQOpenData and INSERTing them into mySQL
-	 *
-	 * @@@@needAcheck for verifying the coordinate from a circuit (closed perimeter)
-	 *
-	 * @needAflag for multipoint polygons (polgons with holes! e.g.) Baarle Nassue);
-	 *   assuming this would cause issues with ST_contains
-	 *
-	 * cant be null
-	 * cant be empty
-	 *
-	 *
+	 * @throws \RangeException if point has more than two elements (lat, long, ?)
+	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	/**   public function setDistrictGeom(array $newDistrictGeom): void {
-	 * if(empty($newDistrictGeom) === true) {
-	 * throw(new \InvalidArgumentException())}
-	 * }
+	public function setDistrictGeom(array $newDistrictGeom): void {
+		foreach($newDistrictGeom as $pointArray) {
+			if(count($newDistrictGeom) !== 2) {
+				throw(new \RangeException("more than two coordinates given"));
+			}
+			try {
+				self::validateLatitude($pointArray[1]);
+				self::validateLongitude($pointArray[0]);
+			} catch(\Exception | \RangeException | \TypeError $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			}
+		}
+
+		$this->districtGeom = $newDistrictGeom;
+	}
+
+	/**
+	 * helper methods for coordinate range validation
+	 *
+	 * @throws \RangeException if (-90 > lat > 90) and (-180 > long > 180)
+	 *
 	 **/
 
-
-	public function isValidLatitude(float $newLat): bool {
+	public static function validateLatitude(float $newLat): float {
 		if($newLat < -90 || $newLat > 90) {
 			throw(new \RangeException("lat not within valid range"));
 		} else {
-			return true;
+			return $newLat;
 		}
 	}
 
-	public function isValidLongitude(float $newLong): bool {
+	public static function validateLongitude(float $newLong): float {
 		if($newLong < -180 || $newLong > 180) {
 			throw(new \RangeException("long not within valid range"));
 		} else {
-			return true;
+			return $newLong;
 		}
 	}
+
 
 }
 
