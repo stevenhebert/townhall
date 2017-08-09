@@ -373,9 +373,43 @@ public function setPostParentId(?int $newPostParentId) : void {
 			return($post);
 		}
 
-		/**gets the post by postDistrictId
-		 *
-		 **/
+	/**gets the post by postDistrictId
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $postDistrictId to search for
+	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostByPostDistrictId(\PDO $pdo, int $postDistrictId) : \SplFixedArray {
+		//sanitize the postDistrictId before searching
+		if($postDistrictId <= 0) {
+			throw(new \PDOException("post District Id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime from post WHERE postDistrictId = :postDistrictId";
+		$statement = $pdo->prepare($query);
+
+		//bind the post district id to the place holder in the template
+		$parameters = ["postDistrictId" => $postDistrictId];
+		$statement->execute($parameters);
+
+		//build an array of posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($posts);
+	}
 
 		/** gets the post by postParentId
 		 *
