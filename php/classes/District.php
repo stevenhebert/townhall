@@ -39,7 +39,7 @@ class District {
 
 	/** constructor for this district
 	 * @param int $newDistrictId
-	 * @param geometry $newDistrictGeom
+	 * @param array $newDistrictGeom
 	 * @param string $newDistrictName
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
@@ -48,8 +48,16 @@ class District {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
-public fucntion __construct(?int $newDistric) {
-
+public function __construct(?int $newDistrictId, array $newDistrictGeom, string $newDistrictName) {
+	try {
+		$this->setDistrictId($newDistrictId);
+		$this->setDistrictId($newDistrictId);
+		$this->setDistrictId($newDistrictId);
+	} //determine what exception was thrown
+	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
 }
 	/**
 	 * accessor for district id
@@ -72,7 +80,7 @@ public fucntion __construct(?int $newDistric) {
 	 **/
 	public function setDistrictId(int $newDistrictId): void {
 //void if district id is null - assuming this means all polygons have been assigned - want to stop process
-		if($newdistrictId === null) {
+		if($newDistrictId === null) {
 			$this->districtId = null;
 			return;
 		}
