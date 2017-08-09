@@ -534,9 +534,53 @@ public function setPostParentId(?int $newPostParentId) : void {
 
 		/** gets an array of posts based on its date
 		 *
-
-
+		 * @param \PDO $pdo connection object
+		 * @param \DateTime $sunrisePostDate beginning date of search
+		 * @param \DateTime $sunset PostDate ending date of search
+		 * @return \SplFixedArray of posts found
+		 * @throws \PDOException error when mySQL related errors occur
+		 * @throws \TypeError when variables are not the correct data type
+		 * @throws \InvalidArgumentException if either sun dates are in the wrong format
 		 **/
+		public static function getPostByPostDate (PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate) : \SplFixedArray {
+			//enforce both dates are present
+			if((empty($sunrisePostDate) === true) || (empty($sunsetPostDate) === true)) {
+				throw(new \InvalidArgumentException("dates are empty or insecure"));
+			}
+
+			//ensure both dates are in the correct format and are secure
+			try {
+				$sunrisePostDate = self::validateDateTime($sunrisePostDate);
+				$sunsetPostDate = self::validateDateTime($sunsetPostDate);
+			} catch(\InvalidArgumentException | \RangeException $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			}
+
+			//create query template
+			$query = "SELECT postId, postDistrictId, postParentId, postProfileId FROM post WHERE postDateTime >= :sunrisePostDate AND postDateTime <= :sunsetPostDate";
+			$statement = $pdo->prepare($query);
+
+			//format the dates so that mySQL can use them
+			$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s");
+			$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s");
+			$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
+			$statement->execute($parameters);
+
+			//build an array of posts
+			$posts = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+				try {
+					$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
+					$posts[$posts->key()] = $post;
+					$posts->next();
+				} catch(\Exception $exception) {
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+				}
+			}
+			return($posts);
+		}
 
 
 }
