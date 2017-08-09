@@ -15,7 +15,7 @@ namespace Edu\Cnm\Townhall;
  * @version 1.0
  **/
 
-class District implements \JsonSerializable {
+class District {
 	/**
 	 * id for this district
 	 * this is the primary key
@@ -113,8 +113,7 @@ class District implements \JsonSerializable {
  *   assuming this would cause issues with ST_contains
  *
  **/
-public
-function setDistrictGeom(?int $newDistrictGeom): void {
+public function setDistrictGeom(?int $newDistrictGeom): void {
 // if district Geometry is null there is not district, duh
 	if($newDistrictGeom === null) {
 		$this->districtGeom = null;
