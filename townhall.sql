@@ -65,3 +65,4 @@ CREATE TABLE vote (
 	FOREIGN KEY (voteProfileId) REFERENCES profile (profileId),
 	PRIMARY KEY (votePostId, voteProfileId)
 );
+

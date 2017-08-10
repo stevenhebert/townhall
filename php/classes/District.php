@@ -25,7 +25,7 @@ class District {
 
 	/**
 	 * geometry for this district
-	 * @var geom districtGeom
+	 * @var array districtGeom
 	 *
 	 **/
 	private $districtGeom;
@@ -48,17 +48,18 @@ class District {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
-public function __construct(?int $newDistrictId, array $newDistrictGeom, string $newDistrictName) {
-	try {
-		$this->setDistrictId($newDistrictId);
-		$this->setDistrictId($newDistrictId);
-		$this->setDistrictId($newDistrictId);
-	} //determine what exception was thrown
-	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	public function __construct(?int $newDistrictId, array $newDistrictGeom, string $newDistrictName) {
+		try {
+			$this->setDistrictId($newDistrictId);
+			$this->setDistrictId($newDistrictId);
+			$this->setDistrictId($newDistrictId);
+		} //determine what exception was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
-}
+
 	/**
 	 * accessor for district id
 	 *
@@ -96,7 +97,7 @@ public function __construct(?int $newDistrictId, array $newDistrictGeom, string 
 	/**
 	 * accessor for districtGeom
 	 *
-	 * @return geometry value (no longer array) of districtGeom
+	 * @return array value (no longer array) of districtGeom
 	 * reads district geometry data in order to run contains fn
 	 * -> conceptually is the contains fn calling this from php or from mysql?
 	 * ->-> if the latter, will this accessor actually be used?
@@ -109,7 +110,7 @@ public function __construct(?int $newDistrictId, array $newDistrictGeom, string 
 	/**
 	 * mutator for districtGeom
 	 *
-	 * @param geometry $newDistrictGeom
+	 * @param array $newDistrictGeom
 	 * @throws \Exception if some other exception occurs
 	 * @throws \RangeException if point has more than two elements (lat, long, ?)
 	 * @throws \TypeError if data types violate type hints
@@ -155,6 +156,101 @@ public function __construct(?int $newDistrictId, array $newDistrictGeom, string 
 		}
 	}
 
+	/**
+	 * accessor method for districtName
+	 *
+	 * @return string for name of district
+	 *
+	 */
+	public function getDistrictName(): string {
+		return ($this->districtName);
+	}
 
-}
+	/**
+	 * mutator method for districtName
+	 *
+	 * @return string for name of district
+	 *
+	 */
 
+
+	/**
+	 * inserts the districts into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+		//enforce the district id is null b/c dont want to insert into a district that already exists
+		if($this->districtId !== null) {
+			throw(new \PDOException("districtId already assigned"));
+		}
+		//create query template
+		$query = "INSERT INTO district(districtGeom, districtName) VALUES(:districtGeom, :districtName)";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holders in the template
+		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+		$statement->execute($parameters);
+		//update the null profileId with what mySQL returns
+		$this->profileId = intval($pdo->lastInsertId());
+	}
+
+	/** deletes this district from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+//enforce the districtId is not null, cant delete something that doesn't exist
+		if($this->districtId === null) {
+			throw(new \PDOException("district not found, unable to delete"));
+		}
+		//create a query template
+		$query = "DELETE FROM district WHERE districtId = :districtId";
+		$statement = $pdo->prepare($query);
+		//bind the district variables to the placeholders
+		$parameters = ["districtId" => $this->districtId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this district in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 *
+	 */
+	public function update(\PDO $pdo): void {
+		//enforce the districtId is not null, cant update a district if it doesnt exist
+		if($this->districtId === null) {
+			throw(new \PDOException("district not found, unable to delete"));
+		}
+		//create new query template and don't delete the bloody primary key
+		$query = "UPDATE district SET districtGeom = :districtGeom, districtName = :districtName WHERE districtId = :districtId";
+		$statement = $pdo->prepare($query);
+		//bind the member variables to the place holders in the template
+		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * get district by districtId
+	 *
+	 *
+	 */
+
+
+	/**
+	 *  get district by districtGeom
+	 *
+	 *
+	 */
+
+	/**
+	 * get district by districtName
+	 *
+	 *
+	 **/
