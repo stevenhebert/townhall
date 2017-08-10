@@ -29,7 +29,7 @@ require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
  *
  * @author Dylan McDonald <dmcdonald21@cnm.edu>
  **/
-abstract class DataDesignTest extends TestCase {
+abstract class TownHallProfileTest extends TestCase {
 
 	use TestCaseTrait;
 
@@ -57,8 +57,7 @@ abstract class DataDesignTest extends TestCase {
 		// add all the tables for the project here
 		// THESE TABLES *MUST* BE LISTED IN THE SAME ORDER THEY WERE CREATED!!!!
 		$dataset->addTable("profile");
-		$dataset->addTable("tweet");
-		$dataset->addTable("like");
+
 		return($dataset);
 	}
 
@@ -95,8 +94,8 @@ abstract class DataDesignTest extends TestCase {
 		// if the connection hasn't been established, create it
 		if($this->connection === null) {
 			// connect to mySQL and provide the interface to PHPUnit
-			$config = readConfig("/etc/apache2/capstone-mysql/dmcdonald21.ini");
-			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/dmcdonald21.ini");
+			$config = readConfig("/etc/apache2/capstone-mysql/xxxxxxx.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/xxxxxx.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
 		return($this->connection);
