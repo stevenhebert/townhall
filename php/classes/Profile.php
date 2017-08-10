@@ -642,7 +642,7 @@ class profile {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function update(\PDO $pdo) : void {
+	public function update(\PDO $pdo): void {
 		// enforce the profile id is not null (i.e., don't update a profile that hasn't been inserted)
 		if($this->profileId === null) {
 			throw(new \PDOException("unable to update a profile that does not exist"));

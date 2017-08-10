@@ -1,13 +1,15 @@
 <?php
-namespace Edu\Cnm\vote;
+
+namespace Edu\Cnm\Townhall;
+
 /**
-* vote Class
+ * vote Class
  * This class stores all the vote data and the time of the vote
-* Referenced by Profile and Post
-*
+ * Referenced by Profile and Post
+ *
  * @author Michelle Allen <mbojorquez4@cnm.edu>
  * @version 1.0
-*/
+ */
 class Vote {
 	/**
 	 * id for the original post; this is the primary key
@@ -49,31 +51,30 @@ class Vote {
 			$this->setVoteProfileId($newVoteProfileId);
 			$this->setVoteDateTime($newVoteDateTime);
 			$this->setVoteValue($newVoteValue);
-		}
-			//determine what exception type was thrown
+		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-		}
+	}
 
 	/**
 	 * accessor method for postVoteId id
 	 *
 	 * @return int|null value of postVoteID id
 	 **/
-	public function getPostVoteId() : int {
-		return($this->postVoteId);
+	public function getPostVoteId(): int {
+		return ($this->postVoteId);
 	}
 
-/**
- * mutator method for postVoteID id
- *
- * @param int|null $newPostVoteId new value of newPostVoteId id
- * @throws \RangeException if $newPostVoteId is not positive
- * @throws \TypeError if $newPostVoteId is not an integer
- **/
-	public function setPostVoteId(?int $newPostVoteId) : void {
+	/**
+	 * mutator method for postVoteID id
+	 *
+	 * @param int|null $newPostVoteId new value of newPostVoteId id
+	 * @throws \RangeException if $newPostVoteId is not positive
+	 * @throws \TypeError if $newPostVoteId is not an integer
+	 **/
+	public function setPostVoteId(?int $newPostVoteId): void {
 		//if postVote id is null immediately return it
 		if($newPostVoteId === null) {
 			$this->postVoteId = null;
@@ -85,7 +86,7 @@ class Vote {
 			}
 
 			// convert and store the postVote id
-			$this->postVoteId = $newPostVoteId ;
+			$this->postVoteId = $newPostVoteId;
 		}
 
 		/**
@@ -93,7 +94,8 @@ class Vote {
 		 *
 		 * @return int value of vote profile id
 		 **/
-		public function getVoteProfileId() : int {
+		public
+		function getVoteProfileId(): int {
 			return ($this->VoteProfileId);
 		}
 
@@ -104,7 +106,8 @@ class Vote {
 		 * @throws \RangeException if $newVoteProfileId is not positive
 		 * @throws \TypeError if $newVoteProfileId is not an integer
 		 **/
-		public function setVoteProfileId(int $newVoteProfileId) : void {
+		public
+		function setVoteProfileId(int $newVoteProfileId): void {
 
 			// verify the voteProfile id is positive
 			if($newVoteProfileId <= 0) {
@@ -114,14 +117,17 @@ class Vote {
 			// convert and store the vote profile id
 			$this->voteProfileId = $newVoteProfileId;
 		}
+
 		/**
 		 * accessor method for voteDateTime
 		 *
 		 * @return string value of tweet content
 		 **/
-		public function getVoteDateTime() : \DateTime {
-			return($this->VoteDateTime);
+		public
+		function getVoteDateTime(): \DateTime {
+			return ($this->VoteDateTime);
 		}
+
 		/**
 		 * mutator method for vote date/time
 		 *
@@ -129,12 +135,13 @@ class Vote {
 		 * @throws \InvalidArgumentException if $newVoteDatetime is not a valid object or string
 		 * @throws \RangeException if $newVoteDateTime is a date that does not exist
 		 **/
-		public function setVoteDateTime($newVoteDateTime = null) : void {
+		public
+		function setVoteDateTime($newVoteDateTime = null): void {
 			// base case: if the date is null, use the current date and time
 			if($newVoteDateTime === null) {
 				$this->VoteDatetime = new \DateTime();
 				return;
-		}
+			}
 			// store the like date using the ValidateDate trait
 			try {
 				$newVoteDateTime = self::validateVoteDateTime($newVoteDateTime);
@@ -144,6 +151,7 @@ class Vote {
 			}
 			$this->VoteDateTime = $newVoteDateTime;
 		}
+
 		/**
 		 * inserts this VoteDateTime into mySQL
 		 *
@@ -151,7 +159,8 @@ class Vote {
 		 * @throws \PDOException when mySQL related errors occur
 		 * @throws \TypeError if $pdo is not a PDO connection object
 		 **/
-		public function insert(\PDO $pdo) : void {
+		public
+		function insert(\PDO $pdo): void {
 			// enforce the voteProfileId is null (i.e., don't insert a tweet that already exists)
 			if($this->voteProfileId !== null) {
 				throw(new \PDOException("not a new voteProfileId"));

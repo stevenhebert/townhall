@@ -80,12 +80,12 @@ class District {
 	 *
 	 **/
 	public function setDistrictId(int $newDistrictId): void {
-//void if district id is null - assuming this means all polygons have been assigned - want to stop process
+		//void if district id is null - assuming this means all polygons have been assigned - want to stop process
 		if($newDistrictId === null) {
 			$this->districtId = null;
 			return;
 		}
-//verify that the districtId is positive
+		//verify that the districtId is positive
 		if($newDistrictId <= 0) {
 			throw(new \RangeException("district id not positive"));
 		}
@@ -203,7 +203,7 @@ class District {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo): void {
-//enforce the districtId is not null, cant delete something that doesn't exist
+		//enforce the districtId is not null, cant delete something that doesn't exist
 		if($this->districtId === null) {
 			throw(new \PDOException("district not found, unable to delete"));
 		}
@@ -239,18 +239,35 @@ class District {
 	/**
 	 * get district by districtId
 	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $districtId to search for
+	 * @return district|null
+	 * @throws \PDOException when mySQL error occur
+	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
-
-
-	/**
-	 *  get district by districtGeom
-	 *
-	 *
-	 */
-
-	/**
-	 * get district by districtName
-	 *
-	 *
-	 **/
+	public static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?District {
+		//negative district id absurd
+		if($districtId <= 0) {
+			throw(new \PDOException("districtId is not positive"));
+		}
+		//create query template
+		$query = "SELECT districtId, districtGeom, districtName FROM district WHERE districtId =: districtId";
+		$statement = $pdo->prepare($query);
+		//bind the districtId ti the place holder in the template
+		$parameters = ["districtId" => $districtId];
+		$statement->execute($parameters);
+		//get district from mySQL
+		try {
+			$post = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row == false) {
+				$district = new District($row["districtId"], $row["districtGeom"], $row["districtName"]);
+			}
+		} catch(\Exception $exception) {
+			//if row can't be converted re-throw it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}

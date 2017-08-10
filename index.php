@@ -1,8 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: steven
- * Date: 8/2/17
- * Time: 10:46 AM
+ * ABQ Townhall
+ * Deep Dive Coding
+ * Authors: Leonora, Michelle, Ryan, Steven
+ * Cohort 17
+ *
  */
 

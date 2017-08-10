@@ -1,5 +1,7 @@
 <?php
-namespace Edu\Cnm\DataDesign;
+
+namespace Edu\Cnm\Townhall;
+
 /**
  * Trait to Validate a mySQL Date--from Dylan McDonald--used with permission
  *

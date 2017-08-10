@@ -1,5 +1,6 @@
 <?php
 
+namespace Edu\Cnm\Townhall;
 
 require_once("autoload.php");
 
@@ -16,7 +17,7 @@ require_once("autoload.php");
  * @author Leonora Sanchez-Rees <leonora621@yahoo.com>
  * @version 1.0.0
  **/
-class Post  {
+class Post {
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId
@@ -52,6 +53,7 @@ class Post  {
 	 * @var \DateTime $postDateTime
 	 **/
 	private $postDateTime;
+
 	/**
 	 * constructor for Post
 	 *
@@ -76,8 +78,7 @@ class Post  {
 			$this->setPostProfileId($newPostProfileId);
 			$this->setPostContent($newPostContent);
 			$this->setPostDateTime($newPostDateTime);
-		}
-		//determine what exception type was thrown
+		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \ RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -85,15 +86,15 @@ class Post  {
 	}
 
 
-
 	/**
 	 * accessor for post id
 	 *
 	 * @return int | null value of post id
 	 **/
-	public function getPostId() : int {
-		return($this->postId);
+	public function getPostId(): int {
+		return ($this->postId);
 	}
+
 	/**
 	 * mutator method for post id
 	 *
@@ -101,7 +102,7 @@ class Post  {
 	 * @throws \RangeException if $newPostId is not positive
 	 * @throws \TypeError if $newPostId is not an integer
 	 **/
-	public function setPostId(?int $newPostId) : void {
+	public function setPostId(?int $newPostId): void {
 		//if post id is null immediately return it
 		if($newPostId === null) {
 			$this->postId = null;
@@ -116,13 +117,15 @@ class Post  {
 		//convert and store the post id
 		$this->postId = $newPostId;
 	}
+
 	/**
 	 * accessor method for post district id
 	 * @return int value of post district id
 	 **/
-	public function getPostDistrictId() : int {
-		return($this->postDistrictId);
+	public function getPostDistrictId(): int {
+		return ($this->postDistrictId);
 	}
+
 	/**
 	 * mutator method for post district id
 	 *
@@ -131,7 +134,7 @@ class Post  {
 	 * @throws \TypeError if $newPostDistrictId is not an integer
 	 *
 	 **/
-	public function setPostDistrictId(int $newPostDistrictId) : void {
+	public function setPostDistrictId(int $newPostDistrictId): void {
 
 		//verify the post district id is positive
 		if($newPostDistrictId <= 0) {
@@ -143,37 +146,37 @@ class Post  {
 
 	}
 
-/**
- * accessor method for post parent id
- *
- * @return int | null value of post parent id
- **/
+	/**
+	 * accessor method for post parent id
+	 *
+	 * @return int | null value of post parent id
+	 **/
 
-public function getPostParentId() : int {
-	return($this->postParentId);
-}
-
-/**
- * mutator method for post parent id
- *
- * @param int | null $newPostParentId new value of post parent id
- * @throws \RangeException if $newPostParentId is not positive
- * @throws \TypeError if $newPostParentId is not an integer
- **/
-public function setPostParentId(?int $newPostParentId) : void {
-	//if post parent id is null immediately return it
-	if($newPostParentId === null) {
-		$this->postParentId = null;
-		return;
+	public function getPostParentId(): int {
+		return ($this->postParentId);
 	}
 
-	//verify the post parent id is positive
-	if($newPostParentId <= 0) {
-		throw(new \RangeException("post parent id is not positive"));
-	}
+	/**
+	 * mutator method for post parent id
+	 *
+	 * @param int | null $newPostParentId new value of post parent id
+	 * @throws \RangeException if $newPostParentId is not positive
+	 * @throws \TypeError if $newPostParentId is not an integer
+	 **/
+	public function setPostParentId(?int $newPostParentId): void {
+		//if post parent id is null immediately return it
+		if($newPostParentId === null) {
+			$this->postParentId = null;
+			return;
+		}
 
-	//convert and store the post parent id
-	$this->postParentId = $newPostParentId;
+		//verify the post parent id is positive
+		if($newPostParentId <= 0) {
+			throw(new \RangeException("post parent id is not positive"));
+		}
+
+		//convert and store the post parent id
+		$this->postParentId = $newPostParentId;
 	}
 
 
@@ -182,19 +185,20 @@ public function setPostParentId(?int $newPostParentId) : void {
 	 *
 	 * @return int value of post profile id
 	 **/
-	public function getPostProfileId() : int {
-		return($this->postProfileId);
+	public function getPostProfileId(): int {
+		return ($this->postProfileId);
 	}
+
 	/**mutator method for post profile id
 	 *
 	 * @param int $newPostProfileId new value of post profile id
 	 * @throws \RangeException if $newPostProfileId is not positive
 	 * @throws \TypeError if $newPostProfileId is not an integer
 	 **/
-	public function setPostProfileId(int $newPostProfileId) : void {
+	public function setPostProfileId(int $newPostProfileId): void {
 
 		//verify the profile id is positive
-		if($newPostProfileId <= 0 ) {
+		if($newPostProfileId <= 0) {
 			throw(new \RangeException("post profile id is not positive"));
 		}
 
@@ -207,9 +211,10 @@ public function setPostParentId(?int $newPostParentId) : void {
 	 *
 	 * @return string value of post content
 	 **/
-	public function getPostContent() : string {
-		return($this->postContent);
+	public function getPostContent(): string {
+		return ($this->postContent);
 	}
+
 	/**
 	 * mutator method for post content
 	 *
@@ -219,7 +224,7 @@ public function setPostParentId(?int $newPostParentId) : void {
 	 * @throws \TypeError if $newPostContent is not a string
 	 *
 	 **/
-	public function setPostContent(string $newPostContent) : void {
+	public function setPostContent(string $newPostContent): void {
 		//verify the post content is secure
 		$newPostContent = trim($newPostContent);
 		$newPostContent = filter_var($newPostContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -235,23 +240,25 @@ public function setPostParentId(?int $newPostParentId) : void {
 		//store the post content
 		$this->postContent = $newPostContent;
 	}
+
 	/*
 	 * accessor method for postDateTime
 	 *
 	 * @return \DateTime value of post date and time
 	 **/
-	public function getPostDateTime() : \DateTime {
-		return($this->postDateTime);
+	public function getPostDateTime(): \DateTime {
+		return ($this->postDateTime);
 	}
+
 	/**
 	 * mutator method for post date time
 	 *
-	 * @param \DateTime\string\null  $newPostDateTime post date time as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime\string\null $newPostDateTime post date time as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newPostDateTime is not a valid object or string
 	 * @throws \RangeException if $newPostDateTime is a date that does not exist
 	 *
 	 **/
-	public function setPostDateTime($newPostDateTime = null) : void {
+	public function setPostDateTime($newPostDateTime = null): void {
 		//base case:  if the date is null, use the current date and time
 		if($newPostDateTime === null) {
 			$this->postDateTime = new \DateTime();
@@ -266,112 +273,112 @@ public function setPostParentId(?int $newPostParentId) : void {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		$this->postDateTime = $newPostDateTime;
+	}
+
+	/** inserts post into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL-related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+		//enforce the postId is null. (i.e., don't insert a post that already exists.)
+		if($this->postId !== null) {
+			throw(new \PDOException("not a new post"));
+		}
+		//create a query template
+		$query = "INSERT INTO post(postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime) VALUES (:postId, :postDistrictId, :postParentId, :postProfileId, :postContent, :postDateTime)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
+		$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
+		$statement->execute($parameters);
+
+		//update the null postId with what mySQL just gave us
+		$this->postId = intval($pdo->lastInsertId());
+	}
+
+	/** deletes this post from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+		//enforce the postId is not null (i.e., don't delete a post that hasn't been inserted).
+		if($this->postId === null) {
+			throw(new \PDOException("unable to delete a post that doesn't exist"));
 		}
 
-		/** inserts post into mySQL
-		 *
-		 * @param \PDO $pdo PDO connection object
-		 * @throws \PDOException when mySQL-related errors occur
-		 * @throws \TypeError if $pdo is not a PDO connection object
-		 **/
-		public function insert(\PDO $pdo) : void {
-			//enforce the postId is null. (i.e., don't insert a post that already exists.)
-			if($this->postId !== null) {
-				throw(new \PDOException("not a new post"));
-			}
-			//create a query template
-			$query = "INSERT INTO post(postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime) VALUES (:postId, :postDistrictId, :postParentId, :postProfileId, :postContent, :postDateTime)";
-			$statement = $pdo->prepare($query);
+		//create a query template
+		$query = "DELETE FROM post WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
 
-			//bind the member variables to the place holders in the template
-			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
-			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
-			$statement->execute($parameters);
+		//bind the member variables to the place holder in the template
+		$parameters = ["postId" => $this->postId];
+		$statement->execute($parameters);
+	}
 
-			//update the null postId with what mySQL just gave us
-			$this->postId = intval($pdo->lastInsertId());
+
+	/** updates the post in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+		//enforce the postId is not null (don't update a post that hasn't been inserted
+		if($this->postId === null) {
+			throw(new \PDOException("unable to update post that doesn't exist"));
 		}
 
-		/** deletes this post from mySQL
-		 *
-		 * @param \PDO $pdo PDO connection object
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError if $pdo is not a PDO connection object
-		 **/
-		public function delete(\PDO $pdo) : void {
-			//enforce the postId is not null (i.e., don't delete a post that hasn't been inserted).
-			if($this->postId === null) {
-				throw(new \PDOException("unable to delete a post that doesn't exist"));
-			}
+		//create query template
+		$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent, postDateTime = :postDateTime";
+		$statement = $pdo->prepare($query);
 
-			//create a query template
-			$query = "DELETE FROM post WHERE postId = :postId";
-			$statement = $pdo->prepare($query);
+		//bind the member variables to thte place holders in the template
+		$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
+		$statement->execute($parameters);
+	}
 
-			//bind the member variables to the place holder in the template
-			$parameters = ["postId" => $this->postId];
-			$statement->execute($parameters);
+	/**gets the post by postId
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $postId to search for
+	 * @return Post | null Post found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostByPostId(\PDO $pdo, int $postId): ?Post {
+		//sanitize the PostId before searching
+		if($postId <= 0) {
+			throw(new \PDOException("post Id is not positive"));
 		}
 
+		//create query template
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
 
-		/** updates the post in mySQL
-		 *
-		 * @param \PDO $pdo PDO connection object
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError if $pdo is not a PDO connection object
-		 **/
-		public function update(\PDO $pdo) : void {
-			//enforce the postId is not null (don't update a post that hasn't been inserted
-			if($this->postId === null) {
-				throw(new \PDOException("unable to update post that doesn't exist"));
+		//bind the post id to the place holder in the template
+		$parameters = ["postId" => $postId];
+		$statement->execute($parameters);
+
+		//grab post from mySQL
+		try {
+			$post = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
 			}
-
-			//create query template
-			$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent, postDateTime = :postDateTime";
-			$statement = $pdo->prepare($query);
-
-			//bind the member variables to thte place holders in the template
-			$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
-			$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
-			$statement->execute($parameters);
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
-		/**gets the post by postId
-		 *
-		 * @param \PDO $pdo connection object
-		 * @param int $postId to search for
-		 * @return Post | null Post found or null if not found
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 **/
-		public static function getPostByPostId(\PDO $pdo, int $postId) : ?Post {
-			//sanitize the PostId before searching
-			if($postId <= 0) {
-				throw(new \PDOException("post Id is not positive"));
-			}
-
-			//create query template
-			$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime from post WHERE postId = :postId";
-			$statement = $pdo->prepare($query);
-
-			//bind the post id to the place holder in the template
-			$parameters = ["postId" => $postId];
-			$statement->execute($parameters);
-
-			//grab post from mySQL
-			try {
-				$post = null;
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				$row = $statement->fetch();
-				if($row !== false) {
-					$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
-				}
-			} catch(\Exception $exception) {
-				//if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-			return($post);
-		}
+		return ($post);
+	}
 
 	/**gets the post by postDistrictId
 	 *
@@ -381,14 +388,14 @@ public function setPostParentId(?int $newPostParentId) : void {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getPostByPostDistrictId(\PDO $pdo, int $postDistrictId) : \SplFixedArray {
+	public static function getPostByPostDistrictId(\PDO $pdo, int $postDistrictId): \SplFixedArray {
 		//sanitize the postDistrictId before searching
 		if($postDistrictId <= 0) {
 			throw(new \PDOException("post District Id is not positive"));
 		}
 
 		//create query template
-		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime from post WHERE postDistrictId = :postDistrictId";
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postDistrictId = :postDistrictId";
 		$statement = $pdo->prepare($query);
 
 		//bind the post district id to the place holder in the template
@@ -408,25 +415,25 @@ public function setPostParentId(?int $newPostParentId) : void {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($posts);
+		return ($posts);
 	}
 
-		/** gets the post by postParentId
-		 *
-		 * @param \PDO $pdo connection object
-		 * @param int $postParentId to search for
-		 * @return \SplFixedArray SplFixedArray of Posts found
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 **/
-	public static function getPostByPostParentId(\PDO $pdo, int $postParentId) : \SplFixedArray {
+	/** gets the post by postParentId
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $postParentId to search for
+	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostByPostParentId(\PDO $pdo, int $postParentId): \SplFixedArray {
 		//sanitize the postDistrictId before searching
 		if($postParentId <= 0) {
 			throw(new \PDOException("post Parent Id is not positive"));
 		}
 
 		//create query template
-		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime from post WHERE postParentId = :postParentId";
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postParentId = :postParentId";
 		$statement = $pdo->prepare($query);
 
 		//bind the post district id to the place holder in the template
@@ -446,25 +453,25 @@ public function setPostParentId(?int $newPostParentId) : void {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($posts);
+		return ($posts);
 	}
 
-		/** gets the post by postProfileId
-		 *
-		 * @param \PDO $pdo connection object
-		 * @param int $postProfileId to search for
-		 * @return \SplFixedArray SplFixedArray of Posts found
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 **/
-	public static function getPostByPostProfileId(\PDO $pdo, int $postProfileId) : \SplFixedArray {
+	/** gets the post by postProfileId
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $postProfileId to search for
+	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostByPostProfileId(\PDO $pdo, int $postProfileId): \SplFixedArray {
 		//sanitize the postDistrictId before searching
 		if($postProfileId <= 0) {
 			throw(new \PDOException("post Profile Id is not positive"));
 		}
 
 		//create query template
-		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime from post WHERE postProfileId = :postProfileId";
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postProfileId = :postProfileId";
 		$statement = $pdo->prepare($query);
 
 		//bind the post district id to the place holder in the template
@@ -484,133 +491,133 @@ public function setPostParentId(?int $newPostParentId) : void {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($posts);
+		return ($posts);
 	}
 
 
-		/** gets the post by content
-		 *
-		 * @param \PDO $pdo PDO connection object
-		 * @param string $postContent post content to search for
-		 * @return \SplFixedArray SPLFixedArray of posts found
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 **/
-		public static function getPostByPostContent(\PDO $pdo, string $postContent) : \SplFixedArray {
-			//sanitize the description before searching
-			$postContent = trim($postContent);
-			$postContent = filter_var($postContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-			if(empty($postContent) === true) {
-				throw(new \PDOException("post content is invalid"));
-			}
-
-			//escape any mySQL wild cards
-			$postContent = str_replace("_", "\\_", str_replace("%", "\\%", $postContent));
-
-			//create query template
-			$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postContent LIKE :postContent";
-			$statement = $pdo->prepare($query);
-
-			//bind the post content to the place holder in the template
-			$postContent = "%$postContent";
-			$parameters = ["postContent" => $postContent];
-			$statement->execute($parameters);
-
-			//build an array of posts
-			$posts = new \SplFixedArray($statement->rowCount());
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
-				try {
-					$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
-					$posts[$posts->key()] = $post;
-					$posts->next();
-				} catch(\Exception $exception) {
-					//if the row couldn't be converted, rethrow it
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
-				}
-			}
+	/** gets the post by content
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $postContent post content to search for
+	 * @return \SplFixedArray SPLFixedArray of posts found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPostByPostContent(\PDO $pdo, string $postContent): \SplFixedArray {
+		//sanitize the description before searching
+		$postContent = trim($postContent);
+		$postContent = filter_var($postContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($postContent) === true) {
+			throw(new \PDOException("post content is invalid"));
 		}
 
+		//escape any mySQL wild cards
+		$postContent = str_replace("_", "\\_", str_replace("%", "\\%", $postContent));
 
-		/** gets an array of posts based on its date
-		 *
-		 * @param \PDO $pdo connection object
-		 * @param \DateTime $sunrisePostDate beginning date of search
-		 * @param \DateTime $sunset PostDate ending date of search
-		 * @return \SplFixedArray of posts found
-		 * @throws \PDOException error when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 * @throws \InvalidArgumentException if either sun dates are in the wrong format
-		 **/
-		public static function getPostByPostDate (PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate) : \SplFixedArray {
-			//enforce both dates are present
-			if((empty($sunrisePostDate) === true) || (empty($sunsetPostDate) === true)) {
-				throw(new \InvalidArgumentException("dates are empty or insecure"));
-			}
+		//create query template
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postContent LIKE :postContent";
+		$statement = $pdo->prepare($query);
 
-			//ensure both dates are in the correct format and are secure
+		//bind the post content to the place holder in the template
+		$postContent = "%$postContent";
+		$parameters = ["postContent" => $postContent];
+		$statement->execute($parameters);
+
+		//build an array of posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
 			try {
-				$sunrisePostDate = self::validateDateTime($sunrisePostDate);
-				$sunsetPostDate = self::validateDateTime($sunsetPostDate);
-			} catch(\InvalidArgumentException | \RangeException $exception) {
-				$exceptionType = get_class($exception);
-				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+				$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
+		}
+	}
 
-			//create query template
-			$query = "SELECT postId, postDistrictId, postParentId, postProfileId FROM post WHERE postDateTime >= :sunrisePostDate AND postDateTime <= :sunsetPostDate";
-			$statement = $pdo->prepare($query);
 
-			//format the dates so that mySQL can use them
-			$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
-			$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
-			$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
-			$statement->execute($parameters);
-
-			//build an array of posts
-			$posts = new \SplFixedArray($statement->rowCount());
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
-				try {
-					$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
-					$posts[$posts->key()] = $post;
-					$posts->next();
-				} catch(\Exception $exception) {
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
-				}
-			}
-			return($posts);
+	/** gets an array of posts based on its date
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param \DateTime $sunrisePostDate beginning date of search
+	 * @param \DateTime $sunset PostDate ending date of search
+	 * @return \SplFixedArray of posts found
+	 * @throws \PDOException error when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
+	 **/
+	public static function getPostByPostDate(PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate): \SplFixedArray {
+		//enforce both dates are present
+		if((empty($sunrisePostDate) === true) || (empty($sunsetPostDate) === true)) {
+			throw(new \InvalidArgumentException("dates are empty or insecure"));
 		}
 
-		/**
-		 * get all posts
-		 *
-		 * @param \PDO $pdo PDO connection object
-		 * @return \SplFixedArray SplFixedArray of posts found or null if not found
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 **/
-		public static function getAllPosts(\PDO $pdo) : SplFixedArray {
-			//create query template
-			$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post";
-			$statement = $pdo->prepare($query);
-			$statement->execute();
-
-			//build an array of posts
-			$posts = new \SplFixedArray($statement->rowCount());
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
-				try {
-					$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
-					$posts[$posts->key()] = $post;
-					$posts->next();
-				} catch(\Exception $exception) {
-					//if the row couldn't be converted, rethrow it
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
-				}
-			}
-			return($posts);
+		//ensure both dates are in the correct format and are secure
+		try {
+			$sunrisePostDate = self::validateDateTime($sunrisePostDate);
+			$sunsetPostDate = self::validateDateTime($sunsetPostDate);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+
+		//create query template
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId FROM post WHERE postDateTime >= :sunrisePostDate AND postDateTime <= :sunsetPostDate";
+		$statement = $pdo->prepare($query);
+
+		//format the dates so that mySQL can use them
+		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
+		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
+		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
+		$statement->execute($parameters);
+
+		//build an array of posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($posts);
+	}
+
+	/**
+	 * get all posts
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of posts found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllPosts(\PDO $pdo): SplFixedArray {
+		//create query template
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		//build an array of posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postDistrictId"], $row["postParentId"], $row["postProfileId"], $row["postContent"], $row["postDateTime"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($posts);
+	}
 
 
 }
