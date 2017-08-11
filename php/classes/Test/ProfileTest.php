@@ -15,7 +15,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Tweet
  * @author Dylan McDonald <dmcdonald21@cnm.edu>
  **/
-class TweetTest extends DataDesignTest {
+class ProfileTest extends TownHallProfileTest {
 	/**
 	 * Profile that created the Tweet; this is for foreign key relations
 	 * @var Profile profile
