@@ -195,7 +195,7 @@ class PostTest extends PostTestSetup {
 
 
 		// create and insert a Profile to own the test Post
-		$this->profile = new Profile(null, null,"123", "123 Main St",$this->VALID_PROFILE_HASH, "+12125551212", $this->VALID_PROFILE_SALT);
+		$this->profile = new Profile(null, null,"123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc");
 		$this->profile->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)
@@ -221,8 +221,8 @@ class PostTest extends PostTestSetup {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		post = new Post(null, $this->VALID_POST_PARENTID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $tweet->getPostId());
@@ -252,7 +252,7 @@ class PostTest extends PostTestSetup {
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$tweet = new Post(null,$this->VALID_DISTRICT_ID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 
 		// edit the Post and update it in mySQL
@@ -275,8 +275,8 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testUpdateInvalidPost() : void {
 		// create a Post with a non null tweet id and watch it fail
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->update($this->getPDO());
+		$post = new Post(null, $this->VALID_POST_DISTRICTID, $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->update($this->getPDO());
 	}
 
 	/**
@@ -284,18 +284,18 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testDeleteValidPost() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$tweet->insert($this->getPDO());
 
 		// delete the Post from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$tweet->delete($this->getPDO());
+		$post->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Post does not exist
-		$pdoPost = Post::getPostByPostId($this->getPDO(), $tweet->getPostId());
+		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
 		$this->assertNull($pdoPost);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tweet"));
 	}
@@ -307,8 +307,10 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testDeleteInvalidPost() : void {
 		// create a Post and try to delete it without actually inserting it
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->delete($this->getPDO());
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
+
+		$post->delete($this->getPDO());
 	}
 
 	/**
@@ -316,15 +318,15 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testGetValidPostByPostId() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoPost = Post::getPostByPostId($this->getPDO(), $tweet->getPostId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
@@ -345,15 +347,15 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testGetValidPostByPostProfileId() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Post::getPostByPostProfileId($this->getPDO(), $tweet->getPostProfileId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Post::getPostByPostProfileId($this->getPDO(), $post->getPostProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
 
@@ -370,24 +372,24 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testGetInvalidPostByPostProfileId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$tweet = Post::getPostByPostProfileId($this->getPDO(), DataDesignTest::INVALID_KEY);
-		$this->assertCount(0, $tweet);
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$this->assertCount(0, $post);
 	}
 
 	/**
-	 * test grabbing a Post by tweet content
+	 * test grabbing a Post by post content
 	 **/
 	public function testGetValidPostByPostContent() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Post::getPostByPostContent($this->getPDO(), $tweet->getPostContent());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Post::getPostByPostContent($this->getPDO(), $post->getPostContent());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
 
 		// enforce no other objects are bleeding into the test
@@ -406,8 +408,8 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testGetInvalidPostByPostContent() : void {
 		// grab a tweet by content that does not exist
-		$tweet = Post::getPostByPostContent($this->getPDO(), "nobody ever tweeted this");
-		$this->assertCount(0, $tweet);
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$this->assertCount(0, $post);
 	}
 
 	/**
@@ -416,15 +418,15 @@ class PostTest extends PostTestSetup {
 	 */
 	public function testGetValidPostBySunDate() : void {
 		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		//create a new Post and insert it into the database
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
 
 		// grab the tweet from the database and see if it matches expectations
 		$results = Post::getPostByPostDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1,$results);
 
 		//enforce that no other objects are bleeding into the test
@@ -432,9 +434,9 @@ class PostTest extends PostTestSetup {
 
 		//use the first result to make sure that the inserted tweet meets expectations
 		$pdoPost = $results[0];
-		$this->assertEquals($pdoPost->getPostId(), $tweet->getPostId());
-		$this->assertEquals($pdoPost->getPostProfileId(), $tweet->getPostProfileId());
-		$this->assertEquals($pdoPost->getPostContent(), $tweet->getPostContent());
+		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
+		$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
+		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
 		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
 
 	}
@@ -444,11 +446,11 @@ class PostTest extends PostTestSetup {
 	 **/
 	public function testGetAllValidPosts() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Post::getAllPosts($this->getPDO());
