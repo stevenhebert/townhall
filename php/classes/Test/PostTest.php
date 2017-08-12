@@ -12,16 +12,84 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * This is a complete PHPUnit test of the Post class. It is complete because *ALL* mySQL/PDO enabled methods
  * are tested for both invalid and valid inputs.
  *
- * @see Post
- * @author Dylan McDonald <dmcdonald21@cnm.edu>
+ *
+ * @author Leonora Sanchez-Rees <leonora621@yahoo.com>
  **/
-class PostTest extends DataDesignTest {
+class PostTest extends PostTestSetup {
+	/*district data needs to be set up first*/
+
+	/**
+	 * district that created the profile; this is for foreign key relations
+	 * @var District district
+	 **/
+	protected $district = null;
+
+	/**
+	 * valid district id to use to create the profile object to own the test
+	 * @var string $VALID_DISTRICT_ID
+	 */
+	protected $VALID_DISTRICT_ID;
+
+	/**
+	 * valid DISTRICT NAME to use to create the profile object to own the test
+	 * @var string $VALID_DISTRICT_NAME
+	 */
+	protected $VALID_DISTRICT_NAME;
+
+	/**
+	 * valid district geom to use to create the profile object to own the test
+	 * @var string $VALID_DISTRICT_GEOM
+	 */
+	protected $VALID_DISTRICT_GEOM;
+
+
 	/**
 	 * Profile that created the Post; this is for foreign key relations
 	 * @var Profile profile
 	 **/
 	protected $profile = null;
 
+	/**
+	 * valid profile id to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_ID
+	 */
+	protected $VALID_PROFILE_ID;
+
+	/**
+	 * valid district id to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_DISTRICT_ID
+	 */
+	protected $VALID_PROFILE_DISTRICT_ID;
+
+	/**
+	 * valid activation token to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_ACTIVATION_TOKEN
+	 */
+	protected $VALID_PROFILE_ACTIVATION_TOKEN;
+
+	/**
+	 * valid address1 to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_ADDRESS1
+	 */
+	protected $VALID_PROFILE_ADDRESS1;
+
+	/**
+	 * valid CITY to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_CITY
+	 */
+	protected $VALID_PROFILE_CITY;
+
+	/**
+	 * valid email to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_EMAIL
+	 */
+	protected $VALID_PROFILE_EMAIL;
+
+	/**
+	 * valid first name to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_FIRSTNAME
+	 */
+	protected $VALID_PROFILE_FIRSTNAME;
 
 	/**
 	 * valid profile hash to create the profile object to own the test
@@ -30,22 +98,68 @@ class PostTest extends DataDesignTest {
 	protected $VALID_PROFILE_HASH;
 
 	/**
+	 * valid last name to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_LASTNAME
+	 */
+	protected $VALID_PROFILE_LASTNAME;
+
+	/**
 	 * valid salt to use to create the profile object to own the test
 	 * @var string $VALID_SALT
 	 */
 	protected $VALID_PROFILE_SALT;
 
 	/**
+	 * valid state to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_STATE
+	 */
+	protected $VALID_PROFILE_STATE;
+
+	/**
+	 * valid username to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_USERNAME
+	 */
+	protected $VALID_PROFILE_USERNAME;
+
+	/**
+	 * valid zip to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_ZIP
+	 */
+	protected $VALID_PROFILE_ZIP;
+
+
+	/*set up the variables for the post table*/
+
+	/**
+	 * district id of the Post
+	 * @var string $VALID_POST_DISTRICTID
+	 **/
+	protected $VALID_POST_DISTRICTID;
+
+	/**
+	 * PARENT ID of the Post
+	 * @var string $VALID_POST_PARENTID
+	 **/
+	protected $VALID_POST_PARENTID;
+
+	/**
+	 * PROFILE ID of the Post
+	 * @var string $VALID_POST_PROFILEID
+	 **/
+	protected $VALID_POST_PROFILEID;
+
+
+	/**
 	 * content of the Post
 	 * @var string $VALID_POSTCONTENT
 	 **/
-	protected $VALID_POSTCONTENT = "PHPUnit test passing";
+	protected $VALID_POSTCONTENT = "Hey, we created some content.  We're special.";
 
 	/**
 	 * content of the updated Post
 	 * @var string $VALID_POSTCONTENT2
 	 **/
-	protected $VALID_POSTCONTENT2 = "PHPUnit test still passing";
+	protected $VALID_POSTCONTENT2 = "Ooh, more content. Look what we did";
 
 	/**
 	 * timestamp of the Post; this starts as null and is assigned later
@@ -73,9 +187,15 @@ class PostTest extends DataDesignTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
+		// create and insert a Profile to own the test Post
+		$this->district = new District(null, null,"1");
+		$this->district->insert($this->getPDO());
+
+
+
 
 		// create and insert a Profile to own the test Post
-		$this->profile = new Profile(null, null,"@handle", "test@phpunit.de",$this->VALID_PROFILE_HASH, "+12125551212", $this->VALID_PROFILE_SALT);
+		$this->profile = new Profile(null, null,"123", "123 Main St",$this->VALID_PROFILE_HASH, "+12125551212", $this->VALID_PROFILE_SALT);
 		$this->profile->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)

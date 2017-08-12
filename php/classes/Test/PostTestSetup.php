@@ -23,7 +23,7 @@ require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
  * 2. Rename the namespace to be the same as (1) (e.g., Edu\Cnm\ProjectName\Test)
  * 3. Modify DataDesignTest::getDataSet() to include all the tables in your project.
  * 4. Modify DataDesignTest::getConnection() to include the correct mySQL properties file.
- * 5. Have all table specific tests include this class.
+ * 5. Have all table specific tests include this class.1
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).
  *
@@ -96,8 +96,8 @@ abstract class DataDesignTest extends TestCase {
 		// if the connection hasn't been established, create it
 		if($this->connection === null) {
 			// connect to mySQL and provide the interface to PHPUnit
-			$config = readConfig("/etc/apache2/capstone-mysql/dmcdonald21.ini");
-			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/dmcdonald21.ini");
+			$config = readConfig("/etc/apache2/capstone-mysql/townhall.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
 		return($this->connection);
