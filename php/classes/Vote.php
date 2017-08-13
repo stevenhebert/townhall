@@ -170,7 +170,7 @@ public function insert(\PDO $pdo) : void {
 		$statement->execute($parameters);
 
 		// update the null votePostId with what mySql just gave us
-		$this->votePostId = intval($pdo -.lastInsertId());
+		$this->votePostId = intval($pdo ->lastInsertId());
 		}
 
 /**
@@ -213,7 +213,7 @@ $statement =pdo->prepare(query);
 
 //bind the member variables to the place holders in the template
 $formattedDateTime = $this->voteDateTime->formate("Y-m-d H:i:s");
-$parameters = ["votepostId"=> $this->votePostId, "voteProfileId"=> $this->voteProfileId, "voteDateTime" => $formattedDate, "voteValue"=> $this->voteValue];
+$parameters = ["votepostId"=> $this->votePostId, "voteProfileId"=> $this->voteProfileId, "voteDateTime" => $formattedDateTime, "voteValue"=> $this->voteValue];
 $statement->execute(parameters);
 }
 
@@ -369,24 +369,47 @@ $sunsetVoteDateTime) : \SplFixedArray {
  */
 public static function getVotebyVoteValue(\ PDO $pdo, int $voteValue) : \SPLFixedArray {
 	// sanitize the value before searching
-	if($voteValue is not -1 | 1) {
+	if($voteValue is not - 1 | 1) {
 		throw(new \RangeException("vote value must be an int"));
 	}
 	// create query template
 $query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteValue =voteValue";
 	$statement = $pdo->prepare($query);
 	// bind the vote value to the place holder in the template
-$papmeters = ["voteValue"=> $voteValue];
+$papmeters = ["voteValue" => $voteValue];
 $statement->execute($papmeters);
 //build an array of votes
 $votes = new \SplFixedArray($statement->rowCount());
 $statement->setFetchMode(\PDO::FETCH_ASSOC);
-while(($row = $statement->fetch()) !==false) {
+while(($row = $statement->fetch()) !== false) {
 	try {
 		$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
 		$vote[$votes->key()] = $vote;
 		$votes->next();
 	} catch(\Exception $exception) {
 		//if the row couldn't be converted, retrow it
+		throw(new \PDOException($except->getmessage(), 0, $exception));
 	}
+}
+return ($votes);
+}
+
+/**
+ * gets all votes
+ *
+ * @param \PDO $pdo PDO connection object
+ * @return \SplFixedArray SplFixedArray of Votes found or null if not found
+ * @throws \PDOEXception when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+**/
+public static function getAllVotes(\PDO $pdo) : \SplFixedArray{
+	//create query template
+	$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote";
+	$statement = $pdo->prepare($query);
+	$statement->execute();
+
+	//build an array of votes
+	$votes = new \SplFixedArray($statement-> rowCount());
+	$statement->setFetchMode(\PDO:: FETCH_ASSOC);
+	while(($row =[votePostId]))
 }
