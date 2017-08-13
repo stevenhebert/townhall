@@ -166,7 +166,7 @@ public function insert(\PDO $pdo) : void {
 
 	//bind the member variables to the place holders in the template
 		$formattedDateTime = $this->voteDateTime->format("Y-m-d H:i:s");
-		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => voteDateTime, "voteValue" => $formattedDate];
+		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => voteDateTime, "voteValue" => $this->voteValue, => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null votePostId with what mySql just gave us
@@ -306,54 +306,87 @@ return($votes);
 public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteDateTime, \DateTime
 $sunsetVoteDateTime) : \SplFixedArray {
 	//enforce both date are present
-	if((empty ($sunriseVoteDateTime)=== true) || (
-		empty($sunsetVoteDateTime) ===true)) {
+	if((empty ($sunriseVoteDateTime) === true) || (
+			empty($sunsetVoteDateTime) === true)) {
 		throw (new \InvalidArgumentException("dates are empty of insecure"));
 	}
 
 	//ensure both dates are in the correct format and are secure
-try {
-	$sunriseVoteDateTime = self::validateDateTime(
-		$sunriseVoteDateTime);
-	$sunsetVoteDateTime = self::validateDateTime(
-		$sunsetVoteDateTime);
+	try {
+		$sunriseVoteDateTime = self::validateDateTime(
+			$sunriseVoteDateTime);
+		$sunsetVoteDateTime = self::validateDateTime(
+			$sunsetVoteDateTime);
 
-}catch(\InvalidArgumentException|\
+	} catch(\InvalidArgumentException|\
 	RangeException $exception) {
-	$exceptionType = get_class($exception);
-	throw(new $exceptionType($exception->getMessage(), 0, $exception));
-}
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
 
 //create query template
-$query= "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime
+	$query = "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime
 	>= :sunriseVoteDateTime AND voteDateTime <= : sunsetVoteDateTime";
-	$statement =$pdo->prepare(query);
+	$statement = $pdo->prepare(query);
 
 
 	//format the dates so that mySQL can use them
-$formattedSunriseDate = $sunriseVoteDateTime-> format("Y-m-d H:i:s");
-$formattedSunsetDateTime = $sunsetVoteDateTime-> format ("Y-m-d H:i:s");
+	$formattedSunriseDate = $sunriseVoteDateTime->format("Y-m-d H:i:s");
+	$formattedSunsetDateTime = $sunsetVoteDateTime->format("Y-m-d H:i:s");
 
 
-$parameters = ["sunriseVoteDateTime" =>
-$formattedSunriseDateTime, "sunsetVoteDateTime" =>
-$formattedSunsetDateTime];
-$statement->execute($parameters);
+	$parameters = ["sunriseVoteDateTime" =>
+		$formattedSunriseDateTime, "sunsetVoteDateTime" =>
+		$formattedSunsetDateTime];
+	$statement->execute($parameters);
 
 
 //build an array of votes
+	$votes = new \SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+	while(($row = $statement->fetch()) !== false) {
+		try {
+
+			$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+			$votes[$votes->key()] = $vote;
+			$votes->next();
+		} catch(\Exception $exception) {
+			throw (new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+	return ($votes);
+}
+
+/**
+ * gets the Vote by Value
+ *
+ * @param \PDO $pdo PDO connection object
+ * @param int $voteValue vote value to search by
+ * @return \SplFixedArray SplFixedArray of votes found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+ */
+public static function getVotebyVoteValue(\ PDO $pdo, int $voteValue) : \SPLFixedArray {
+	// sanitize the value before searching
+	if($voteValue is not -1 | 1) {
+		throw(new \RangeException("vote value must be an int"));
+	}
+	// create query template
+$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteValue =voteValue";
+	$statement = $pdo->prepare($query);
+	// bind the vote value to the place holder in the template
+$papmeters = ["voteValue"=> $voteValue];
+$statement->execute($papmeters);
+//build an array of votes
 $votes = new \SplFixedArray($statement->rowCount());
 $statement->setFetchMode(\PDO::FETCH_ASSOC);
-
-while(($row = $statement->fetch()) !== false)
-{
-	try{
-
+while(($row = $statement->fetch()) !==false) {
+	try {
 		$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
-		$votes[$votes->key()] = $vote;
+		$vote[$votes->key()] = $vote;
 		$votes->next();
 	} catch(\Exception $exception) {
-		throw (new \PDOException($exception->getMessage(), 0, $exception));
+		//if the row couldn't be converted, retrow it
 	}
-	}
-return($votes);
+}
