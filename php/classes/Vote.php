@@ -292,3 +292,68 @@ while(($row =$statement->fetch()) !== false) {
 return($votes);
 }
 
+/**
+ * gets an array of votes based on its dates and time
+ *
+ * @param \PDO $pdo connect object
+ * @param \DateTime $sunsetVoteDateTime ending date to search for
+ * @param \DateTime $sunsetVoteDateTime ending date to search for
+ * @return \SplFixedArray of votes found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+ * @throws \InvalidArgumentException if either sun dates are in the wrong format
+*/
+public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteDateTime, \DateTime
+$sunsetVoteDateTime) : \SplFixedArray {
+	//enforce both date are present
+	if((empty ($sunriseVoteDateTime)=== true) || (
+		empty($sunsetVoteDateTime) ===true)) {
+		throw (new \InvalidArgumentException("dates are empty of insecure"));
+	}
+
+	//ensure both dates are in the correct format and are secure
+try {
+	$sunriseVoteDateTime = self::validateDateTime(
+		$sunriseVoteDateTime);
+	$sunsetVoteDateTime = self::validateDateTime(
+		$sunsetVoteDateTime);
+
+}catch(\InvalidArgumentException|\
+	RangeException $exception) {
+	$exceptionType = get_class($exception);
+	throw(new $exceptionType($exception->getMessage(), 0, $exception));
+}
+
+//create query template
+$query= "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime
+	>= :sunriseVoteDateTime AND voteDateTime <= : sunsetVoteDateTime";
+	$statement =$pdo->prepare(query);
+
+
+	//format the dates so that mySQL can use them
+$formattedSunriseDate = $sunriseVoteDateTime-> format("Y-m-d H:i:s");
+$formattedSunsetDateTime = $sunsetVoteDateTime-> format ("Y-m-d H:i:s");
+
+
+$parameters = ["sunriseVoteDateTime" =>
+$formattedSunriseDateTime, "sunsetVoteDateTime" =>
+$formattedSunsetDateTime];
+$statement->execute($parameters);
+
+
+//build an array of votes
+$votes = new \SplFixedArray($statement->rowCount());
+$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+while(($row = $statement->fetch()) !== false)
+{
+	try{
+
+		$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+		$votes[$votes->key()] = $vote;
+		$votes->next();
+	} catch(\Exception $exception) {
+		throw (new \PDOException($exception->getMessage(), 0, $exception));
+	}
+	}
+return($votes);
