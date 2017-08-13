@@ -53,7 +53,6 @@ class Post {
 	 * @var \DateTime $postDateTime
 	 **/
 	private $postDateTime;
-
 	/**
 	 * constructor for Post
 	 *
