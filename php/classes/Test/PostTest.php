@@ -187,9 +187,13 @@ class PostTest extends PostTestSetup {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
-		// create and insert a Profile to own the test Post
-		$this->district = new District(null, null,"1");
+		// create and insert a District to own the test Post
+		$poly = 'Polygon((0 0,10 0,10 10,0 10,0 0))';
+		$this->district = new District(null, ST_GeomFromText($poly),"1");
 		$this->district->insert($this->getPDO());
+
+
+
 
 
 
