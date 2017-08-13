@@ -188,14 +188,107 @@ public function insert(\PDO $pdo) : void {
 
 // create query template
 $query ="DELETE FROM vote WHERE postVoteId =:postVoteId";
-$statement= $pdo-.prepare(query);
+$statement= $pdo->prepare(query);
 
-//bind the member variables to the place holder in the templlate
+//bind the member variables to the place holder in the template
+$parameters = ["postVoteId" => $this->votePostId];
+$statement->execute($parameters);
+}
+/**
+ * updates this Vote in mySQL
+ *
+ * @parm \PDO $pdo PDO connect object
+ * @throws \TypeError if $pdo is not a PDO connect object
+ **/
+ public function update(\PDO $pdo) : void {
+	// enforce the postVoteId is not null (i.e., don't update a vote that hasn't been inserted)
+	if($this->postVoteId === null) {
+		throw(new \PDOException("unable to update a vote that does not exist"));
+	}
+}
 
+//create query temple
+$query= "UPDATE vote SET votePostID= : votePostId, voteProfileId= : voteProfileId, voteDateTime= : voteDateTime, voteValue= : voteValue";
+$statement =pdo->prepare(query);
 
+//bind the member variables to the place holders in the template
+$formattedDateTime = $this->voteDateTime->formate("Y-m-d H:i:s");
+$parameters = ["votepostId"=> $this->votePostId, "voteProfileId"=> $this->voteProfileId, "voteDateTime" => $formattedDate, "voteValue"=> $this->voteValue];
+$statement->execute(parameters);
+}
 
+/**gets the vote by votePostId
+ *
+ * @param \PDO $pdo PDO connection object
+ * @param int $postVoteId vote post id to search for
+ * @return votePost\null votePost found or null if not found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws\TypeError when variables are not thecorrect datatype
+ **/
+public static function getVotePost byVotePostId(\PDO $pdo, int $votePostId) : ?votePost {
+	//sanitize the votePostId before searching
+	if($votePostId <= 0) {
+		throw(new \PDOException("votePost id is not positive"));
+	}
+}
 
+// create query template
+$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM  votePostId = votePostId";
+$statement =$pdo->prepare(query);
 
+//bind the votePost id to the place holder in the template
+$parameters =["votePostId" => $votePostId];
+$statement->execute($parameters);
 
+//grab the votePost from mySQL
+try {
+	$votePost = null;
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	$row = $statement->fetch();
+	if($row !== false) {
+		$votePost = new votePost($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+	}
+} catch(\Exception $exception) {
+	// if the row couldn't be converted, rethrow it
+	throw(new \PDOException($exception->getMessage(), 0, $exception));
+}
+return($votePost);
+}
 
+/**
+ * gets the vote by profile id
+ *
+ * @param \PDO $pdo PDO connect object
+ * @param int $voteProfileId profile id to search by
+ * @return |SplFixedArray SplFixedArray of Votes found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+**/
+public static function get voteProfileByVoteProfileID (\PDO $pdo, int $voteProfileID) : \SPLFixedArray {
+	// sanitize the vpteProfile id before searching
+	if($voteProfileId <= 0) {
+		throw(new \RangeException("vote profile id must be positive"));
+	}
+}
+//create query template
+$query = "SELECT postVoteId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :$voteProfileId";
+$statement = $pdo->prepare($query);
+// bind the vote profile id to the place holder in the template
+$parameter = ["voteProfileId" =>$voteProfileId];
+$statement->execute($parameters);
+//build an array of votes
+$votes = new \SplfixedArray($statement->rowcount());
+$statement->setFetchMode(\PDO::FETCH_ASSOC);
+while(($row =$statement->fetch()) !== false) {
+	try {
+		$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+		$votes[$votes->key()] = $vote;
+		$votes->next();
+	} catch(\Exception $exception) {
+		//if te row couldn't be converted, rethrow it
+		throw(new \PDOException($exception->getmessage(), 0, $exception));
+	}
+	}
+return($votes);
+}
 
