@@ -411,5 +411,26 @@ public static function getAllVotes(\PDO $pdo) : \SplFixedArray{
 	//build an array of votes
 	$votes = new \SplFixedArray($statement-> rowCount());
 	$statement->setFetchMode(\PDO:: FETCH_ASSOC);
-	while(($row =[votePostId]))
+	while(($row = $statement->fecth()) !== false){
+		try{
+			$votes[$votes->key()] =$vote;
+			$votes->next();
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		}
+return ($votes);
+}
+/**
+ * formats the state varaables foe JSON serialization
+ *
+ * @return array resulting state variables to serialize
+ **/
+public function jsonSerialize ( {
+	$fields =get_object_vars($this);
+	//format the data so that the front end can consume it
+	$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) *1000);
+	return($fields);
+}
 }
