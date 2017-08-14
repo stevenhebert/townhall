@@ -1,10 +1,8 @@
 <?php
 
-namespace Edu\Cnm\DataDesign\Test;
+namespace Edu\Cnm\Townhall\Test;
 
-use Edu\Cnm\Townhall\{
-	District
-};
+use Edu\Cnm\Townhall\{District};
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -21,11 +19,11 @@ require_once(dirname(__DIR__) . "/autoload.php");
  *
  * @author Steven Hebert <shebert2@cnm.edu>
  **/
-class DistrictTest extends TownhallDistrictTest {
+class DistrictTest extends TownhallTestSetup {
 	/**
 	 * @var geom $VALID_DISTRICT_GEOM
 	 **/
-	protected $VALID_DISTRICT_GEOM = "ST_GeomFromText('Polygon((0 0,10 0,10 10,0 10,0 0))'))";
+	protected $VALID_DISTRICT_GEOM = "'Polygon((0 0,10 0,10 10,0 10,0 0))'))";
 
 	/**
 	 * @var int $VALID_DISTRICT_ID
