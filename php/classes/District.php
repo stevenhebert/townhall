@@ -117,16 +117,21 @@ class District {
 	 *
 	 **/
 	public function setDistrictGeom(array $newDistrictGeom): void {
-		foreach($newDistrictGeom as $pointArray) {
-			if(count($newDistrictGeom) !== 2) {
-				throw(new \RangeException("more than two coordinates given"));
+		foreach($newDistrictGeom as $polygons) {
+			if(is_array($polygons) === false) {
+				throw(new \InvalidArgumentException("not an array give me more money, I need an a-raise"));
 			}
-			try {
-				self::validateLatitude($pointArray[1]);
-				self::validateLongitude($pointArray[0]);
-			} catch(\Exception | \RangeException | \TypeError $exception) {
-				$exceptionType = get_class($exception);
-				throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			foreach($polygons as $pointArray) {
+				if(count($newDistrictGeom) !== 2) {
+					throw(new \RangeException("more than two coordinates given"));
+				}
+				try {
+					self::validateLatitude($pointArray[1]);
+					self::validateLongitude($pointArray[0]);
+				} catch(\Exception | \RangeException | \TypeError $exception) {
+					$exceptionType = get_class($exception);
+					throw(new $exceptionType($exception->getMessage(), 0, $exception));
+				}
 			}
 		}
 
@@ -271,3 +276,4 @@ class District {
 		}
 		return ($profile);
 	}
+}
