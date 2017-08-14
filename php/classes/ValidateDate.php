@@ -38,8 +38,7 @@ trait ValidateDate {
 		$year = intval($matches[1]);
 		$month = intval($matches[2]);
 		$day = intval($matches[3]);
-		if(checkdate($month, $day, $year) === false) {
-			throw(new \RangeException("date is not a Gregorian date"));
+		if(checkdate($month, $day, $year) === false) {throw(new \RangeException("date is not a Gregorian date"));
 		}
 		// if we got here, the date is clean
 		$newDate = \DateTime::createFromFormat("Y-m-d H:i:s", $newDate . " 00:00:00");

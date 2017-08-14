@@ -84,18 +84,22 @@ class vote {
 		//if($newPostVoteId <= 0) {
 		throw(new \RangeException("postVoteId is not positive"));
 	}
+}
 
 			// convert and store the postVoteId
-			$this->postVoteId = $newPostVoteId;
+			$this->postVoteId = $newPostVoteId ;
 		}
+
 /**
  * accessor method for vote profile id
  *
  * @return int value of vote profile id
  **/
+
 public function getVoteProfileId() : int{
 	return ($this->VoteProfileId);
 }
+
 /**
  * mutator method for voteProfileId
  *
