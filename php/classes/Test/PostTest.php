@@ -192,7 +192,7 @@ class PostTest extends TownhallTestSetup {
 	 **/
 	public function testInsertInvalidPost() : void {
 		// create a Post with a non null post id and watch it fail
-		$post = new Post(DataDesignTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(TownhallTestSetup::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 	}
 	/**
@@ -275,7 +275,7 @@ class PostTest extends TownhallTestSetup {
 	 **/
 	public function testGetInvalidPostByPostId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$tweet = Post::getPostByPostId($this->getPDO(), DataDesignTest::INVALID_KEY);
+		$tweet = Post::getPostByPostId($this->getPDO(), TownhallTestSetup::INVALID_KEY);
 		$this->assertNull($tweet);
 	}
 	/**
