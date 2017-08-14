@@ -23,12 +23,12 @@ class DistrictTest extends TownhallTestSetup {
 	/**
 	 * @var geom $VALID_DISTRICT_GEOM
 	 **/
-	protected $VALID_DISTRICT_GEOM = "'Polygon((0 0,10 0,10 10,0 10,0 0))'))";
+	protected $VALID_DISTRICT_GEOM = ST_GeomFromText('Polygon((0 0,10 0,10 10,0 10,0 0))');
 
 	/**
 	 * @var int $VALID_DISTRICT_ID
 	 */
-	protected $VALID_DISTRICT_ID = null;
+	protected $VALID_DISTRICT_ID = "1";
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME
@@ -53,7 +53,7 @@ class DistrictTest extends TownhallTestSetup {
 
 		//get District geojson and insert it into mySQL
 		////pretend to get District geojson and insert it into mySQL
-		$district - new District(null, "")
+		$district = new District(null, "", null);
 }
 
 	/**
@@ -61,6 +61,10 @@ class DistrictTest extends TownhallTestSetup {
 	 *
 	 * @expectedException \PDOException
 	 **/
+	public function testInsertInvalidDistrict(): void {
+		//create district with an id that already exists
+		$district = new District("1", $this->VALID_DISTRICT_GEOM, $this->VALID_DISRICT_NAME);
+		$district =
 }
 
 /**
