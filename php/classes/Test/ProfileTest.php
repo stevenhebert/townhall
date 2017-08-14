@@ -1,8 +1,8 @@
 <?php
 
-namespace Edu\Cnm\Townhall;
+namespace Edu\Cnm\Townhall\Test;
 
-use Edu\Cnm\Townhall\{Profile, Test\TownhallTest};
+use Edu\Cnm\Townhall\ {Profile};
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
