@@ -202,7 +202,7 @@ class PostTest extends TownhallTestSetup {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		$tweet = new Post(null,$this->VALID_DISTRICT_ID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(null,$this->VALID_DISTRICT_ID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 		// edit the Post and update it in mySQL
 		$post->setPostContent($this->VALID_POSTCONTENT2);
