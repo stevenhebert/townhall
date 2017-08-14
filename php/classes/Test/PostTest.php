@@ -24,7 +24,7 @@ class PostTest extends PostTestSetup {
 	 **/
 	protected $district = null;
 
-	/**
+	/**t
 	 * valid district id to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_ID
 	 */

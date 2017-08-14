@@ -29,7 +29,7 @@ require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
  *
  * @author Dylan McDonald <dmcdonald21@cnm.edu>
  **/
-abstract class DataDesignTest extends TestCase {
+abstract class TownhallTest extends TestCase {
 
 	use TestCaseTrait;
 
@@ -56,9 +56,10 @@ abstract class DataDesignTest extends TestCase {
 
 		// add all the tables for the project here
 		// THESE TABLES *MUST* BE LISTED IN THE SAME ORDER THEY WERE CREATED!!!!
+		$dataset->addTable("district");
 		$dataset->addTable("profile");
-		$dataset->addTable("tweet");
-		$dataset->addTable("like");
+		$dataset->addTable("post");
+		$dataset->addTable("vote");
 		return($dataset);
 	}
 
