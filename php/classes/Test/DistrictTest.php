@@ -28,7 +28,7 @@ class DistrictTest extends TownhallTestSetup {
 	/**
 	 * @var int $VALID_DISTRICT_ID
 	 */
-	protected $VALID_DISTRICT_ID = "1";
+	protected $VALID_DISTRICT_ID = null;
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME
