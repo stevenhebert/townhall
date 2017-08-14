@@ -19,7 +19,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  *
  * @author Steven Hebert <shebert2@cnm.edu>
  **/
-class DistrictTest extends TownhallTestSetup {
+class DistrictTest extends TownhallTest {
 	/**
 	 * @var geom $VALID_DISTRICT_GEOM
 	 **/
