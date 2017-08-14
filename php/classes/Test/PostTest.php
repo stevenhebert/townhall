@@ -1,6 +1,6 @@
 <?php
 namespace Edu\Cnm\Townhall\Test;
-use Edu\Cnm\Townhall\{District, Profile, Post, Vote};
+use Edu\Cnm\Townhall\{District, Profile, Post};
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 /**
@@ -175,15 +175,15 @@ class PostTest extends TownhallTestSetup {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		post = new Post(null, $this->VALID_POST_PARENTID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(null, $this->VALID_POST_PARENTID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoPost = Post::getPostByPostId($this->getPDO(), $tweet->getPostId());
+		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+		$this->assertEquals($pdoPost->getPostDateTime()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
 	}
 	/**
 	 * test inserting a Post that already exists
@@ -208,12 +208,12 @@ class PostTest extends TownhallTestSetup {
 		$post->setPostContent($this->VALID_POSTCONTENT2);
 		$post->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoPost = Post::getPostByPostId($this->getPDO(), $tweet->getPostId());
+		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT2);
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+		$this->assertEquals($pdoPost->getPostDateTime()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
 	}
 	/**
 	 * test updating a Post that already exists
@@ -233,7 +233,7 @@ class PostTest extends TownhallTestSetup {
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$tweet->insert($this->getPDO());
+		$post->insert($this->getPDO());
 		// delete the Post from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
 		$post->delete($this->getPDO());
@@ -268,7 +268,7 @@ class PostTest extends TownhallTestSetup {
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+		$this->assertEquals($pdoPost->getPostDateTime()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
 	}
 	/**
 	 * test grabbing a Post that does not exist
