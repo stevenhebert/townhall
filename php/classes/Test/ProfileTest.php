@@ -1,7 +1,9 @@
 <?php
 namespace Edu\Cnm\Townhall;
 
-use Edu\Cnm\Townhall\{Profile};
+use Edu\Cnm\Townhall\{
+	Profile, Test\TownhallTest
+};
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -16,7 +18,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @author Ryan Henson <hensojr@gmail.com>
  **/
 
-class ProfileTest extends TownHallProfileTest {
+class ProfileTest extends TownhallTest {
 	/**
 	 * District of this profile; this is for foreign key relations
 	 * @var District
