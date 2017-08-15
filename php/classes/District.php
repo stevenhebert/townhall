@@ -79,8 +79,7 @@ class District {
 	 * who is receiving these exceptions if geojsons are imported into mysql automagically?
 	 *
 	 **/
-	public function setDistrictId(?
-											int $newDistrictId): void {
+	public function setDistrictId(?int $newDistrictId): void {
 		//void if district id is null - assuming this means all polygons have been assigned - want to stop process
 		if($newDistrictId === null) {
 			$this->districtId = null;
@@ -123,7 +122,6 @@ class District {
 			if(is_array($polygons) === false) {
 				throw(new \InvalidArgumentException("not an array give me more money, I need an a-raise"));
 			}
-			var_dump($polygons);
 			foreach($polygons as $pointArray) {
 				if(count($pointArray) !== 2) {
 					throw(new \RangeException("more than two coordinates given"));
@@ -214,7 +212,7 @@ class District {
 		$parameters = ["districtGeom" => $geoJson, "districtName" => $this->districtName];
 		$statement->execute($parameters);
 		//update the null profileId with what mySQL returns
-		$this->profileId = intval($pdo->lastInsertId());
+		$this->districtId = intval($pdo->lastInsertId());
 	}
 
 	/** deletes this district from mySQL
@@ -245,8 +243,7 @@ class District {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
 	 */
-	public
-	function update(\PDO $pdo): void {
+	public function update(\PDO $pdo): void {
 		//enforce the districtId is not null, cant update a district if it doesn't exist
 		if($this->districtId === null) {
 			throw(new \PDOException("district not found, unable to delete"));
@@ -269,8 +266,7 @@ class District {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
-	public
-	static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?District {
+	public static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?District {
 		//negative district id absurd
 		if($districtId <= 0) {
 			throw(new \PDOException("districtId is not positive"));
@@ -283,7 +279,7 @@ class District {
 		$statement->execute($parameters);
 		//get district from mySQL
 		try {
-			$post = null;
+			$district = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row == false) {
