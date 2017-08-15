@@ -8,7 +8,7 @@ namespace Edu\Cnm\Townhall;
  * @version 1.0.0
  **/
 
-class profile {
+class Profile {
 	/**
 	 * id for this profile; this is the primary key
 	 * @var int $profileId

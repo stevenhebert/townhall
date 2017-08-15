@@ -35,7 +35,7 @@ class ProfileTest extends TownhallTest {
 	 * valid profile activation token to create the profile object to own the test
 	 * @var $VALID_PROFILE_ACTIVATION_TOKEN
 	 **/
-	protected $VALID_PROFILE_ACTIVATION_TOKEN;
+	protected $VALID_PROFILE_ACTIVATION_TOKEN = "111111111111";
 
 	/**
 	 * valid address1 to use to create the profile object to own the test
@@ -130,8 +130,8 @@ class ProfileTest extends TownhallTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
-		$district = new District(null, $this->VALID_DISTRICT_GEOM, "District 6");
-		$district->insert($this->getPDO());
+		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, "District 6");
+		$this->district->insert($this->getPDO());
 
 	}
 
@@ -141,7 +141,7 @@ class ProfileTest extends TownhallTest {
 	public function testInsertValidProfile(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
-
+var_dump($this->VALID_PROFILE_HASH);
 		// create a new Profile and insert to into mySQL
 		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
