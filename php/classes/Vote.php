@@ -428,6 +428,8 @@ public function jsonSerialize () {
 	$fields =get_object_vars($this);
 	//format the data so that the front end can consume it
 	$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) *1000);
+	//unset the district array to avoid sending back a huge amount of data
+	unset($districtGeom);
 	return($fields);
 }
 }

@@ -266,7 +266,7 @@ class Post {
 
 		//store the post date using the ValidateDate trait
 		try {
-			$newPostDateTime = self::validateDateTime($newPostDateTime);
+			$newPostDateTime = self::validateDate($newPostDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -556,8 +556,8 @@ class Post {
 
 		//ensure both dates are in the correct format and are secure
 		try {
-			$sunrisePostDate = self::validateDateTime($sunrisePostDate);
-			$sunsetPostDate = self::validateDateTime($sunsetPostDate);
+			$sunrisePostDate = self::validateDate($sunrisePostDate);
+			$sunsetPostDate = self::validateDate($sunsetPostDate);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -617,6 +617,11 @@ class Post {
 		}
 		return ($posts);
 	}
-
+	public function jsonSerialize () {
+		$fields =get_object_vars($this);
+		//format the data so that the front end can consume it
+		$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) *1000);
+		return($fields);
+	}
 
 }

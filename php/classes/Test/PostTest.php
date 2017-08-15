@@ -58,22 +58,22 @@ class PostTest extends TownhallTest {
 	 * valid address1 to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ADDRESS1
 	 */
-	protected $VALID_PROFILE_ADDRESS1;
+	protected $VALID_PROFILE_ADDRESS1 = "123 Main St";
 	/**
 	 * valid CITY to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_CITY
 	 */
-	protected $VALID_PROFILE_CITY;
+	protected $VALID_PROFILE_CITY = "Albuquerque";
 	/**
 	 * valid email to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_EMAIL
 	 */
-	protected $VALID_PROFILE_EMAIL;
+	protected $VALID_PROFILE_EMAIL = "myemail@email.com";
 	/**
 	 * valid first name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_FIRSTNAME
 	 */
-	protected $VALID_PROFILE_FIRSTNAME;
+	protected $VALID_PROFILE_FIRSTNAME = "Jean-Luc";
 	/**
 	 * valid profile hash to create the profile object to own the test
 	 * @var $VALID_HASH
@@ -83,7 +83,7 @@ class PostTest extends TownhallTest {
 	 * valid last name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_LASTNAME
 	 */
-	protected $VALID_PROFILE_LASTNAME;
+	protected $VALID_PROFILE_LASTNAME = "Picard";
 	/**
 	 * valid salt to use to create the profile object to own the test
 	 * @var string $VALID_SALT
@@ -93,17 +93,17 @@ class PostTest extends TownhallTest {
 	 * valid state to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_STATE
 	 */
-	protected $VALID_PROFILE_STATE;
+	protected $VALID_PROFILE_STATE = "NM";
 	/**
 	 * valid username to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_USERNAME
 	 */
-	protected $VALID_PROFILE_USERNAME;
+	protected $VALID_PROFILE_USERNAME ="IamJeanLuc";
 	/**
 	 * valid zip to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ZIP
 	 */
-	protected $VALID_PROFILE_ZIP;
+	protected $VALID_PROFILE_ZIP = "87508";
 	/*set up the variables for the post table*/
 	/**
 	 * district id of the Post
@@ -124,12 +124,13 @@ class PostTest extends TownhallTest {
 	 * content of the Post
 	 * @var string $VALID_POSTCONTENT
 	 **/
-	protected $VALID_POSTCONTENT = "Hey, we created some content.  We're special.";
+	protected $VALID_POSTCONTENT = "May the force be with you.  Oops, wrong reference.
+	";
 	/**
 	 * content of the updated Post
 	 * @var string $VALID_POSTCONTENT2
 	 **/
-	protected $VALID_POSTCONTENT2 = "Ooh, more content. Look what we did";
+	protected $VALID_POSTCONTENT2 = "Let's ask some serious questions here.";
 	/**
 	 * timestamp of the Post; this starts as null and is assigned later
 	 * @var \DateTime $VALID_POSTDATE
@@ -157,7 +158,9 @@ class PostTest extends TownhallTest {
 		$this->district = new District(null, $poly,"1");
 		$this->district->insert($this->getPDO());
 		// create and insert a Profile to own the test Post
+		//need to get the districtId from the district
 		$this->profile = new Profile(null, null,"123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc");
+		//what is the district Id?  Need to get this
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTDATE = new \DateTime();
@@ -175,7 +178,7 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		$post = new Post(null, $this->VALID_POST_PARENTID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(null, $this->VALID_DISTRICT_ID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
