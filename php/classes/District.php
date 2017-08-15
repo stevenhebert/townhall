@@ -236,7 +236,7 @@ class District {
 	 *
 	 */
 	public function update(\PDO $pdo): void {
-		//enforce the districtId is not null, cant update a district if it doesnt exist
+		//enforce the districtId is not null, cant update a district if it doesn't exist
 		if($this->districtId === null) {
 			throw(new \PDOException("district not found, unable to delete"));
 		}
@@ -264,7 +264,7 @@ class District {
 			throw(new \PDOException("districtId is not positive"));
 		}
 		//create query template
-		$query = "SELECT districtId, districtGeom, districtName FROM district WHERE districtId =: districtId";
+		$query = "SELECT districtId, districtGeom, districtName FROM district WHERE districtId = :districtId";
 		$statement = $pdo->prepare($query);
 		//bind the districtId ti the place holder in the template
 		$parameters = ["districtId" => $districtId];
