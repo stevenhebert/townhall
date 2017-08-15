@@ -28,12 +28,12 @@ class PostTest extends TownhallTest {
 	 * valid DISTRICT NAME to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_NAME
 	 */
-	protected $VALID_DISTRICT_NAME;
+	protected $VALID_DISTRICT_NAME = "District 1";
 	/**
 	 * valid district geom to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_GEOM
 	 */
-	protected $VALID_DISTRICT_GEOM;
+	protected $VALID_DISTRICT_GEOM = [[[0,0],[10,0],[10,10],[0,10],[0,0]]];
 	/**
 	 * Profile that created the Post; this is for foreign key relations
 	 * @var Profile profile
@@ -59,7 +59,7 @@ class PostTest extends TownhallTest {
 	 * @var string $VALID_PROFILE_ADDRESS1
 	 */
 	protected $VALID_PROFILE_ADDRESS1 = "123 Main St";
-	/**
+		/**
 	 * valid CITY to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_CITY
 	 */
@@ -124,8 +124,7 @@ class PostTest extends TownhallTest {
 	 * content of the Post
 	 * @var string $VALID_POSTCONTENT
 	 **/
-	protected $VALID_POSTCONTENT = "May the force be with you.  Oops, wrong reference.
-	";
+	protected $VALID_POSTCONTENT = "May the force be with you.  Oops, wrong reference.";
 	/**
 	 * content of the updated Post
 	 * @var string $VALID_POSTCONTENT2
@@ -153,14 +152,14 @@ class PostTest extends TownhallTest {
 		$password = "abc123";
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
+
 		// create and insert a District to own the test Post
-		$poly = [[[0,0], [9,0], [12,3], [9,6], [0,6], [3,3], [0,0]]];
-		$this->district = new District(null, $poly,"1");
-		$this->district->insert($this->getPDO());
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+		$district->insert($this->getPDO());
+
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
-		$this->profile = new Profile(null, null,"123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc");
-		//what is the district Id?  Need to get this
+		$this->profile = new Profile(null, null,null, $this->VALID_PROFILE_ADDRESS1, null,$this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, null, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME);
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTDATE = new \DateTime();
@@ -178,7 +177,7 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		$post = new Post(null, $this->VALID_DISTRICT_ID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());

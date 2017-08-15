@@ -252,7 +252,7 @@ class Post {
 	/**
 	 * mutator method for post date time
 	 *
-	 * @param \DateTime\string\null $newPostDateTime post date time as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime |string |null $newPostDateTime post date time as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newPostDateTime is not a valid object or string
 	 * @throws \RangeException if $newPostDateTime is a date that does not exist
 	 *
