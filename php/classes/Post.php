@@ -291,7 +291,7 @@ class Post {
 
 		//bind the member variables to the place holders in the template
 		$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $formattedDate];
 		$statement->execute($parameters);
 
 		//update the null postId with what mySQL just gave us
@@ -336,9 +336,9 @@ class Post {
 		$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent, postDateTime = :postDateTime";
 		$statement = $pdo->prepare($query);
 
-		//bind the member variables to thte place holders in the template
+		//bind the member variables to the place holders in the template
 		$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $this->postDateTime];
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $formattedDate];
 		$statement->execute($parameters);
 	}
 

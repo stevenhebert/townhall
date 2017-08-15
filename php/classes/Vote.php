@@ -51,153 +51,153 @@ class Vote {
 			$this->setVoteProfileId($newVoteProfileId);
 			$this->setVoteDateTime($newVoteDateTime);
 			$this->setVoteValue($newVoteValue);
-		}
-			//determine what exception type was thrown
+		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
+
 	/**
 	 * accessor method for votePostId
 	 *
 	 * @return int|null value of votePostID
-	 **/public function getVotePostId() : int {
-	return($this->votePostId);
+	 **/
+	public function getVotePostId(): int {
+		return ($this->votePostId);
 	}
-/**
- * mutator method for votePostId
- *
- * @param int|null $newPostVoteId new value of newPostVoteId
- * @throws \RangeException if $newPostVoteId is not positive
- * @throws \TypeError if $newPostVoteId is not an integer
- **/
-	public function setPostVoteId(?int $newVotePostId) :
-	void {
+
+	/**
+	 * mutator method for votePostId
+	 *
+	 * @param int|null $newPostVoteId new value of newPostVoteId
+	 * @throws \RangeException if $newPostVoteId is not positive
+	 * @throws \TypeError if $newPostVoteId is not an integer
+	 **/
+	public function setVotePostId(?int $newVotePostId): void {
 		//if votePostId is null immediately return it
-		if($ === null) {
+		if($newVotePostId === null) {
 			$this->votePostId = null;
 			return;
 		}
 
 		// verify the vote post is positive
 		if($newVotePostId <= 0) {
-		throw(new \RangeException("votePostId is not positive"));
-	}
-}
-
-			// convert and store the vote post id
-			$this->votePostId =$newVotePostId;
+			throw(new \RangeException("votePostId is not positive"));
 		}
 
-/**
- * accessor method for vote profile id
- *
- * @return int value of vote profile id
- **/
 
-public function getVoteProfileId() : int{
-	return ($this->VoteProfileId);
-}
-
-/**
- * mutator method for voteProfileId
- *
- * @param int $newVoteProfileId new value of vote profileId
- * @throws \RangeException if $newVoteProfileId is not positive
- * @throws \TypeError if $newVoteProfileId is not an integer
- **/
-		public function setVoteProfileId(int $newVoteProfileId) :
-void {
-
-	// verify the voteProfile id is positive
-	if($newVoteProfileId <= 0) {
-		throw(new \RangeException("vote profile id is not positive"));
+		// convert and store the vote post id
+		$this->votePostId = $newVotePostId;
 	}
 
-	// convert and store the vote profile id
-	$this->voteProfileId = $newVoteProfileId;
-}
+	/**
+	 * accessor method for vote profile id
+	 *
+	 * @return int value of vote profile id
+	 **/
 
-/**
- * accessor method for voteDateTime
- *
- * @return \ DateTime value of voteDateTime
- **/
-public function getVoteDateTime() : \DateTime {
-	return($this->VoteDateTime);
-}
-
-/**
- * mutator method for vote date/time
- *
- * @param \DateTime|string|null $newVoteDateTime vote date time as a DateTime object or string (or null to load the current time)
- * @throws \InvalidArgumentException if $newVoteDatetime is not a valid object or
-string
- * @throws \RangeException if $newVoteDateTime is a date that does not exist
- **/
-public function setVoteDateTime($newVoteDateTime = null) : void {
-	// base case: if the date is null, use the current date and time
-	if($newVoteDateTime === null) {
-		$this->VoteDatetime = new \DateTime();
-		return;
-		}
-
-			// store the like date using the ValidateDate trait
-			try {
-				$newVoteDateTime = self::validateDateTime($newVoteDateTime);
-			} catch(\InvalidArgumentException | \RangeException $exception) {
-				$exceptionType = get_class($exception);
-				throw(new $exceptionType($exception->getMessage(), 0, $exception));
-			}
-			$this->voteDateTime = $newVoteDateTime;
-		}
-
-/**
- * inserts this VoteDateTime into mySQL
- * @param \PDO $pdo PDO connection object
- * @throws \PDOException when mySQL related errors occur
- * @throws \TypeError if $pdo is not a PDO connection object
- **/
-public function insert(\PDO $pdo) : void {
-	//enforce the postVoteId is null (i.e, don't insert a vote that already exist)
-	if($this->votePostId !== null) {
-		throw(new \PDOException("not a new vote"));
+	public function getVoteProfileId(): int {
+		return ($this->voteProfileId);
 	}
-	// create query template
-	$query = "Insert Into vote(votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, voteProfileId, voteDateTime,voteValue)";
-		$statement = $pdo -> prepare($query);
 
-	//bind the member variables to the place holders in the template
+	/**
+	 * mutator method for voteProfileId
+	 *
+	 * @param int $newVoteProfileId new value of vote profileId
+	 * @throws \RangeException if $newVoteProfileId is not positive
+	 * @throws \TypeError if $newVoteProfileId is not an integer
+	 **/
+	public function setVoteProfileId(int $newVoteProfileId): void {
+
+		// verify the voteProfile id is positive
+		if($newVoteProfileId <= 0) {
+			throw(new \RangeException("vote profile id is not positive"));
+		}
+
+		// convert and store the vote profile id
+		$this->voteProfileId = $newVoteProfileId;
+	}
+
+	/**
+	 * accessor method for voteDateTime
+	 *
+	 * @return \ DateTime value of voteDateTime
+	 **/
+	public function getVoteDateTime(): \DateTime {
+		return ($this->VoteDateTime);
+	}
+
+	/**
+	 * mutator method for vote date/time
+	 *
+	 * @param \DateTime|string|null $newVoteDateTime vote date time as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newVoteDatetime is not a valid object or
+	 * string
+	 * @throws \RangeException if $newVoteDateTime is a date that does not exist
+	 **/
+	public function setVoteDateTime($newVoteDateTime = null): void {
+		// base case: if the date is null, use the current date and time
+		if($newVoteDateTime === null) {
+			$this->VoteDatetime = new \DateTime();
+			return;
+		}
+
+		// store the like date using the ValidateDate trait
+		try {
+			$newVoteDateTime = self::validateDateTime($newVoteDateTime);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->voteDateTime = $newVoteDateTime;
+	}
+
+	/**
+	 * inserts this VoteDateTime into mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+		//enforce the postVoteId is null (i.e, don't insert a vote that already exist)
+		if($this->votePostId !== null) {
+			throw(new \PDOException("not a new vote"));
+		}
+		// create query template
+		$query = "INSERT INTO vote(votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, voteProfileId, voteDateTime,voteValue)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
 		$formattedDateTime = $this->voteDateTime->format("Y-m-d H:i:s");
-		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => voteDateTime, "voteValue" => $this->voteValue, => $formattedDateTime];
+		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => $formattedDateTime, "voteValue" => $this->voteValue];
 		$statement->execute($parameters);
 
 		// update the null votePostId with what mySql just gave us
-		$this->votePostId = intval($pdo ->lastInsertId());
+		$this->votePostId = intval($pdo->lastInsertId());
 		}
 
-/**
- * deletes this vote from mySQL
- *
- * @param\PDO $pdo PDO connection object
- * @throws \PDOException when my SQL related errors occur
- * @throws \TypeError if $pdo is not a PDO connection object
- **/
- public function delete(\PDO $pdo) : void {
- 			//enforce the votePostId is not null
-	 //if($this->postVoteId === null) {
-	 			throw(new \PDOException("unable to delete a vote that does not exist "));
-}
+	/**
+	 * deletes this vote from mySQL
+	 *
+	 * @param\PDO $pdo PDO connection object
+	 * @throws \PDOException when my SQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+		//enforce the votePostId is not null
+		if($this->votePostId === null) {
+			throw(new \PDOException("unable to delete a vote that does not exist "));
+		}
 
 // create query template
-$query ="DELETE FROM vote WHERE postVoteId =:postVoteId";
-$statement = $pdo->prepare(query);
+		$query = "DELETE FROM vote WHERE postVoteId =:postVoteId";
+		$statement = $pdo->prepare(query);
 
 //bind the member variables to the place holder in the template
-$parameters = ["votePostId" => $this->votePostId];
-$statement->execute($parameters);
-}
+		$parameters = ["votePostId" => $this->votePostId];
+		$statement->execute($parameters);
+	}
 /**
  * updates this Vote in mySQL
  *
@@ -209,9 +209,8 @@ $statement->execute($parameters);
 	if($this->votePostId === null) {
 		throw(new \PDOException("unable to update a vote that does not exist"));
 	}
-}
 
-//create query temple
+	//create query temple
 $query= "UPDATE vote SET votePostID= : votePostId, voteProfileId= : voteProfileId, voteDateTime= : voteDateTime, voteValue= : voteValue";
 $statement =$pdo
 	->prepare(query);
@@ -235,11 +234,11 @@ public static function getVotePostByVotePostId(\PDO $pdo, int $votePostId) : ?vo
 	if($votePostId <= 0) {
 		throw(new \PDOException("votePostId is not positive"));
 	}
-}
+
 
 // create query template
-$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM  votePostId = votePostId";
-$statement =$pdo->prepare(query);
+$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM  votePostId = :votePostId";
+$statement =$pdo->prepare($query);
 
 //bind the votePost id to the place holder in the template
 $parameters =["votePostId" => $votePostId];
@@ -274,12 +273,12 @@ public static function getVoteProfileByVoteProfileId(\PDO $pdo, int $voteProfile
 	if($voteProfileId <= 0) {
 		throw(new \RangeException("vote profile id must be positive"));
 	}
-}
+
 //create query template
 $query = "SELECT postVoteId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :$voteProfileId";
 $statement = $pdo->prepare($query);
 // bind the vote profile id to the place holder in the template
-$parameter = ["voteProfileId" =>$voteProfileId];
+$parameters= ["voteProfileId" =>$voteProfileId];
 $statement->execute($parameters);
 //build an array of votes
 $votes = new \SplfixedArray($statement->rowcount());
@@ -310,27 +309,22 @@ return($votes);
 */
 public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteDateTime, \DateTime $sunsetVoteDateTime) : \SplFixedArray {
 	//enforce both date are present
-	if((empty ($sunriseVoteDateTime) === true) || (
-			empty($sunsetVoteDateTime) === true)) {
+	if((empty ($sunriseVoteDateTime) === true) || (empty($sunsetVoteDateTime) === true)) {
 		throw (new \InvalidArgumentException("dates are empty of insecure"));
 	}
 
 	//ensure both dates are in the correct format and are secure
 	try {
-		$sunriseVoteDateTime = self::validateDateTime(
-			$sunriseVoteDateTime);
-		$sunsetVoteDateTime = self::validateDateTime(
-			$sunsetVoteDateTime);
+		$sunriseVoteDateTime = self::validateDateTime($sunriseVoteDateTime);
+		$sunsetVoteDateTime = self::validateDateTime($sunsetVoteDateTime);
 
-	} catch(\InvalidArgumentException|\
-	RangeException $exception) {
+	} catch(\InvalidArgumentException|\RangeException $exception) {
 		$exceptionType = get_class($exception);
 		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
 
 //create query template
-	$query = "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime
-	>= :sunriseVoteDateTime AND voteDateTime <= : sunsetVoteDateTime";
+	$query = "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime >= :sunriseVoteDateTime AND voteDateTime <= : sunsetVoteDateTime";
 	$statement = $pdo->prepare(query);
 
 
@@ -339,7 +333,7 @@ public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteD
 	$formattedSunsetDateTime = $sunsetVoteDateTime->format("Y-m-d H:i:s");
 
 
-	$parameters = ["sunriseVoteDateTime" => $formattedSunriseDateTime, "sunsetVoteDateTime" => $formattedSunsetDateTime];
+	$parameters = ["sunriseVoteDateTime" => $formattedSunriseDate, "sunsetVoteDateTime" => $formattedSunsetDateTime];
 	$statement->execute($parameters);
 
 
@@ -371,15 +365,15 @@ public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteD
  */
 public static function getVotebyVoteValue(\ PDO $pdo, int $voteValue) : \SPLFixedArray {
 	// sanitize the value before searching
-	if($voteValue is not - 1 | 1) {
+	if($voteValue !== -1 || $voteValue !== 1) {
 		throw(new \RangeException("vote value must be an int"));
 	}
 	// create query template
 $query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteValue =voteValue";
 	$statement = $pdo->prepare($query);
 	// bind the vote value to the place holder in the template
-$papmeters = ["voteValue" => $voteValue];
-$statement->execute($papmeters);
+	$parameters = ["voteValue" => $voteValue];
+$statement->execute($parameters);
 //build an array of votes
 $votes = new \SplFixedArray($statement->rowCount());
 $statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -390,7 +384,7 @@ while(($row = $statement->fetch()) !== false) {
 		$votes->next();
 	} catch(\Exception $exception) {
 		//if the row couldn't be converted, retrow it
-		throw(new \PDOException($except->getmessage(), 0, $exception));
+		throw(new \PDOException($exception->getmessage(), 0, $exception));
 	}
 }
 return ($votes);
@@ -413,9 +407,10 @@ public static function getAllVotes(\PDO $pdo) : \SplFixedArray{
 	//build an array of votes
 	$votes = new \SplFixedArray($statement-> rowCount());
 	$statement->setFetchMode(\PDO:: FETCH_ASSOC);
-	while(($row = $statement->fetch()) !== false){
+	while(($row = $statement->fetch()) !== false) {
 		try{
-			$votes[$votes->key()] =$vote;
+			$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+			$votes[$votes->key()] = $vote;
 			$votes->next();
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -425,11 +420,11 @@ public static function getAllVotes(\PDO $pdo) : \SplFixedArray{
 return ($votes);
 }
 /**
- * formats the state varaables foe JSON serialization
+ * formats the state variables for JSON serialization
  *
  * @return array resulting state variables to serialize
  **/
-public function jsonSerialize ( {
+public function jsonSerialize () {
 	$fields =get_object_vars($this);
 	//format the data so that the front end can consume it
 	$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) *1000);
