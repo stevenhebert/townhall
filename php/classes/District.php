@@ -51,8 +51,8 @@ class District {
 	public function __construct(?int $newDistrictId, array $newDistrictGeom, string $newDistrictName) {
 		try {
 			$this->setDistrictId($newDistrictId);
-			$this->setDistrictId($newDistrictId);
-			$this->setDistrictId($newDistrictId);
+			$this->setDistrictGeom($newDistrictGeom);
+			$this->setDistrictName($newDistrictName);
 		} //determine what exception was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
@@ -79,7 +79,8 @@ class District {
 	 * who is receiving these exceptions if geojsons are imported into mysql automagically?
 	 *
 	 **/
-	public function setDistrictId(int $newDistrictId): void {
+	public function setDistrictId(?
+											int $newDistrictId): void {
 		//void if district id is null - assuming this means all polygons have been assigned - want to stop process
 		if($newDistrictId === null) {
 			$this->districtId = null;
@@ -122,8 +123,9 @@ class District {
 			if(is_array($polygons) === false) {
 				throw(new \InvalidArgumentException("not an array give me more money, I need an a-raise"));
 			}
+			var_dump($polygons);
 			foreach($polygons as $pointArray) {
-				if(count($newDistrictGeom) !== 2) {
+				if(count($pointArray) !== 2) {
 					throw(new \RangeException("more than two coordinates given"));
 				}
 				try {
@@ -178,7 +180,13 @@ class District {
 	 * @return string for name of district
 	 *
 	 */
-
+	public function setDistrictName(string $newDistrictName): void {
+		// verify the districtName is valid
+		if(strlen($newDistrictName) > 64) {
+			throw(new \RangeException("name is too long"));
+		}
+		$this->districtName = $newDistrictName;
+	}
 
 	/**
 	 * inserts the districts into mySQL
@@ -187,7 +195,8 @@ class District {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function insert(\PDO $pdo): void {
+	public
+	function insert(\PDO $pdo): void {
 		//enforce the district id is null b/c dont want to insert into a district that already exists
 		if($this->districtId !== null) {
 			throw(new \PDOException("districtId already assigned"));
@@ -214,7 +223,8 @@ class District {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function delete(\PDO $pdo): void {
+	public
+	function delete(\PDO $pdo): void {
 		//enforce the districtId is not null, cant delete something that doesn't exist
 		if($this->districtId === null) {
 			throw(new \PDOException("district not found, unable to delete"));
@@ -235,7 +245,8 @@ class District {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
 	 */
-	public function update(\PDO $pdo): void {
+	public
+	function update(\PDO $pdo): void {
 		//enforce the districtId is not null, cant update a district if it doesn't exist
 		if($this->districtId === null) {
 			throw(new \PDOException("district not found, unable to delete"));
@@ -258,7 +269,8 @@ class District {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
-	public static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?District {
+	public
+	static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?District {
 		//negative district id absurd
 		if($districtId <= 0) {
 			throw(new \PDOException("districtId is not positive"));

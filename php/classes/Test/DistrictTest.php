@@ -80,6 +80,7 @@ class DistrictTest extends TownhallTest {
 
 		////pretend to get District geojson and insert it into mySQL
 		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+
 		$district->insert($this->getPDO());
 
 		//grab the data from MySQL and enforce that it meets expectations
@@ -95,8 +96,7 @@ class DistrictTest extends TownhallTest {
 	 *
 	 **/
 	public function testInvalidDistrictInsert(): void {
-		//create district with an id that already exists
-		$district = new District(null, $this->INVALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
+		$district = new District(TownhallTest::INVALID_KEY, $this->INVALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
 		$district->insert($this->getPDO());
 	}
 
