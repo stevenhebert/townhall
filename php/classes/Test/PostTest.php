@@ -153,7 +153,7 @@ class PostTest extends TownhallTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 		// create and insert a District to own the test Post
-		$poly = [[[0, 0], [10, 0], [10,5], [5,7], [0, 0]]];
+		$poly = [[[0,0], [9,0], [12,3], [9,6], [0,6], [3,3], [0,0]]];
 		$this->district = new District(null, $poly,"1");
 		$this->district->insert($this->getPDO());
 		// create and insert a Profile to own the test Post

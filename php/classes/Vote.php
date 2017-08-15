@@ -9,7 +9,7 @@ require_once("autoload.php");
  * @version 1.0.0
  * */
 
-class vote {
+class Vote {
 	/**
 	 * id for this Post; this is the primary key
 	 * @var int $votePostId
@@ -24,7 +24,7 @@ class vote {
 	 * timestamp of the post
 	 * @var \DateTime $postDateTime
 	 **/
-	private $postDateTime;
+	private $voteDateTime;
 	/**
 	 * value of the vote
 	 * @var int $voteValue
@@ -45,9 +45,9 @@ class vote {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct(?int $newPostVoteId, int $newVoteProfileId, $newVoteDateTime, int $newVoteValue = null) {
+	public function __construct(?int $newVotePostId, int $newVoteProfileId, $newVoteDateTime = null, int $newVoteValue = null) {
 		try {
-			$this->setPostVoteId($newPostVoteId);
+			$this->setVotePostId($newVotePostId);
 			$this->setVoteProfileId($newVoteProfileId);
 			$this->setVoteDateTime($newVoteDateTime);
 			$this->setVoteValue($newVoteValue);
@@ -59,35 +59,35 @@ class vote {
 		}
 	}
 	/**
-	 * accessor method for postVoteId
+	 * accessor method for votePostId
 	 *
-	 * @return int|null value of postVoteID
-	 **/public function getPostVoteId() : int {
-	return($this->postVoteId);
+	 * @return int|null value of votePostID
+	 **/public function getVotePostId() : int {
+	return($this->votePostId);
 	}
 /**
- * mutator method for postVoteID
+ * mutator method for votePostId
  *
  * @param int|null $newPostVoteId new value of newPostVoteId
  * @throws \RangeException if $newPostVoteId is not positive
  * @throws \TypeError if $newPostVoteId is not an integer
  **/
-	public function setPostVoteId(?int $newPostVoteId) :
+	public function setPostVoteId(?int $newVotePostId) :
 	void {
-		//if postVoteId is null immediately return it
-		if($newPostVoteId === null) {
-			$this->postVoteId = null;
+		//if votePostId is null immediately return it
+		if($ === null) {
+			$this->votePostId = null;
 			return;
 		}
 
-		// verify the postVoteId is positive
-		//if($newPostVoteId <= 0) {
-		throw(new \RangeException("postVoteId is not positive"));
+		// verify the vote post is positive
+		if($newVotePostId <= 0) {
+		throw(new \RangeException("votePostId is not positive"));
 	}
 }
 
-			// convert and store the postVoteId
-			$this->postVoteId = $newPostVoteId ;
+			// convert and store the vote post id
+			$this->votePostId =$newVotePostId;
 		}
 
 /**
@@ -170,7 +170,7 @@ public function insert(\PDO $pdo) : void {
 
 	//bind the member variables to the place holders in the template
 		$formattedDateTime = $this->voteDateTime->format("Y-m-d H:i:s");
-		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => voteDateTime, "voteValue" => $this->voteValue, => $formattedDate];
+		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => voteDateTime, "voteValue" => $this->voteValue, => $formattedDateTime];
 		$statement->execute($parameters);
 
 		// update the null votePostId with what mySql just gave us
@@ -192,10 +192,10 @@ public function insert(\PDO $pdo) : void {
 
 // create query template
 $query ="DELETE FROM vote WHERE postVoteId =:postVoteId";
-$statement= $pdo->prepare(query);
+$statement = $pdo->prepare(query);
 
 //bind the member variables to the place holder in the template
-$parameters = ["postVoteId" => $this->votePostId];
+$parameters = ["votePostId" => $this->votePostId];
 $statement->execute($parameters);
 }
 /**
@@ -206,14 +206,15 @@ $statement->execute($parameters);
  **/
  public function update(\PDO $pdo) : void {
 	// enforce the postVoteId is not null (i.e., don't update a vote that hasn't been inserted)
-	if($this->postVoteId === null) {
+	if($this->votePostId === null) {
 		throw(new \PDOException("unable to update a vote that does not exist"));
 	}
 }
 
 //create query temple
 $query= "UPDATE vote SET votePostID= : votePostId, voteProfileId= : voteProfileId, voteDateTime= : voteDateTime, voteValue= : voteValue";
-$statement =pdo->prepare(query);
+$statement =$pdo
+	->prepare(query);
 
 //bind the member variables to the place holders in the template
 $formattedDateTime = $this->voteDateTime->formate("Y-m-d H:i:s");
@@ -224,15 +225,15 @@ $statement->execute(parameters);
 /**gets the vote by votePostId
  *
  * @param \PDO $pdo PDO connection object
- * @param int $postVoteId vote post id to search for
- * @return votePost\null votePost found or null if not found
+ * @param int $votePostId vote post id to search for
+ * @return \SplFixedArray SplFixedArray of Posts found
  * @throws \PDOException when mySQL related errors occur
  * @throws\TypeError when variables are not thecorrect datatype
  **/
-public static function getVotePost byVotePostId(\PDO $pdo, int $votePostId) : ?votePost {
+public static function getVotePostByVotePostId(\PDO $pdo, int $votePostId) : ?votePostId {
 	//sanitize the votePostId before searching
 	if($votePostId <= 0) {
-		throw(new \PDOException("votePost id is not positive"));
+		throw(new \PDOException("votePostId is not positive"));
 	}
 }
 
@@ -244,7 +245,7 @@ $statement =$pdo->prepare(query);
 $parameters =["votePostId" => $votePostId];
 $statement->execute($parameters);
 
-//grab the votePost from mySQL
+//grab the votePostId from mySQL
 try {
 	$votePost = null;
 	$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -268,8 +269,8 @@ return($votePost);
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the correct data type
 **/
-public static function get voteProfileByVoteProfileID (\PDO $pdo, int $voteProfileID) : \SPLFixedArray {
-	// sanitize the vpteProfile id before searching
+public static function getVoteProfileByVoteProfileId(\PDO $pdo, int $voteProfileId) : \SPLFixedArray {
+	// sanitize the voteProfile id before searching
 	if($voteProfileId <= 0) {
 		throw(new \RangeException("vote profile id must be positive"));
 	}
@@ -307,8 +308,7 @@ return($votes);
  * @throws \TypeError when variables are not the correct data type
  * @throws \InvalidArgumentException if either sun dates are in the wrong format
 */
-public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteDateTime, \DateTime
-$sunsetVoteDateTime) : \SplFixedArray {
+public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteDateTime, \DateTime $sunsetVoteDateTime) : \SplFixedArray {
 	//enforce both date are present
 	if((empty ($sunriseVoteDateTime) === true) || (
 			empty($sunsetVoteDateTime) === true)) {
@@ -339,9 +339,7 @@ $sunsetVoteDateTime) : \SplFixedArray {
 	$formattedSunsetDateTime = $sunsetVoteDateTime->format("Y-m-d H:i:s");
 
 
-	$parameters = ["sunriseVoteDateTime" =>
-		$formattedSunriseDateTime, "sunsetVoteDateTime" =>
-		$formattedSunsetDateTime];
+	$parameters = ["sunriseVoteDateTime" => $formattedSunriseDateTime, "sunsetVoteDateTime" => $formattedSunsetDateTime];
 	$statement->execute($parameters);
 
 
@@ -415,7 +413,7 @@ public static function getAllVotes(\PDO $pdo) : \SplFixedArray{
 	//build an array of votes
 	$votes = new \SplFixedArray($statement-> rowCount());
 	$statement->setFetchMode(\PDO:: FETCH_ASSOC);
-	while(($row = $statement->fecth()) !== false){
+	while(($row = $statement->fetch()) !== false){
 		try{
 			$votes[$votes->key()] =$vote;
 			$votes->next();
