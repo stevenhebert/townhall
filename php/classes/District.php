@@ -117,6 +117,7 @@ class District {
 	 *
 	 **/
 	public function setDistrictGeom(array $newDistrictGeom): void {
+		// create temporary object
 		foreach($newDistrictGeom as $polygons) {
 			if(is_array($polygons) === false) {
 				throw(new \InvalidArgumentException("not an array give me more money, I need an a-raise"));
@@ -243,7 +244,7 @@ class District {
 		$query = "UPDATE district SET districtGeom = :districtGeom, districtName = :districtName WHERE districtId = :districtId";
 		$statement = $pdo->prepare($query);
 		//bind the member variables to the place holders in the template
-		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this-> districtName];
+		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
 		$statement->execute($parameters);
 	}
 

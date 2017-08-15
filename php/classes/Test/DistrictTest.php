@@ -76,7 +76,7 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testValidDistrictInsert(): void {
 		//count number of row and save to compare after running test
-		$numrows = $this->getConnection()->getRowCount("district");
+		$numRows = $this->getConnection()->getRowCount("district");
 
 		////pretend to get District geojson and insert it into mySQL
 		$district = new District($this->VALID_DISTRICT_ID, $this->VALID_DISTRICT_GEOM, $this->VALID_DISRICT_NAME);
@@ -107,7 +107,7 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testValidDistrictUpdate(): void {
 		// count number of row and save to compare after running test
-		$numrows = $this->getConnection()->getRowCount("district");
+		$numRows = $this->getConnection()->getRowCount("district");
 
 		// create district object and insert it back into the db
 		// using the same polygon as "district1"
@@ -146,7 +146,7 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testValidDistrictDelete() {
 		// count number of row and save to compare after running test
-		$numrows = $this->getConnection()->getRowCount("district");
+		$numRows = $this->getConnection()->getRowCount("district");
 
 		// create the district object
 		// not sure if we can keep using the same VALID_data???
@@ -187,7 +187,7 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testValidDistrictGet() {
 		// count number of row and save to compare after running test
-		$numrows = $this->getConnection()->getRowCount("district");
+		$numRows = $this->getConnection()->getRowCount("district");
 
 		//create the district object
 		$district = new District("2", "ST_GeomFromText('Polygon((0 0,-10 0,-10 10,0 10,0 0))')", "district2");
@@ -214,7 +214,7 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testValidDistrictGetAll() {
 		// count number of row and save to compare after running test
-		$numrows = $this->getConnection()->getRowCount("district");
+		$numRows = $this->getConnection()->getRowCount("district");
 
 		//create the district object
 		$district = new District("2", "ST_GeomFromText('Polygon((0 0,-10 0,-10 10,0 10,0 0))')", "district2");
