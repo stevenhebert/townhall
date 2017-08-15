@@ -183,10 +183,10 @@ class DistrictTest extends TownhallTest {
 
 
 	/**
-	 * test valid GET district by ID
+	 * test valid GET by districtId
 	 *
 	 **/
-	public function testValidDistrictGet() {
+	public function testValidDistrictIDGet() {
 		// count number of row and save to compare after running test
 		$numRows = $this->getConnection()->getRowCount("district");
 
@@ -204,11 +204,11 @@ class DistrictTest extends TownhallTest {
 		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
 	}
 	/**
-	 * test invalid GET district by Id
+	 * test invalid GET by districtId
 	 * try to grab a district that doesn't exist
 	 *
 	 **/
-	public function testInvalidDistrictGet() {
+	public function testInvalidDistrictIDGet() {
 		//create the district object
 		//don't insert the new object into mySQL
 		$district = District::getDistrictByDistrictId($this->getPDO(), "9001");
@@ -217,15 +217,40 @@ class DistrictTest extends TownhallTest {
 		$this->assertEmpty($district);
 	}
 	/**
-	 * test invalid GET by district
+	 * test valid GET by districtId
 	 *
 
+	public function testValidDistrictNameGet() {
+		// count number of row and save to compare after running test
+		$numRows = $this->getConnection()->getRowCount("district");
+
+		//create the district object
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
+
+		//insert new object into mySQL
+		$district->insert($this->getPDO());
+
+		//grab the district from the database and enforce that the object meets expectations
+		$pdoDistrict = District::getDistrictByDistrictName($this->getPDO(), $district->getDistrictName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
+		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
+		$this->assertEquals($pdoDistrict->getDistrictGeom(), $district->getDistrictGeom());
+		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
+	} */
+
+	/**
+	 * test invalid GET by districtName
+	 *
+	 **/
+
+
+	/*
 	public function testValidDistrictGetAll() {
 		// count number of row and save to compare after running test
 		$numRows = $this->getConnection()->getRowCount("district");
 
 		//create the district object
-		$district = new District("2", "ST_GeomFromText('Polygon((0 0,-10 0,-10 10,0 10,0 0))')", "district2");
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
 		$district->insert($this->getPDO());
 
 		//grab results from mySQL and enforce it meets expectations
@@ -237,6 +262,5 @@ class DistrictTest extends TownhallTest {
 		$pdoDistrict = $results[0];
 		$this->assertEquals($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
 		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
-	 **/
-	}
+	} */
 }

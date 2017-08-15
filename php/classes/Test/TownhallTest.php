@@ -96,8 +96,8 @@ abstract class TownhallTest extends TestCase {
 		// if the connection hasn't been established, create it
 		if($this->connection === null) {
 			// connect to mySQL and provide the interface to PHPUnit
-			$config = readConfig("/etc/apache2/capstone-mysql/dmcdonald21.ini");
-			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/dmcdonald21.ini");
+			$config = readConfig("/etc/apache2/capstone-mysql/townhall.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
 		return($this->connection);
