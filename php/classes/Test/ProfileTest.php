@@ -20,21 +20,16 @@ class ProfileTest extends TownhallTest {
 
 	/**
 	 * Distict of this profile; this is for foreign key relations
-	 * @var Profile profile
+	 * @var District district
 	 **
 	 **/
 	protected $district = null;
 
-	/** valid profile district ID
-	 * @var profile distict ID
-	 **/
-	protected $VALID_PROFILE_DISTRICT_ID = "6";
-
 	/**
+	 * @var array $VALID_DISTRICT_GEOM
 	 *
-	 * @var profile geom
 	 **/
-	protected $VALID_PROFILE_DISTRICT_GEOM = "ST_GeomFromText(ST_AsText(ST_GeomFromGeoJSON('{\"type\":\"Polygon\",\"coordinates\":[[[0,0],[5,0],[5,5],[0,5],[0,0]]]))";
+	protected $VALID_DISTRICT_GEOM = [[[0,0],[10,0],[10,10],[0,10],[0,0]]];
 
 	/**
 	 * valid profile activation token to create the profile object to own the test
@@ -135,6 +130,9 @@ class ProfileTest extends TownhallTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, "District 6");
+		$district->insert($this->getPDO());
+
 	}
 
 	/**
@@ -145,7 +143,7 @@ class ProfileTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("profile");
 
 		// create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -153,10 +151,6 @@ class ProfileTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->VALID_PROFILE_FIRST_NAME);
 
-		// create and insert a Profile to own the test Tweet
-		$this->district = new District(null, null, null);
-		$this->district->insert($this->getPDO());
-	}
 
 	/**
 	 * test inserting a Profile that already exists
@@ -165,7 +159,7 @@ class ProfileTest extends TownhallTest {
 	 **/
 	public function testInsertInvalidProfile(): void {
 		// create a Profile with a non null profile id and watch it fail
-		$profile = new Profile("1", $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile("1", $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 	}
 
@@ -177,7 +171,7 @@ class ProfileTest extends TownhallTest {
 		$numRows = $this->$this->getConnection()->getRowCount("profile");
 
 		//create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 
 		//edit profile and update it in mySQL
@@ -199,7 +193,7 @@ class ProfileTest extends TownhallTest {
 	 * @expectedException \PDOException
 	 **/
 	public function testUpdateInvalidProfile() : void {
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->update($this->getPDO());
 	}
 
@@ -211,7 +205,7 @@ class ProfileTest extends TownhallTest {
 		$numRows = $this->$this->getConnection()->getRowCount("profile");
 
 		//create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 
 		//delete the profile from mySQL
@@ -231,7 +225,7 @@ class ProfileTest extends TownhallTest {
 	 **/
 	public function testDeleteInvalidProfile(): void {
 		// create a Profile and try to delete it without actually inserting it
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->delete($this->getPDO());
 	}
 
@@ -243,7 +237,7 @@ class ProfileTest extends TownhallTest {
 		$numRows = $this->$this->getConnection()->getRowCount("profile");
 
 		//create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -269,7 +263,7 @@ class ProfileTest extends TownhallTest {
 		$numRows = $this->$this->getConnection()->getRowCount("profile");
 
 		//create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -295,7 +289,7 @@ class ProfileTest extends TownhallTest {
 		$numRows = $this->$this->getConnection()->getRowCount("profile");
 
 		//create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->VALID_PROFILE_DISTRICT_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile = new Profile(null, $this->district->getDistrictId(),, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
