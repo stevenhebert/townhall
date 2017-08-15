@@ -23,17 +23,17 @@ class DistrictTest extends TownhallTest {
 	/**
 	 * @var geom $VALID_DISTRICT_GEOM
 	 **/
-	protected $VALID_DISTRICT_GEOM = ST_GeomFromText('Polygon((0 0,10 0,10 10,0 10,0 0))');
+	protected $VALID_DISTRICT_GEOM = "ST_GeomFromText('Polygon((0 0,10 0,10 10,0 10,0 0))')";
 
 	/**
 	 * @var int $VALID_DISTRICT_ID
 	 */
-	protected $VALID_DISTRICT_ID = null;
+	protected $VALID_DISTRICT_ID = "2";
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME
 	 */
-	protected $VALID_DISRICT_NAME = null;
+	protected $VALID_DISRICT_NAME = "district2";
 
 	/** create dependent objects before running each test
 	 **/
@@ -53,18 +53,18 @@ class DistrictTest extends TownhallTest {
 
 		//get District geojson and insert it into mySQL
 		////pretend to get District geojson and insert it into mySQL
-		$district = new District(null, "", null);
+		$district = new District($this->VALID_DISTRICT_ID, $this->VALID_DISTRICT_GEOM, $this->VALID_DISRICT_NAME);
 }
 
 	/**
-	 * test inserting a Tweet that already exists
+	 * test inserting a district that already exists
 	 *
 	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidDistrict(): void {
 		//create district with an id that already exists
-		$district = new District("1", $this->VALID_DISTRICT_GEOM, $this->VALID_DISRICT_NAME);
-		$district =
+		$district = new District("2", "ST_GeomFromText('Polygon((0 0,10 0,10 -10,0 -10,0 0))');", "district3");
+		$district->insert($this->getPDO());
 }
 
 /**
