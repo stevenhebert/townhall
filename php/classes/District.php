@@ -191,11 +191,17 @@ class District {
 		if($this->districtId !== null) {
 			throw(new \PDOException("districtId already assigned"));
 		}
+		//Jean-Luc needs geoJSON
+		$geoObject = new \stdClass();
+		$geoObject->type = "Polygon";
+		$geoObject->coordinates = $this->districtGeom;
+		$geoJson = json_encode($geoObject);
+
 		//create query template
-		$query = "INSERT INTO district(districtGeom, districtName) VALUES(:districtGeom, :districtName)";
+		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+		$parameters = ["districtGeom" => $geoJson, "districtName" => $this->districtName];
 		$statement->execute($parameters);
 		//update the null profileId with what mySQL returns
 		$this->profileId = intval($pdo->lastInsertId());
