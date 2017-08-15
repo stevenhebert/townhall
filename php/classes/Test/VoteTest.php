@@ -146,6 +146,38 @@ protected $district = null;
 	/**
 	 * create dependent objects before running each test
 	 **/
+	protected $VALID_VOTE_POSTID;
+	/**
+	 * PARENT ID of the vote posted
+	 * @var string $VALID_VOTEPOSTID_PARENTID
+	 **/
+	protected $VALID_VOTE_PARENTID;
+	/**
+	 * PROFILE ID of the vote
+	 * @var string $VALID_VOTE_PROFILEID
+	 **/
+	protected $VALID_VOTE_PROFILEID;
+	/**
+	 * timestamp of the vote; this starts as null and is assigned later
+	 * @var \DateTime $VALID_VOTEDATE
+	 **/
+	protected $VALID_VOTEDATE = null;
+	/**
+	 * Valid timestamp to use as sunriseVoteDate
+	 */
+	protected $VALID_SUNRISEDATE = null;
+	/**
+	 * Valid timestamp to use as sunsetVoteDate
+	 */
+	protected $VALID_SUNSETDATE = null;
+	/**
+	 * value of the vote
+	 * @var string $VALID_VOTEVALUE
+	 **/
+	protected $VALID_VOTEVALUE = "1 || -1";
+	/**
+	 * create dependent objects before running each test
+	 **/
 	public final function setUp()  : void {
 // run the default setUp() method first
 		parent::setUp();
