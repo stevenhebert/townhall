@@ -621,6 +621,7 @@ class Post {
 		$fields =get_object_vars($this);
 		//format the data so that the front end can consume it
 		$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) *1000);
+		unset($districtGeom);
 		return($fields);
 	}
 
