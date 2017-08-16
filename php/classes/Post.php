@@ -69,7 +69,7 @@ class Post {
 	 * @Doumentation:  https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
-	public function __construct(?int $newPostId, int $newPostDistrictId, int $newPostParentId, int $newPostProfileId, string $newPostContent, $newPostDateTime = null) {
+	public function __construct(?int $newPostId, int $newPostDistrictId, ?int $newPostParentId, int $newPostProfileId, string $newPostContent, $newPostDateTime = null) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostDistrictId($newPostDistrictId);

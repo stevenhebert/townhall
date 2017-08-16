@@ -1,6 +1,6 @@
 <?php
 namespace Edu\Cnm\Townhall\Test;
-use Edu\Cnm\Townhall\{District, Profile, Post};
+use Edu\Cnm\Townhall\{Post, Profile, District};
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 /**
@@ -21,7 +21,7 @@ class PostTest extends TownhallTest {
 	protected $district = null;
 	/**t
 	 * valid district id to use to create the profile object to own the test
-	 * @var string $VALID_DISTRICT_ID
+	 * @var int $VALID_DISTRICT_ID
 	 */
 	protected $VALID_DISTRICT_ID;
 	/**
@@ -31,7 +31,7 @@ class PostTest extends TownhallTest {
 	protected $VALID_DISTRICT_NAME = "District 1";
 	/**
 	 * valid district geom to use to create the profile object to own the test
-	 * @var string $VALID_DISTRICT_GEOM
+	 * @var array $VALID_DISTRICT_GEOM
 	 */
 	protected $VALID_DISTRICT_GEOM = [[[0,0],[10,0],[10,10],[0,10],[0,0]]];
 	/**
@@ -46,7 +46,7 @@ class PostTest extends TownhallTest {
 	protected $VALID_PROFILE_ID;
 	/**
 	 * valid district id to use to create the profile object to own the test
-	 * @var string $VALID_PROFILE_DISTRICT_ID
+	 * @var int $VALID_PROFILE_DISTRICT_ID
 	 */
 	protected $VALID_PROFILE_DISTRICT_ID;
 	/**
@@ -59,6 +59,11 @@ class PostTest extends TownhallTest {
 	 * @var string $VALID_PROFILE_ADDRESS1
 	 */
 	protected $VALID_PROFILE_ADDRESS1 = "123 Main St";
+	/**
+	 * valid address2 to use to create the profile object to own the test
+	 * @var string $VALID_PROFILE_ADDRESS2
+	 */
+	protected $VALID_PROFILE_ADDRESS2 = "Suite 311";
 		/**
 	 * valid CITY to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_CITY
@@ -85,6 +90,11 @@ class PostTest extends TownhallTest {
 	 */
 	protected $VALID_PROFILE_LASTNAME = "Picard";
 	/**
+	 * valid representative indicator to use to create the profile object
+	 * @var int $VALID_PROFILE_REPRESENTATIVE;
+	 */
+	protected $VALID_PROFILE_REPRESENTATIVE;
+	/**
 	 * valid salt to use to create the profile object to own the test
 	 * @var string $VALID_SALT
 	 */
@@ -107,17 +117,17 @@ class PostTest extends TownhallTest {
 	/*set up the variables for the post table*/
 	/**
 	 * district id of the Post
-	 * @var string $VALID_POST_DISTRICTID
+	 * @var int $VALID_POST_DISTRICTID
 	 **/
 	protected $VALID_POST_DISTRICTID;
 	/**
 	 * PARENT ID of the Post
-	 * @var string $VALID_POST_PARENTID
+	 * @var int $VALID_POST_PARENTID
 	 **/
 	protected $VALID_POST_PARENTID;
 	/**
 	 * PROFILE ID of the Post
-	 * @var string $VALID_POST_PROFILEID
+	 * @var int $VALID_POST_PROFILEID
 	 **/
 	protected $VALID_POST_PROFILEID;
 	/**
@@ -154,12 +164,13 @@ class PostTest extends TownhallTest {
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
 		// create and insert a District to own the test Post
-		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
-		$district->insert($this->getPDO());
+		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+		$this->district->insert($this->getPDO());
 
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
-		$this->profile = new Profile(null, null,null, $this->VALID_PROFILE_ADDRESS1, null,$this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, null, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME);
+		// create a new Profile and insert to into mySQL
+		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTDATE = new \DateTime();
