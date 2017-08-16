@@ -1,6 +1,6 @@
 <?php
 namespace Edu\Cnm\Townhall\Test;
-use Edu\Cnm\Townhall\{District, Profile, Post};
+use Edu\Cnm\Townhall\{District, Profile, Post, Vote};
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 /**
@@ -19,7 +19,7 @@ class VoteTest extends TownhallTest {
 	 * @var District district
 	 **/
 	protected $district = null;
-	/**t
+	/**
 	 * valid district id to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_ID
 	 */
@@ -124,8 +124,7 @@ class VoteTest extends TownhallTest {
 	 * content of the Post
 	 * @var string $VALID_POSTCONTENT
 	 **/
-	protected $VALID_POSTCONTENT = "May the force be with you.  Oops, wrong reference.
-	";
+	protected $VALID_POSTCONTENT = "May the force be with you.  Oops, wrong reference.";
 	/**
 	 * content of the updated Post
 	 * @var string $VALID_POSTCONTENT2
@@ -164,14 +163,7 @@ class VoteTest extends TownhallTest {
 	 * @var \DateTime $VALID_POSTDATE
 	 **/
 	protected $VALID_VOTEDATE = null;
-	/**
-	 * Valid timestamp to use as sunriseVoteDate
-	 **/
-	protected $VALID_SUNRISEDATE = null;
-	/**
-	 * Valid timestamp to use as sunsetVoteDate
-	 **/
-	protected $VALID_SUNSETDATE = null;
+
 	/**
 	 * VALUE of the VOTE
 	 * @var string $VALID_VOTEVALUE
@@ -441,7 +433,7 @@ class VoteTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new Vote and insert to into mySQL
 		$vote = new Vote(null, $this->VALID_VOTE_POST_ID, $this->VALID_VOTE_PARENTID, $this->VALID_VOTE_PROFILEID, $this->VALID_VOTE_DATETIME, $this->VALID_VOTE_DATETIME);
-		$post->insert($this->getPDO());
+		$vote->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVotePostId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
@@ -459,7 +451,7 @@ class VoteTest extends TownhallTest {
 	 **/
 	public function testInsertInvalidVote(): void {
 		// create a Vote with a non null vote id and watch it fail
-		$post = new Vote(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
+		$vote = new Vote(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
 		$vote->insert($this->getPDO());
 	}
 
