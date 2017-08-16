@@ -211,7 +211,7 @@ class District {
 		$geoJson = json_encode($geoObject);
 
 		//create query template
-		$query = "INSERT INTO district (districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
+		$query = "INSERT INTO district (districtGeom, districtName) VALUES(ST_GeomFromGeoJSON('{\"type\":\"Polygon\",\"coordinates\"::districtGeom}'), :districtName)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$parameters = ["districtGeom" => $geoJson, "districtName" => $this->districtName];
