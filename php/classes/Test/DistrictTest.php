@@ -28,7 +28,7 @@ class DistrictTest extends TownhallTest {
 	 *
 	 **/
 
-	protected $VALID_DISTRICT_GEOM = [[0,0],[10,0],[10,10],[0,10],[0,0]];
+	protected $VALID_DISTRICT_GEOM = [[[1,1],[10,1],[10,10],[1,10],[1,1]]];
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME

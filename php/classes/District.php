@@ -82,7 +82,7 @@ class District {
 	 * mutator method for district id
 	 *
 	 * @param int | null $newDistrictId value of new district id
-	 * associates districts with their respective polygon
+	 * associates districts with their respective polygons
 	 *
 	 **/
 	public function setDistrictId(?int $newDistrictId): void {
@@ -211,7 +211,7 @@ class District {
 		$geoJson = json_encode($geoObject);
 
 		//create query template
-		$query = "INSERT INTO district (districtGeom, districtName) VALUES(ST_GeomFromGeoJSON('{\"type\":\"Polygon\",\"coordinates\"::districtGeom}'), :districtName)";
+		$query = "INSERT INTO district(districtGeom, districtName) VALUES(:districtGeom, :districtName)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$parameters = ["districtGeom" => $geoJson, "districtName" => $this->districtName];
