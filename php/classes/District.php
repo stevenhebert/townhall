@@ -133,7 +133,7 @@ class District {
 					throw(new \RangeException("more than two coordinates given"));
 				}
 				try {
-					self::validateLatitude($pointArray[1]);
+					self::validateLatitude($pointArray[0]);
 					self::validateLongitude($pointArray[0]);
 				} catch(\Exception | \RangeException | \TypeError $exception) {
 					$exceptionType = get_class($exception);
