@@ -63,26 +63,28 @@ class DistrictTest extends TownhallTest {
 	/**
 	 * create dependent objects before running each test
 	 *
-	 **/
+
 	public final function setUp() {
 		// run the setup method so the test can run properly
 		// this is where all dependencies would be squashed so the test could be run properly.
 		parent::setUp();
-	}
+	}**/
 
 	/**
 	 * test valid INSERT district
 	 *
 	 **/
 	public function testValidDistrictInsert(): void {
-		//count number of row and save to compare after running test
+		// count number of row and save to compare after running test
 		$numRows = $this->getConnection()->getRowCount("district");
 
-		////pretend to get District geojson and insert it into mySQL
+		// create district object
 		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+
+		// insert into mySQL
 		$district->insert($this->getPDO());
 
-		//grab the data from MySQL and enforce that it meets expectations
+		// grab the data from MySQL and enforce that it meets expectations
 		$pdoDistrict = District::getDistrictByDistrictId($this->getPDO(), $district->getDistrictId());
 		var_dump($pdoDistrict->getDistrictId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
@@ -97,6 +99,8 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testInvalidDistrictInsert(): void {
 		$district = new District(TownhallTest::INVALID_KEY, $this->INVALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
+
+		//
 		$district->insert($this->getPDO());
 	}
 

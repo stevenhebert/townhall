@@ -1,6 +1,8 @@
 <?php
+namespace Edu\Cnm\TownHall;
 
-namespace Edu\Cnm\Townhall;
+require_once("autoload.php");
+
 
 /**
  * District Class
@@ -36,6 +38,10 @@ class District {
 	 *
 	 **/
 	private $districtName;
+	/**
+	 * @var int|null
+	 */
+	private $newDistrictId;
 
 	/** constructor for this district
 	 * @param int $newDistrictId
@@ -58,6 +64,7 @@ class District {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+		$this->districtId = $newDistrictId;
 	}
 
 	/**
@@ -76,11 +83,10 @@ class District {
 	 *
 	 * @param int | null $newDistrictId value of new district id
 	 * associates districts with their respective polygon
-	 * who is receiving these exceptions if geojsons are imported into mysql automagically?
 	 *
 	 **/
 	public function setDistrictId(?int $newDistrictId): void {
-		//void if district id is null - assuming this means all polygons have been assigned - want to stop process
+		//void if district id is null
 		if($newDistrictId === null) {
 			$this->districtId = null;
 			return;
@@ -193,25 +199,24 @@ class District {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public
-	function insert(\PDO $pdo): void {
+	public function insert(\PDO $pdo): void {
 		//enforce the district id is null b/c dont want to insert into a district that already exists
 		if($this->districtId !== null) {
 			throw(new \PDOException("districtId already assigned"));
 		}
 		//Jean-Luc needs geoJSON
 		$geoObject = new \stdClass();
-		$geoObject->type = "Polygon";
+		$geoObject->type = "polygon";
 		$geoObject->coordinates = $this->districtGeom;
 		$geoJson = json_encode($geoObject);
 
 		//create query template
-		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
+		$query = "INSERT INTO district (districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$parameters = ["districtGeom" => $geoJson, "districtName" => $this->districtName];
 		$statement->execute($parameters);
-		//update the null profileId with what mySQL returns
+		//update the null districtId with what mySQL returns
 		$this->districtId = intval($pdo->lastInsertId());
 	}
 
