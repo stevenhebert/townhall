@@ -418,3 +418,216 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
 	}
 }
+/**
+ * test inserting a valid Vote and verify that the actual mySQL data matches
+ **/
+public function testInsertValidVote() : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("vote");
+	// create a new Vote and insert to into mySQL
+	$post = new Vote(null, $this->VALID_VOTE_POST_ID, $this->VALID_VOTE_PARENTID, $this->VALID_VOTE_PROFILEID, $this->VALID_VOTE_DATETIME, $this->VALID_VOTE_DATETIME);
+	$post->insert($this->getPDO());
+	// grab the data from mySQL and enforce the fields match our expectations
+	$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVoteId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+	$this->assertEquals($pdoVote->getVotePostId(), $this->post->getVotePostId());
+	$this->assertEquals($pdoVote->getVoteProfile(), $this->VALID_VOTEPROFILEID);
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoVote->getVoteDateTime()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+	$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
+}
+/**
+ * test inserting a Vote that already exists
+ *
+ * @expectedException \PDOException
+ **/
+public function testInsertInvalidVote() : void {
+	// create a Vote with a non null vote id and watch it fail
+	$post = new Vote(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
+	$vote->insert($this->getPDO());
+}
+/**
+ * test inserting a Vote, editing it, and then updating it
+ **/
+public function testUpdateValidVote() : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("post");
+	// create a new Vote and insert to into mySQL
+	$vote = new vote(null,$this->VALID_VOTE_POST_ID, $this->VALID_VOTE_PARENTID, $this->VALID_VOTE_POST_ID, $this->VALID_VOTEDATETIME, $this->VALID_VOTE_VALUE);
+	$vote->insert($this->getPDO());
+	// edit the Vote and update it in mySQL
+	// grab the data from mySQL and enforce the fields match our expectations
+	$pdoVote = Vote::getVoteByPostId($this->getPDO(), $vote->getVotePostId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+	$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getVoteProfileId());
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoVote->getVoteDateTime()->getTimestamp(), $this->VALID_VOTEDATETIME->getTimestamp());
+	$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTE_VALUE);
+}
+/**
+ * test updating a Vote that already exists
+ *
+ * @expectedException \PDOException
+ **/
+public function testUpdateInvalidVote() : void {
+	// create a Vote with a non null post id and watch it fail
+	$post = new Vote(null, $this->VALID_VOTE_DISTRICTID, $this->VALID_VOTE_PARENTID, $this->profile->getProfileId(), $this->VALID_VOTEDATE, $this->VALID_VOTEVALUE);
+	$vote->update($this->getPDO());
+}
+/**
+ * test creating a Vote and then deleting it
+ **/
+public function testDeleteValidVote() : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("vote");
+	// create a new Vote and insert to into mySQL
+	$vote = new Vote(null,$this->profile->getVotePostId(), $this->VALID_VOTE_PARENTID, $this->profile->getProfileId(), $this->VALID_VOTEDATETME, $this->VALID_VOTEVALUE);
+	$vote->insert($this->getPDO());
+	// delete the Vote from mySQL
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+	$vote->delete($this->getPDO());
+	// grab the data from mySQL and enforce the Vote does not exist
+	$pdoVote = Vote::getVotePostByVotePostId($this->getPDO(), $vote->getVotePostId());
+	$this->assertNull($pdoVote);
+	$this->assertEquals($numRows, $this->getConnection()->getRowCount("vote"));
+}
+/**
+ * test deleting a Vote that does not exist
+ *
+ * @expectedException \PDOException
+ **/
+public function testDeleteInvalidVote() : void {
+	// create a Vote and try to delete it without actually inserting it
+	$vote = new Vote(null,$this->profile->getProfileDistrictId(), $this->VALID_VOTE_PARENTID, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
+	$vote->insert($this->getPDO());
+	$vote->delete($this->getPDO());
+}
+/**
+ * test inserting a Vote and regrabbing it from mySQL
+ **/
+public function testGetValidVoteByVotePostId() : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("vote");
+	// create a new Vote and insert to into mySQL
+	$vote = new Vote(null,$this->vote->getVotePostId(), $this->VALID_VOTE_PORFILEID, $this->profile->getVoteProfileId(), $this->VALID_VOTE_DATETIME, $this->VALID_VOTE_VALUE);
+	$vote->insert($this->getPDO());
+	// grab the data from mySQL and enforce the fields match our expectations
+	$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVotePostId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+	$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoPost->getVoteValue(), $this->VALID_VOTE);
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoPost->getVoteDateTime()->getTimestamp(), $this->VALID_VOTE_DATETIME->getTimestamp());
+}
+/**
+ * test grabbing a Post that does not exist
+ **/
+public function testGetInvalidPostByPostId() : void {
+	// grab a profile id that exceeds the maximum allowable profile id
+	$tweet = Post::getPostByPostId($this->getPDO(), TownhallTest::INVALID_KEY);
+	$this->assertNull($tweet);
+}
+/**
+ * test inserting a Post and regrabbing it from mySQL
+ **/
+public function testGetValidPostByPostProfileId() {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("post");
+	// create a new Post and insert to into mySQL
+	$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+	$post->insert($this->getPDO());
+	// grab the data from mySQL and enforce the fields match our expectations
+	$results = Post::getPostByPostProfileId($this->getPDO(), $post->getPostProfileId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+	$this->assertCount(1, $results);
+	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+	// grab the result from the array and validate it
+	$pdoPost = $results[0];
+	$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+}
+/**
+ * test grabbing a Post that does not exist
+ **/
+public function testGetInvalidPostByPostProfileId() : void {
+	// grab a profile id that exceeds the maximum allowable profile id
+	$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+	$this->assertCount(0, $post);
+}
+/**
+ * test grabbing a Post by post content
+ **/
+public function testGetValidPostByPostContent() : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("post");
+	// create a new Post and insert to into mySQL
+	$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+	$post->insert($this->getPDO());
+	// grab the data from mySQL and enforce the fields match our expectations
+	$results = Post::getPostByPostContent($this->getPDO(), $post->getPostContent());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+	$this->assertCount(1, $results);
+	// enforce no other objects are bleeding into the test
+	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+	// grab the result from the array and validate it
+	$pdoPost = $results[0];
+	$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+}
+/**
+ * test grabbing a Post by content that does not exist
+ **/
+public function testGetInvalidPostByPostContent() : void {
+	// grab a tweet by content that does not exist
+	$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+	$this->assertCount(0, $post);
+}
+/**
+ * test grabbing a valid Post by sunset and sunrise date
+ *
+ */
+public function testGetValidPostBySunDate() : void {
+	//count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("post");
+	//create a new Post and insert it into the database
+	$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+	$post->insert($this->getPDO());
+	// grab the tweet from the database and see if it matches expectations
+	$results = Post::getPostByPostDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+	$this->assertCount(1,$results);
+	//enforce that no other objects are bleeding into the test
+	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+	//use the first result to make sure that the inserted tweet meets expectations
+	$pdoPost = $results[0];
+	$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
+	$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
+	$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
+	$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+}
+/**
+ * test grabbing all Posts
+ **/
+public function testGetAllValidPosts() : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("post");
+	// create a new Post and insert to into mySQL
+	$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+	$post->insert($this->getPDO());
+	// grab the data from mySQL and enforce the fields match our expectations
+	$results = Post::getAllPosts($this->getPDO());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+	$this->assertCount(1, $results);
+	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+	// grab the result from the array and validate it
+	$pdoPost = $results[0];
+	$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+}
+}
