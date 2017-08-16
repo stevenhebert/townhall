@@ -567,7 +567,7 @@ class VoteTest extends TownhallTest {
 	/**
 	 * test grabbing a Vote that does not exist
 	 **/
-	public function testGetInvalidVoteByVotePostId(): void {
+	public function GetInvalidVoteByVotePostId(): void {
 		// grab a post id that exceeds the maximum allowable post id
 		$vote = new Vote(null, $this->votePost->getVotePostId(), $this->VALID_VOTE_PARENTID, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
 		$this->assertCount(0, $vote);
