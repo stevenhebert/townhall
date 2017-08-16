@@ -108,7 +108,7 @@ class Profile {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct(?int $newProfileId, int $newProfileDistrictId, string $newProfileActivationToken, string $newProfileAddress1, string $newProfileAddress2, string $newProfileCity, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, int $newProfileRepresentative, string $newProfileSalt, string $newProfileState, string $newProfileUserName, string $newProfileZip) {
+	public function __construct(?int $newProfileId, int $newProfileDistrictId, string $newProfileActivationToken, string $newProfileAddress1, string $newProfileAddress2, string $newProfileCity, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, ?int $newProfileRepresentative, string $newProfileSalt, string $newProfileState, string $newProfileUserName, string $newProfileZip) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileDistrictId($newProfileDistrictId);
@@ -122,7 +122,8 @@ class Profile {
 			$this->setProfileLastName($newProfileLastName);
 			$this->setProfileRepresentative($newProfileRepresentative);
 			$this->setProfileSalt($newProfileSalt);
-			$this->setprofileSalt($newProfileState);
+			$this->setprofileState($newProfileState);
+			$this->setProfileUserName($newProfileUserName);
 			$this->setProfileZip($newProfileZip);
 		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -273,7 +274,7 @@ class Profile {
 		// verify the profileAddress2 is secure
 		$newProfileAddress2 = trim($newProfileAddress2);
 		$newProfileAddress2 = filter_var($newProfileAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newProfileAddress1) === true) {
+		if(empty($newProfileAddress2) === true) {
 			throw(new \InvalidArgumentException("profile address is empty or insecure"));
 		}
 		// verify the profileAddress2 fit in the database
@@ -609,7 +610,8 @@ class Profile {
 		$query = "INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(:profileDistrictId, :profileActivationToken, :profileAddress1, :profileAddress2, :profileCity, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profileRepresentative, :profileSalt, :profileState, :profileUserName, :profileZip)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileDistricId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileZip" => $this->profileZip];
+		$parameters = ["profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" =>$this->profileUserName, "profileZip" => $this->profileZip];
+
 		$statement->execute($parameters);
 		// update the null profileId with what mySQL just gave us
 		$this->profileId = intval($pdo->lastInsertId());
@@ -648,13 +650,14 @@ class Profile {
 			throw(new \PDOException("unable to update a profile that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE profile SET profileDistrictId = :profileDistrictId, profileActivationToken = :profileActivationToken, profileAddress1 = :profileAddress1, profileAddress2 = :profileAddress2, profileCity = :profileCity, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileName, profileRepresentative = :profileRepresentative, profileSalt = :profileSalt, profileState = :profileState, profileUserName = :profileUserName, profileZip = :profileZip WHERE profileId = :profileId";
+		$query = "UPDATE profile SET profileDistrictId = :profileDistrictId, profileActivationToken = :profileActivationToken, profileAddress1 = :profileAddress1, profileAddress2 = :profileAddress2, profileCity = :profileCity, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profileRepresentative = :profileRepresentative, profileSalt = :profileSalt, profileState = :profileState, profileUserName = :profileUserName, profileZip = :profileZip WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
+
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileId" => $this->profileId, "profileDistricId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileZip" => $this->profileZip];
+		$parameters = ["profileId" => $this->profileId, "profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
+
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * gets the Profile by profileId
 	 *
@@ -670,7 +673,7 @@ class Profile {
 			throw(new \PDOException("profile id is not positive"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUsername, profileZip FROM profile WHERE profileId = :profileId";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileId" => $profileId];
@@ -780,7 +783,7 @@ class Profile {
 			throw(new \PDOException("profile activation token is invalid"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUsername, profileZip FROM profile WHERE profileEmail = :profileEmail";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileEmail = :profileEmail";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileEmail" => $profileEmail];
@@ -817,7 +820,7 @@ class Profile {
 			throw(new \PDOException("profile user name is invalid"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUsername, profileZip FROM profile WHERE profileUserName = :profileUserName";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileUserName = :profileUserName";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileUserName" => $profileUserName];
