@@ -3,6 +3,7 @@
 namespace Edu\Cnm\Townhall;
 
 require_once("autoload.php");
+//include("ValidateDate.php");
 
 /**
  * Class for townhall post
@@ -61,7 +62,7 @@ class Post {
 	 * @param int | null $newPostParentId id of the post being commented on, null if none
 	 * @param int $newPostProfileId id of the person making the post
 	 * @param string $newPostContent content of the new post
-	 * @param timestamp $newPostDateTime timestamp of the post
+	 * @param date $newPostDateTime timestamp of the post
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -266,7 +267,7 @@ class Post {
 
 		//store the post date using the ValidateDate trait
 		try {
-			$newPostDateTime = self::validateDate($newPostDateTime);
+			$newPostDateTime = validateDate($newPostDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -535,6 +536,7 @@ class Post {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
+		return ($posts);
 	}
 
 
@@ -548,7 +550,7 @@ class Post {
 	 * @throws \TypeError when variables are not the correct data type
 	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
 	 **/
-	public static function getPostByPostDate(PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate): \SplFixedArray {
+	public static function getPostByPostDate(\PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate): \SplFixedArray {
 		//enforce both dates are present
 		if((empty($sunrisePostDate) === true) || (empty($sunsetPostDate) === true)) {
 			throw(new \InvalidArgumentException("dates are empty or insecure"));
@@ -568,8 +570,8 @@ class Post {
 		$statement = $pdo->prepare($query);
 
 		//format the dates so that mySQL can use them
-		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
-		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
+		$formattedSunriseDate = $sunrisePostDate->DateTime::format("Y-m-d H:i:s.u");
+		$formattedSunsetDate = $sunsetPostDate->DateTime::format("Y-m-d H:i:s.u");
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
 		$statement->execute($parameters);
 
@@ -596,7 +598,7 @@ class Post {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllPosts(\PDO $pdo): SplFixedArray {
+	public static function getAllPosts(\PDO $pdo): \SplFixedArray {
 		//create query template
 		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post";
 		$statement = $pdo->prepare($query);
@@ -620,7 +622,7 @@ class Post {
 	public function jsonSerialize () {
 		$fields =get_object_vars($this);
 		//format the data so that the front end can consume it
-		$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) *1000);
+		$fields["postDateTime"] = round(floatval($this->postDateTime->format("U.u")) *1000);
 		unset($districtGeom);
 		return($fields);
 	}

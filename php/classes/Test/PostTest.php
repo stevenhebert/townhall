@@ -163,7 +163,7 @@ class PostTest extends TownhallTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
-		// create and insert a District to own the test Post
+		// create and insert a District for the test Post
 		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$this->district->insert($this->getPDO());
 
@@ -171,7 +171,9 @@ class PostTest extends TownhallTest {
 		//need to get the districtId from the district
 		// create a new Profile and insert to into mySQL
 		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
-		$this->profile->insert($this->getPDO());
+		$profile->insert($this->getPDO());
+
+
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTDATE = new \DateTime();
 		//format the sunrise date to use for testing
@@ -189,6 +191,7 @@ class PostTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
 		$post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
@@ -205,7 +208,7 @@ class PostTest extends TownhallTest {
 	 **/
 	public function testInsertInvalidPost() : void {
 		// create a Post with a non null post id and watch it fail
-		$post = new Post(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(TownhallTest::INVALID_KEY, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 	}
 	/**

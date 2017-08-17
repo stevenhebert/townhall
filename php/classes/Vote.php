@@ -145,7 +145,7 @@ class Vote {
 
 		// store the like date using the ValidateDate trait
 		try {
-			$newVoteDateTime = self::validateDateTime($newVoteDateTime);
+			$newVoteDateTime = self::validateDate($newVoteDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
