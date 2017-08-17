@@ -201,16 +201,7 @@ class District {
 		if($this->districtId !== null) {
 			throw(new \PDOException("districtId already assigned"));
 		}
-		//Jean-Luc needs geoJSON
-	//	$geoObject = new \stdClass();
-		//$geoObject->type = "polygon";
-		//$geoObject->coordinates = $this->districtGeom;
-		//$geoJson = json_encode($geoObject);
 
-		//$geoJson = "'" . $this->districtGeom . "'";
-		//var_dump($geoJson);
-
-		//create query template
 		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
 		$statement = $pdo->prepare($query);
 
