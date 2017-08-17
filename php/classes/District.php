@@ -250,10 +250,13 @@ class District {
 			throw(new \PDOException("district not found, unable to delete"));
 		}
 		//create new query template and don't delete the bloody primary key
-		$query = "UPDATE district SET districtGeom = :districtGeom, districtName = :districtName WHERE districtId = :districtId";
+		$query = "UPDATE district SET districtGeom = ST_GeomFromGeoJSON(:districtGeom), districtName = :districtName WHERE districtId = :districtId";
 		$statement = $pdo->prepare($query);
+
 		//bind the member variables to the place holders in the template
+
 		$parameters = ["districtId" => $this->districtId,"districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+		var_dump($parameters);
 		$statement->execute($parameters);
 	}
 
@@ -273,9 +276,9 @@ class District {
 			throw(new \PDOException("districtId is not positive"));
 		}
 		//create query template
-		$query = "SELECT districtId, districtGeom, districtName FROM district WHERE districtId = :districtId";
-		$statement = $pdo->prepare($query);
+		$query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district WHERE districtId = :districtId";
 
+		$statement = $pdo->prepare($query);
 		//bind the districtId ti the place holder in the template
 		$parameters = ["districtId" => $districtId];
 		$statement->execute($parameters);
@@ -285,7 +288,7 @@ class District {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$district = new District($row["districtId"], $row["districtGeom"], $row["districtName"]);
+				$district = new District($row["districtId"], $row["ST_AsGeoJson(districtGeom)"], $row["districtName"]);
 			}
 		} catch(\Exception $exception) {
 			//if row can't be converted re-throw it

@@ -2,9 +2,7 @@
 
 namespace Edu\Cnm\Townhall\Test;
 
-use Edu\Cnm\Townhall\{
-	District
-};
+use Edu\Cnm\Townhall\{District};
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -23,12 +21,12 @@ require_once(dirname(__DIR__) . "/autoload.php");
  *
  **/
 class DistrictTest extends TownhallTest {
+
 	/**
 	 * @var string $VALID_DISTRICT_GEOM
 	 *
 	 **/
-
-	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
+	protected $VALID_DISTRICT_GEOM = '{"type": "Polygon", "coordinates": [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]}';
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME
@@ -37,39 +35,16 @@ class DistrictTest extends TownhallTest {
 	protected $VALID_DISTRICT_NAME = "district1";
 
 	/**
-	 * @var string $VALID_DISTRICT_GEOM_4
+	 * @var string $VALID_DISTRICT_GEOM_UPDATE
 	 *
 	 **/
-	protected $VALID_DISTRICT_GEOM_4 = '{"type":"Polygon","coordinates":[[[0,0],[5,0],[7,7],[0,5],[0,0]]]}';
+	protected $VALID_DISTRICT_GEOM_UPDATE = '{"type": "Polygon", "coordinates": [[[0, 0], [5, 0], [7, 7], [0, 5], [0, 0]]]}';
 
 	/**
-	 * @var string $VALID_DISTRICT_NAME_4
+	 * @var string $VALID_DISTRICT_NAME_UPDATE
 	 *
 	 */
-	protected $VALID_DISTRICT_NAME_4 = "district4";
-
-	/**
-	 * @var string $INVALID_DISTRICT_GEOM
-	 *
-	 **/
-	protected $INVALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
-
-	/**
-	 * @var string $VALID_DISTRICT_NAME_4
-	 *
-	 */
-	protected $INVALID_DISTRICT_NAME = "districtInvalidGeom";
-
-
-	/**
-	 * create dependent objects before running each test
-	 *
-
-	public final function setUp() {
-		// run the setup method so the test can run properly
-		// this is where all dependencies would be squashed so the test could be run properly.
-		parent::setUp();
-	}**/
+	protected $VALID_DISTRICT_NAME_UPDATE = "district4";
 
 	/**
 	 * test valid INSERT district
@@ -86,9 +61,9 @@ class DistrictTest extends TownhallTest {
 
 		// grab the data from MySQL and enforce that it meets expectations
 		$pdoDistrict = District::getDistrictByDistrictId($this->getPDO(), $district->getDistrictId());
-
+		var_dump($pdoDistrict);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
-		//$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
+		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
 		$this->assertEquals($pdoDistrict->getDistrictGeom(), $district->getDistrictGeom());
 		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
 	}
@@ -98,12 +73,9 @@ class DistrictTest extends TownhallTest {
 	 *
 	 **/
 	public function testInvalidDistrictInsert(): void {
-		$district = new District(TownhallTest::INVALID_KEY, $this->INVALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
-
-		//
+		$district = new District("5", $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$district->insert($this->getPDO());
 	}
-
 
 	/**
 	 * test valid UPDATE district
@@ -120,7 +92,7 @@ class DistrictTest extends TownhallTest {
 
 		// edit the district object then insert the object back into the database
 		// changed district polygon to 4th quadrant poly
-		$district->setDistrictGeom($this->VALID_DISTRICT_GEOM_4);
+		$district->setDistrictGeom($this->VALID_DISTRICT_GEOM_UPDATE);
 		$district->update($this->getPDO());
 
 		// grab the district out of the database and enforce the object meets expectations
@@ -137,7 +109,7 @@ class DistrictTest extends TownhallTest {
 	 */
 	public function testInvalidDistrictUpdate() {
 		//create a new district object
-		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+		$district = new District("99", $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 
 		//try to update a district object that does not exist: "Area 51"
 		$district->update($this->getPDO());
@@ -153,7 +125,7 @@ class DistrictTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("district");
 
 		// create the district object
-		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 
 		//insert new object into mySQL
 		$district->insert($this->getPDO());
@@ -179,8 +151,7 @@ class DistrictTest extends TownhallTest {
 	public function testInvalidDistrictDelete() {
 		//create the quote object
 		//don't insert the new object into mySQL
-		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
-
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		//try to delete the object without putting it into the db
 		$district->delete($this->getPDO());
 	}
@@ -195,7 +166,7 @@ class DistrictTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("district");
 
 		//create the district object
-		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->INVALID_DISTRICT_NAME);
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 
 		//insert new object into mySQL
 		$district->insert($this->getPDO());
@@ -207,6 +178,7 @@ class DistrictTest extends TownhallTest {
 		$this->assertEquals($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
 		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
 	}
+
 	/**
 	 * test invalid GET by districtId
 	 * try to grab a district that doesn't exist
@@ -220,6 +192,7 @@ class DistrictTest extends TownhallTest {
 		// verify GET returned empty row
 		$this->assertEmpty($district);
 	}
+
 	/**
 	 * test valid GET by districtId
 	 *
