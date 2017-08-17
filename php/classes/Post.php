@@ -344,6 +344,11 @@ class Post {
 		//bind the member variables to the place holders in the template
 		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent];
 		$statement->execute($parameters);
+
+		// update the auto generated timestamp
+		$tempPost = Post::getPostByPostId($pdo, $this->postId);
+		$this->setPostDateTime($tempPost->getPostDateTime());
+
 	}
 
 	/**gets the post by postId
