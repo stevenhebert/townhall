@@ -120,7 +120,16 @@ class District {
 	 **/
 	public function setDistrictGeom($newDistrictGeom): void {
 		// create temporary object
-		$geomObject = json_decode($newDistrictGeom);
+		if (gettype($newDistrictGeom) === "string") {
+			$geomObject = json_decode($newDistrictGeom);
+			if(empty($geomObject) === true) {
+				throw(new \InvalidArgumentException("geom object empty or invalid"));
+			}
+		}elseif(gettype($newDistrictGeom) === "array"){
+			$geomObject = $newDistrictGeom;
+		}else {
+			throw(new \TypeError("hit the road Jack - geometry needs to be GeoJson or array"));
+		}
 		foreach($geomObject->coordinates[0] as $coordinates) {
 			if(count($coordinates) !== 2) {
 				throw(new \RangeException("more than two coordinates given"));
@@ -244,7 +253,7 @@ class District {
 		$query = "UPDATE district SET districtGeom = :districtGeom, districtName = :districtName WHERE districtId = :districtId";
 		$statement = $pdo->prepare($query);
 		//bind the member variables to the place holders in the template
-		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+		$parameters = ["districtId" => $this->districtId,"districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
 		$statement->execute($parameters);
 	}
 
