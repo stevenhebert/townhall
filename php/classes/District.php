@@ -256,7 +256,6 @@ class District {
 		//bind the member variables to the place holders in the template
 
 		$parameters = ["districtId" => $this->districtId,"districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
-		var_dump($parameters);
 		$statement->execute($parameters);
 	}
 
