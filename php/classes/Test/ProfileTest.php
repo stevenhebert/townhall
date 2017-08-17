@@ -26,10 +26,10 @@ class ProfileTest extends TownhallTest {
 	protected $district = null;
 
 	/**
-	 * @var array $VALID_DISTRICT_GEOM
+	 * @var string $VALID_DISTRICT_GEOM
 	 *
 	 **/
-	protected $VALID_DISTRICT_GEOM = [[[0,0],[10,0],[10,10],[0,10],[0,0]]];
+	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
 
 	/**
 	 * valid profile activation token to create the profile object to own the test

@@ -1,5 +1,4 @@
 <?php
-
 namespace Edu\Cnm\TownHall;
 
 require_once("autoload.php");
@@ -17,6 +16,7 @@ require_once("autoload.php");
  * @author Steven Hebert <shebert2@cnm.edu>
  * @version 1.0
  **/
+
 class District {
 	/**
 	 * id for this district
@@ -27,7 +27,7 @@ class District {
 
 	/**
 	 * geometry for this district
-	 * @var array districtGeom
+	 * @var string districtGeom
 	 *
 	 **/
 	private $districtGeom;
@@ -41,10 +41,11 @@ class District {
 	/**
 	 * @var int|null
 	 */
+	private $newDistrictId;
 
 	/** constructor for this district
 	 * @param int $newDistrictId
-	 * @param array $newDistrictGeom
+	 * @param string $newDistrictGeom
 	 * @param string $newDistrictName
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
@@ -53,7 +54,7 @@ class District {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
-	public function __construct(?int $newDistrictId, array $newDistrictGeom, string $newDistrictName) {
+	public function __construct(?int $newDistrictId, string $newDistrictGeom, string $newDistrictName) {
 		try {
 			$this->setDistrictId($newDistrictId);
 			$this->setDistrictGeom($newDistrictGeom);
@@ -102,48 +103,44 @@ class District {
 	/**
 	 * accessor for districtGeom
 	 *
-	 * @return array value (no longer array) of districtGeom
+	 * @return string value (no longer array) of districtGeom
 	 * reads district geometry data in order to run contains fn
 	 * -> conceptually is the contains fn calling this from php or from mysql?
 	 * ->-> if the latter, will this accessor actually be used?
 	 *
 	 **/
-	public function getDistrictGeom(): array {
+	public function getDistrictGeom(): string {
 		return ($this->districtGeom);
 	}
 
 	/**
 	 * mutator for districtGeom
 	 *
-	 * @param array $newDistrictGeom
+	 * @param string $newDistrictGeom
 	 * @throws \Exception if some other exception occurs
 	 * @throws \RangeException if point has more than two elements (lat, long, ?)
 	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	public function setDistrictGeom(array $newDistrictGeom): void {
+	public function setDistrictGeom($newDistrictGeom): void {
 		// create temporary object
-		foreach($newDistrictGeom as $polygons) {
-			if(is_array($polygons) === false) {
-				throw(new \InvalidArgumentException("not an array give me more money, I need an a-raise"));
+		$geomObject = json_decode($newDistrictGeom);
+		foreach($geomObject->coordinates[0] as $coordinates){
+			if(count($coordinates) !== 2) {
+				throw(new \RangeException("more than two coordinates given"));
 			}
-			foreach($polygons as $pointArray) {
-				if(count($pointArray) !== 2) {
-					throw(new \RangeException("more than two coordinates given"));
-				}
-				var_dump($pointArray);
-				try {
-					self::validateLatitude($pointArray[0]);
-					self::validateLongitude($pointArray[0]);
-				} catch(\Exception | \RangeException | \TypeError $exception) {
+			try {
+					self::validateLatitude($coordinates[0]);
+					self::validateLongitude($coordinates[1]);
+			}
+			catch(\Exception | \RangeException | \TypeError $exception) {
 					$exceptionType = get_class($exception);
 					throw(new $exceptionType($exception->getMessage(), 0, $exception));
-				}
 			}
+			$this->districtGeom = $newDistrictGeom;
 		}
-
-		$this->districtGeom = $newDistrictGeom;
 	}
+
 
 	/**
 	 * helper methods for coordinate range validation
@@ -205,16 +202,21 @@ class District {
 			throw(new \PDOException("districtId already assigned"));
 		}
 		//Jean-Luc needs geoJSON
-		$geoObject = new \stdClass();
-		$geoObject->type = "polygon";
-		$geoObject->coordinates = $this->districtGeom;
-		$geoJson = json_encode($geoObject);
+	//	$geoObject = new \stdClass();
+		//$geoObject->type = "polygon";
+		//$geoObject->coordinates = $this->districtGeom;
+		//$geoJson = json_encode($geoObject);
+
+		//$geoJson = "'" . $this->districtGeom . "'";
+		//var_dump($geoJson);
 
 		//create query template
-		$query = "INSERT INTO district(districtGeom, districtName) VALUES(:districtGeom, :districtName)";
+		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
 		$statement = $pdo->prepare($query);
+
 		// bind the member variables to the place holders in the template
-		$parameters = ["districtGeom" => $geoJson, "districtName" => $this->districtName];
+		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+
 		$statement->execute($parameters);
 		//update the null districtId with what mySQL returns
 		$this->districtId = intval($pdo->lastInsertId());
@@ -295,16 +297,5 @@ class District {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($district);
-	}
-
-	/**
-	 * formats the state variables for JSON serialization
-	 *
-	 * @return array resulting state variables to serialize
-	 **/
-	public
-	function jsonSerialize() {
-		return (get_object_vars($this));
-
 	}
 }
