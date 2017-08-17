@@ -31,9 +31,9 @@ class PostTest extends TownhallTest {
 	protected $VALID_DISTRICT_NAME = "District 1";
 	/**
 	 * valid district geom to use to create the profile object to own the test
-	 * @var array $VALID_DISTRICT_GEOM
+	 * @var string $VALID_DISTRICT_GEOM
 	 */
-	protected $VALID_DISTRICT_GEOM = [[[0,0],[10,0],[10,10],[0,10],[0,0]]];
+	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
 	/**
 	 * Profile that created the Post; this is for foreign key relations
 	 * @var Profile profile
@@ -53,7 +53,7 @@ class PostTest extends TownhallTest {
 	 * valid activation token to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ACTIVATION_TOKEN
 	 */
-	protected $VALID_PROFILE_ACTIVATION_TOKEN;
+	protected $VALID_PROFILE_ACTIVATION_TOKEN = "abcdef123456";
 	/**
 	 * valid address1 to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ADDRESS1
@@ -124,7 +124,7 @@ class PostTest extends TownhallTest {
 	 * PARENT ID of the Post
 	 * @var int $VALID_POST_PARENTID
 	 **/
-	protected $VALID_POST_PARENTID;
+	protected $VALID_POST_PARENTID = null;
 	/**
 	 * PROFILE ID of the Post
 	 * @var int $VALID_POST_PROFILEID
@@ -170,12 +170,15 @@ class PostTest extends TownhallTest {
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
 		// create a new Profile and insert to into mySQL
-		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
-		$profile->insert($this->getPDO());
+		$this->profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
+		$this->profile->insert($this->getPDO());
 
 
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTDATE = new \DateTime();
+
+
+		var_dump($this->VALID_POSTDATE);
 		//format the sunrise date to use for testing
 		$this->VALID_SUNRISEDATE = new \DateTime();
 		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
@@ -190,7 +193,9 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		$post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+
+
+		$post = new Post(null, $this->district->getDistrictId(), $this->VALID_DISTRICT_ID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -237,7 +242,7 @@ class PostTest extends TownhallTest {
 	 * @expectedException \PDOException
 	 **/
 	public function testUpdateInvalidPost() : void {
-		// create a Post with a non null tweet id and watch it fail
+		// create a Post with a non null post id and watch it fail
 		$post = new Post(null, $this->VALID_POST_DISTRICTID, $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->update($this->getPDO());
 	}
@@ -251,12 +256,12 @@ class PostTest extends TownhallTest {
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
 		$post->insert($this->getPDO());
 		// delete the Post from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$post->delete($this->getPDO());
 		// grab the data from mySQL and enforce the Post does not exist
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
 		$this->assertNull($pdoPost);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tweet"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("post"));
 	}
 	/**
 	 * test deleting a Post that does not exist

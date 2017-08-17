@@ -260,9 +260,9 @@ class Post {
 	 *
 	 **/
 	public function setPostDateTime($newPostDateTime = null): void {
-		//base case:  if the date is null, use the current date and time
+		//base case:  if the date is null, wait for mySQL
 		if($newPostDateTime === null) {
-			$this->postDateTime = new \DateTime();
+			$this->postDateTime = null;
 			return;
 		}
 
@@ -288,16 +288,19 @@ class Post {
 			throw(new \PDOException("not a new post"));
 		}
 		//create a query template
-		$query = "INSERT INTO post(postDistrictId, postParentId, postProfileId, postContent, postDateTime) VALUES (:postDistrictId, :postParentId, :postProfileId, :postContent, :postDateTime)";
+		$query = "INSERT INTO post(postDistrictId, postParentId, postProfileId, postContent) VALUES (:postDistrictId, :postParentId, :postProfileId, :postContent)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $formattedDate];
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent];
 		$statement->execute($parameters);
 
 		//update the null postId with what mySQL just gave us
 		$this->postId = intval($pdo->lastInsertId());
+
+		// update the auto generated timestamp
+		$tempPost = Post::getPostByPostId($pdo, $this->postId);
+		$this->setPostDateTime($tempPost->getPostDateTime());
 	}
 
 	/** deletes this post from mySQL
@@ -335,12 +338,11 @@ class Post {
 		}
 
 		//create query template
-		$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent, postDateTime = :postDateTime";
+		$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$formattedDate = $this->postDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postDateTime" => $formattedDate];
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent];
 		$statement->execute($parameters);
 	}
 
@@ -624,7 +626,6 @@ class Post {
 		$fields =get_object_vars($this);
 		//format the data so that the front end can consume it
 		$fields["postDateTime"] = round(floatval($this->postDateTime->format("U.u")) *1000);
-		unset($districtGeom);
 		return($fields);
 	}
 

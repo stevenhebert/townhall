@@ -43,7 +43,7 @@ CREATE TABLE post (
 	postParentId   INT UNSIGNED,
 	postProfileId  INT UNSIGNED                NOT NULL,
 	postContent    VARCHAR(8192)               NOT NULL,
-	postDateTime   TIMESTAMP(6)                NOT NULL,
+	postDateTime   TIMESTAMP(6)                NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	INDEX (postDistrictId),
 	INDEX (postParentId),
 	INDEX (postProfileId),
@@ -57,7 +57,7 @@ CREATE TABLE post (
 CREATE TABLE vote (
 	votePostId    INT UNSIGNED                NOT NULL,
 	voteProfileId INT UNSIGNED                NOT NULL,
-	voteDateTime  TIMESTAMP(6)                NOT NULL,
+	voteDateTime  TIMESTAMP(6)                NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	voteValue     TINYINT                     NOT NULL,
 	INDEX (votePostId),
 	INDEX (voteProfileId),
