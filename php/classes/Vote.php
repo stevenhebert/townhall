@@ -145,13 +145,74 @@ class Vote {
 
 		// store the like date using the ValidateDate trait
 		try {
-			$newVoteDateTime = self::validateDate($newVoteDateTime);
+			$newVoteDateTime = self::validateDateTime($newVoteDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		$this->voteDateTime = $newVoteDateTime;
 	}
+	/**
+	 * accessor method for voteValue
+	 *
+	 * @return int|null value of voteValue
+	 **/
+	public function getVoteValue(): int {
+		return ($this->voteValue);
+	}
+
+	/**
+	 * mutator method for voteValue
+	 *
+	 * @param int|null $newVoteValue new value of newVoteValue
+	 * @throws \RangeException if $newVoteValue is -1 || 1
+	 * @throws \TypeError if $newVoteValue is not an integer
+	 **/
+	public function setVoteValue(?int $newVoteValue): void {
+		//if votevalue is null immediately return it
+		if($newVoteValue === null) {
+			$this->voteValue = null;
+			return;
+		}
+
+		// verify the value is -1 || 1
+		if($newVoteValue <= 0) {
+			throw(new \RangeException("voteValue is not -1 || 1"));
+		}
+
+
+		// convert and store the voteValue
+		$this->voteValue = $newVoteValue;
+	}
+
+	/**
+	 * accessor method for vote value
+	 *
+	 * @return int value of vote value
+	 **/
+
+	public function getVoteValue(): int {
+		return ($this->voteValue);
+	}
+
+	/**
+	 * mutator method for voteValue
+	 *
+	 * @param int $newVoteValue new value of vote value
+	 * @throws \RangeException if $newValue is not -1 || 1
+	 * @throws \TypeError if $newVoteValue is not an integer
+	 **/
+	public function setVoteValue(int $newVoteValue): void {
+
+		// verify the voteProfile id is positive
+		if($newVoteValue <= 0) {
+			throw(new \RangeException("vote value is not -1 || 1"));
+		}
+
+		// convert and store the vote value id
+		$this->voteValue = $newVoteValue;
+	}
+
 
 	/**
 	 * inserts this VoteDateTime into mySQL
@@ -229,7 +290,7 @@ $statement->execute(parameters);
  * @throws \PDOException when mySQL related errors occur
  * @throws\TypeError when variables are not thecorrect datatype
  **/
-public static function getVotePostByVotePostId(\PDO $pdo, int $votePostId) : ?votePostId {
+public static function getVoteByVotePostId(\PDO $pdo, int $votePostId) : ?votePostId {
 	//sanitize the votePostId before searching
 	if($votePostId <= 0) {
 		throw(new \PDOException("votePostId is not positive"));
@@ -237,7 +298,7 @@ public static function getVotePostByVotePostId(\PDO $pdo, int $votePostId) : ?vo
 
 
 // create query template
-$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM  votePostId = :votePostId";
+$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE  votePostId = :votePostId";
 $statement =$pdo->prepare($query);
 
 //bind the votePost id to the place holder in the template
@@ -325,7 +386,7 @@ public static function getVoteByVoteDateTime (\PDO $pdo, \DateTime $sunriseVoteD
 
 //create query template
 	$query = "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime >= :sunriseVoteDateTime AND voteDateTime <= : sunsetVoteDateTime";
-	$statement = $pdo->prepare(query);
+	$statement = $pdo->prepare($query);
 
 
 	//format the dates so that mySQL can use them
