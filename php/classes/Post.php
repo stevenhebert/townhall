@@ -19,6 +19,7 @@ require_once("autoload.php");
  * @version 1.0.0
  **/
 class Post {
+	use ValidateDate;
 	/**
 	 * id for this post; this is the primary key
 	 * @var int $postId
@@ -62,7 +63,7 @@ class Post {
 	 * @param int | null $newPostParentId id of the post being commented on, null if none
 	 * @param int $newPostProfileId id of the person making the post
 	 * @param string $newPostContent content of the new post
-	 * @param date $newPostDateTime timestamp of the post
+	 * @param \DateTime $newPostDateTime timestamp of the post
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -267,7 +268,7 @@ class Post {
 
 		//store the post date using the ValidateDate trait
 		try {
-			$newPostDateTime = validateDate($newPostDateTime);
+			$newPostDateTime = self::validateDate($newPostDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -570,8 +571,8 @@ class Post {
 		$statement = $pdo->prepare($query);
 
 		//format the dates so that mySQL can use them
-		$formattedSunriseDate = $sunrisePostDate->DateTime::format("Y-m-d H:i:s.u");
-		$formattedSunsetDate = $sunsetPostDate->DateTime::format("Y-m-d H:i:s.u");
+		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
+		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
 		$statement->execute($parameters);
 
