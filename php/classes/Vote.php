@@ -186,16 +186,6 @@ class Vote {
 	}
 
 	/**
-	 * accessor method for vote value
-	 *
-	 * @return int value of vote value
-	 **/
-
-	public function getVoteValue(): int {
-		return ($this->voteValue);
-	}
-
-	/**
 	 * mutator method for voteValue
 	 *
 	 * @param int $newVoteValue new value of vote value
@@ -226,7 +216,7 @@ class Vote {
 			throw(new \PDOException("not a new vote"));
 		}
 		// create query template
-		$query = "INSERT INTO vote(votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, voteProfileId, voteDateTime,voteValue)";
+		$query = "INSERT INTO vote(votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, ;voteProfileId, ;voteDateTime, ;voteValue)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
