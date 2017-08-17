@@ -38,10 +38,6 @@ class District {
 	 *
 	 **/
 	private $districtName;
-	/**
-	 * @var int|null
-	 */
-	private $newDistrictId;
 
 	/** constructor for this district
 	 * @param int $newDistrictId
@@ -64,7 +60,7 @@ class District {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-		$this->districtId = $newDistrictId;
+		//	$this->districtId = $newDistrictId;
 	}
 
 	/**
@@ -125,17 +121,16 @@ class District {
 	public function setDistrictGeom($newDistrictGeom): void {
 		// create temporary object
 		$geomObject = json_decode($newDistrictGeom);
-		foreach($geomObject->coordinates[0] as $coordinates){
+		foreach($geomObject->coordinates[0] as $coordinates) {
 			if(count($coordinates) !== 2) {
 				throw(new \RangeException("more than two coordinates given"));
 			}
 			try {
-					self::validateLatitude($coordinates[0]);
-					self::validateLongitude($coordinates[1]);
-			}
-			catch(\Exception | \RangeException | \TypeError $exception) {
-					$exceptionType = get_class($exception);
-					throw(new $exceptionType($exception->getMessage(), 0, $exception));
+				self::validateLatitude($coordinates[0]);
+				self::validateLongitude($coordinates[1]);
+			} catch(\Exception | \RangeException | \TypeError $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
 			$this->districtGeom = $newDistrictGeom;
 		}
@@ -203,11 +198,11 @@ class District {
 		}
 
 		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
+
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
 		$parameters = ["districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
-
 		$statement->execute($parameters);
 		//update the null districtId with what mySQL returns
 		$this->districtId = intval($pdo->lastInsertId());
@@ -219,8 +214,7 @@ class District {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public
-	function delete(\PDO $pdo): void {
+	public function delete(\PDO $pdo): void {
 		//enforce the districtId is not null, cant delete something that doesn't exist
 		if($this->districtId === null) {
 			throw(new \PDOException("district not found, unable to delete"));
@@ -272,6 +266,7 @@ class District {
 		//create query template
 		$query = "SELECT districtId, districtGeom, districtName FROM district WHERE districtId = :districtId";
 		$statement = $pdo->prepare($query);
+
 		//bind the districtId ti the place holder in the template
 		$parameters = ["districtId" => $districtId];
 		$statement->execute($parameters);
@@ -280,13 +275,14 @@ class District {
 			$district = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-			if($row == false) {
+			if($row !== false) {
 				$district = new District($row["districtId"], $row["districtGeom"], $row["districtName"]);
 			}
 		} catch(\Exception $exception) {
 			//if row can't be converted re-throw it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+
 		return ($district);
 	}
 }
