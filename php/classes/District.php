@@ -1,4 +1,5 @@
 <?php
+
 namespace Edu\Cnm\TownHall;
 
 require_once("autoload.php");
@@ -16,7 +17,6 @@ require_once("autoload.php");
  * @author Steven Hebert <shebert2@cnm.edu>
  * @version 1.0
  **/
-
 class District {
 	/**
 	 * id for this district
@@ -41,7 +41,6 @@ class District {
 	/**
 	 * @var int|null
 	 */
-	private $newDistrictId;
 
 	/** constructor for this district
 	 * @param int $newDistrictId
@@ -132,6 +131,7 @@ class District {
 				if(count($pointArray) !== 2) {
 					throw(new \RangeException("more than two coordinates given"));
 				}
+				var_dump($pointArray);
 				try {
 					self::validateLatitude($pointArray[0]);
 					self::validateLongitude($pointArray[0]);
@@ -295,5 +295,16 @@ class District {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($district);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public
+	function jsonSerialize() {
+		return (get_object_vars($this));
+
 	}
 }
