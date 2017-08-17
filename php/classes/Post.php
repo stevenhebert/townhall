@@ -288,7 +288,7 @@ class Post {
 			throw(new \PDOException("not a new post"));
 		}
 		//create a query template
-		$query = "INSERT INTO post(postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime) VALUES (:postId, :postDistrictId, :postParentId, :postProfileId, :postContent, :postDateTime)";
+		$query = "INSERT INTO post(postDistrictId, postParentId, postProfileId, postContent, postDateTime) VALUES (:postDistrictId, :postParentId, :postProfileId, :postContent, :postDateTime)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
