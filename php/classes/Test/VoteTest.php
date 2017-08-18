@@ -1,6 +1,7 @@
 <?php
 namespace Edu\Cnm\Townhall\Test;
 use Edu\Cnm\Townhall\{District, Profile, Post, Vote};
+
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 /**

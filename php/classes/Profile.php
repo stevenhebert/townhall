@@ -86,7 +86,7 @@ class Profile {
 	private $profileZip;
 
 	/**
-	 * constructor for this profile
+	 * constructor for the profile class
 	 *
 	 * @param int|null $newProfileId of this profile or null if a new user
 	 * @param int $newProfileDistrictId of this profile

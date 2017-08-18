@@ -555,7 +555,7 @@ class Post {
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param \DateTime $sunrisePostDate beginning date of search
-	 * @param \DateTime $sunset PostDate ending date of search
+	 * @param \DateTime $sunsetPostDate ending date of search
 	 * @return \SplFixedArray of posts found
 	 * @throws \PDOException error when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
