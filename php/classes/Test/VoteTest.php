@@ -437,7 +437,7 @@ class VoteTest extends TownhallTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVotePostId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
-		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getVotePostId());
+		$this->assertEquals($pdoVote->getVotePostId(), $this->vote->getVotePostId());
 		$this->assertEquals($pdoVote->getVoteProfile(), $this->VALID_VOTEPROFILEID);
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoVote->getVoteDateTime()->getTimestamp(), $this->VALID_VOTEDATETIME->getTimestamp());
@@ -634,9 +634,9 @@ class VoteTest extends TownhallTest {
 	 **/
 	public function testGetAllValidVotes(): void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("vote");
+		$numRows = $this->getConnection()->getRowCount("Vote");
 		// create a new Vote and insert to into mySQL
-		$vote = new Vote(null, $this->post->getVotePostId(), $this->VALID_Vote_PARENTID, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
+		$vote = new Vote(null, $this->VALID_VOTE_POSTID->getVotePostId(), $this->VALID_Vote_PARENTID, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
 		$vote->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Vote::getAllVotes($this->getPDO());
