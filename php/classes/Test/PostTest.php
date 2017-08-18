@@ -188,7 +188,7 @@ class PostTest extends TownhallTest {
 
 
 
-		$post = new Post(null, $this->district->getDistrictId(), $this->VALID_DISTRICT_ID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
+		$post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 
 		$post->insert($this->getPDO());
 
