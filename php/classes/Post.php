@@ -581,6 +581,11 @@ class Post {
 		//format the dates so that mySQL can use them
 		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
 		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
+		var_dump($formattedSunriseDate);
+		var_dump($formattedSunsetDate);
+		var_dump($sunrisePostDate);
+		var_dump($sunsetPostDate);
+
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
 		$statement->execute($parameters);
 

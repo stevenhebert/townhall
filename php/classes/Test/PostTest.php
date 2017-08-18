@@ -312,8 +312,9 @@ class PostTest extends TownhallTest {
 	 **/
 	public function testGetInvalidPostByPostProfileId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT,null);
+		$post = POst::getPostByPostProfileId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertCount(0, $post);
+
 	}
 	/**
 	 * test grabbing a Post by post content
@@ -342,8 +343,9 @@ class PostTest extends TownhallTest {
 	 **/
 	public function testGetInvalidPostByPostContent() : void {
 		// grab a tweet by content that does not exist
-		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
+		$post = Post::getPostByPostContent($this->getPDO(), "Reports of my assimilation are greatly exaggerated.");
 		$this->assertCount(0, $post);
+
 	}
 	/**
 	 * test grabbing a valid Post by sunset and sunrise date
@@ -352,22 +354,33 @@ class PostTest extends TownhallTest {
 	public function testGetValidPostBySunDate() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
+
 		//create a new Post and insert it into the database
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
-		// grab the tweet from the database and see if it matches expectations
+
+
+
+		// grab the post from the database and see if it matches expectations
 		$results = Post::getPostByPostDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
+
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1,$results);
+
 		//enforce that no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
-		//use the first result to make sure that the inserted tweet meets expectations
+
+		//use the first result to make sure that the inserted post meets expectations
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
+		$this->assertEquals($pdoPost->getPostDistrictId(), $post->getPostDistrictId());
+		$this->assertEquals($pdoPost->getPostParentId(), $post->getPostParentId());
 		$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
 		$this->assertEquals($pdoPost->getPostDateTime(), $post->getPostDateTime());
+
 	}
+
 	/**
 	 * test grabbing all Posts
 	 **/
