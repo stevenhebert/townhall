@@ -153,7 +153,7 @@ class Post {
 	 * @return int | null value of post parent id
 	 **/
 
-	public function getPostParentId(): int {
+	public function getPostParentId(): ?int {
 		return ($this->postParentId);
 	}
 
@@ -302,7 +302,9 @@ class Post {
 		$tempPost = Post::getPostByPostId($pdo, $this->postId);
 
 
+
 		$this->setPostDateTime($tempPost->getPostDateTime());
+
 	}
 
 	/** deletes this post from mySQL
@@ -575,16 +577,15 @@ class Post {
 		}
 
 		//create query template
-		$query = "SELECT postId, postDistrictId, postParentId, postProfileId FROM post WHERE postDateTime >= :sunrisePostDate AND postDateTime <= :sunsetPostDate";
+		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postDateTime >= :sunrisePostDate AND postDateTime <= :sunsetPostDate";
 		$statement = $pdo->prepare($query);
 
 		//format the dates so that mySQL can use them
 		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
 		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
-		var_dump($formattedSunriseDate);
-		var_dump($formattedSunsetDate);
-		var_dump($sunrisePostDate);
-		var_dump($sunsetPostDate);
+		$sunriseTimestamp = $sunrisePostDate->getTimestamp();
+		$sunsetTimeStamp = $sunsetPostDate->getTimestamp();
+
 
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
 		$statement->execute($parameters);

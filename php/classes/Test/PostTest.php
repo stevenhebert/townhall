@@ -187,11 +187,14 @@ class PostTest extends TownhallTest {
 		// create a new Post and insert to into mySQL
 
 
+
 		$post = new Post(null, $this->district->getDistrictId(), $this->VALID_DISTRICT_ID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 
 		$post->insert($this->getPDO());
+
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
+
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
@@ -358,6 +361,7 @@ class PostTest extends TownhallTest {
 		//create a new Post and insert it into the database
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
+
 
 
 
