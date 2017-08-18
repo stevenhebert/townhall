@@ -261,7 +261,6 @@ class PostTest extends TownhallTest {
 	public function testDeleteInvalidPost() : void {
 		// create a Post and try to delete it without actually inserting it
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
-		$post->insert($this->getPDO());
 		$post->delete($this->getPDO());
 	}
 	/**
@@ -324,7 +323,7 @@ class PostTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
 
-		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), null);
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Post::getPostByPostContent($this->getPDO(), $post->getPostContent());

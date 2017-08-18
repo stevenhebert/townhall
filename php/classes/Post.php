@@ -340,7 +340,7 @@ class Post {
 		}
 
 		//create query template
-		$query = "UPDATE post SET postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent WHERE postId = :$this->postId";
+		$query = "UPDATE post SET postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent WHERE postId = :postId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
@@ -567,8 +567,8 @@ class Post {
 
 		//ensure both dates are in the correct format and are secure
 		try {
-			$sunrisePostDate = self::validateDate($sunrisePostDate);
-			$sunsetPostDate = self::validateDate($sunsetPostDate);
+			$sunrisePostDate = self::validateDateTime($sunrisePostDate);
+			$sunsetPostDate = self::validateDateTime($sunsetPostDate);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
