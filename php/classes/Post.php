@@ -3,7 +3,7 @@
 namespace Edu\Cnm\Townhall;
 
 require_once("autoload.php");
-//include("ValidateDate.php");
+
 
 /**
  * Class for townhall post
@@ -51,7 +51,7 @@ class Post {
 	 **/
 	private $postContent;
 	/**
-	 * timestamp of the post
+	 * timestamp of the post.  will be added by the database
 	 * @var \DateTime $postDateTime
 	 **/
 	private $postDateTime;
@@ -63,7 +63,7 @@ class Post {
 	 * @param int | null $newPostParentId id of the post being commented on, null if none
 	 * @param int $newPostProfileId id of the person making the post
 	 * @param string $newPostContent content of the new post
-	 * @param \DateTime $newPostDateTime timestamp of the post
+	 * @param \DateTime | null $newPostDateTime timestamp of the post
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -268,7 +268,7 @@ class Post {
 
 		//store the post date using the ValidateDate trait
 		try {
-			$newPostDateTime = self::validateDate($newPostDateTime);
+			$newPostDateTime = self::validateDateTime($newPostDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -300,6 +300,8 @@ class Post {
 
 		// update the auto generated timestamp
 		$tempPost = Post::getPostByPostId($pdo, $this->postId);
+
+
 		$this->setPostDateTime($tempPost->getPostDateTime());
 	}
 
@@ -338,13 +340,12 @@ class Post {
 		}
 
 		//create query template
-		$query = "UPDATE post SET postId = :postId, postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent";
+		$query = "UPDATE post SET postDistrictId = :postDistrictId, postParentId = :postParentId, postProfileId = :postProfileId, postContent = :postContent WHERE postId = :$this->postId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent];
+		$parameters = ["postDistrictId" => $this->postDistrictId, "postParentId" => $this->postParentId, "postProfileId" => $this->postProfileId, "postContent" => $this->postContent, "postId" => $this->postId];
 		$statement->execute($parameters);
-
 		// update the auto generated timestamp
 		$tempPost = Post::getPostByPostId($pdo, $this->postId);
 		$this->setPostDateTime($tempPost->getPostDateTime());

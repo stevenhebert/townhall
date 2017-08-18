@@ -213,7 +213,8 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		$post = new Post(null,$this->VALID_DISTRICT_ID, $this->VALID_POST_PARENTID, $this->VALID_POST_PROFILEID, $this->VALID_POSTCONTENT, null);
+
+		$post = new Post(null,$this->district->getDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
 		// edit the Post and update it in mySQL
 		$post->setPostContent($this->VALID_POSTCONTENT2);
@@ -232,7 +233,7 @@ class PostTest extends TownhallTest {
 	 **/
 	public function testUpdateInvalidPost() : void {
 		// create a Post with a non null post id and watch it fail
-		$post = new Post(null, $this->VALID_POST_DISTRICTID, $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
+		$post = new Post(null, $this->district->getDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->update($this->getPDO());
 	}
 	/**
@@ -300,7 +301,7 @@ class PostTest extends TownhallTest {
 		$results = Post::getPostByPostProfileId($this->getPDO(), $post->getPostProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
 		// grab the result from the array and validate it
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
@@ -322,6 +323,7 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
+
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), null);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -329,7 +331,7 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
 		// enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
 		// grab the result from the array and validate it
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
@@ -359,7 +361,7 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1,$results);
 		//enforce that no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
 		//use the first result to make sure that the inserted tweet meets expectations
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
@@ -378,9 +380,9 @@ class PostTest extends TownhallTest {
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Post::getAllPosts($this->getPDO());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
 		// grab the result from the array and validate it
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
