@@ -69,7 +69,7 @@ class DistrictTest extends TownhallTest {
 
 	/**
 	 * test invalid INSERT district
-	 *
+	 ** @expectedException \PDOException
 	 **/
 	public function testInvalidDistrictInsert(): void {
 		$district = new District("5", $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
@@ -104,7 +104,7 @@ class DistrictTest extends TownhallTest {
 
 	/**
 	 * test invalid UPDATE district
-	 *
+	 *@expectedException \PDOException
 	 */
 	public function testInvalidDistrictUpdate() {
 		//create a new district object
@@ -145,7 +145,7 @@ class DistrictTest extends TownhallTest {
 
 	/**
 	 * test invalid DELETE district
-	 *
+	 * @expectedException \PDOException
 	 **/
 	public function testInvalidDistrictDelete() {
 		//create the quote object
