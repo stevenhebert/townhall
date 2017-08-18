@@ -659,11 +659,11 @@ class Profile {
 		$statement->execute($parameters);
 	}
 	/**
-	 * gets the Profile by profileId
+	 * GET profile by profileId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $profileId profile id to search for
-	 * @return Profile|null Profile found or null if not found
+	 * @return null Profile found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -694,7 +694,7 @@ class Profile {
 	}
 
 	/**
-	 * gets profiles by districtId
+	 * GET profileDistrictId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param \int $profileDistrictId to search by
@@ -702,7 +702,7 @@ class Profile {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getProfilesByProfileDistictId(\PDO $pdo, int $profileDistrictId): \SPLFixedArray {
+	public static function getProfileByProfileDistrictId(\PDO $pdo, int $profileDistrictId): \SPLFixedArray {
 		// sanitize the district id before searching
 		if($profileDistrictId <= 0) {
 			throw(new \RangeException("district profile id must be positive"));
@@ -710,9 +710,11 @@ class Profile {
 		// create query template
 		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName FROM profile WHERE profileDistrictId = :profileDistrictId";
 		$statement = $pdo->prepare($query);
+
 		// bind the profile district id to the place holder in the template
 		$parameters = ["profileDistrictId" => $profileDistrictId];
 		$statement->execute($parameters);
+
 		// build an array of profiles
 		$profiles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -730,11 +732,13 @@ class Profile {
 	}
 
 	/**
-	 * gets the profile by activation token
+	 * GET profileActivationToken
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $profileActivationToken content to search for
+	 *
 	 * @return Profile|null Profile found or null if not found
+	 *
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/

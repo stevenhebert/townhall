@@ -433,7 +433,7 @@ class Post {
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $postParentId to search for
-	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @return \SplFixedArray of posts found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
