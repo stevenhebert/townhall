@@ -385,34 +385,15 @@ class VoteTest extends TownhallTest {
 	 * test grabbing a valid Post by sunset and sunrise date
 	 *
 	 */
-	public function testGetValidPostBySunDate(): void {
-		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("post");
-		//create a new Post and insert it into the database
-		$post = new Post(null, $this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
-		$post->insert($this->getPDO());
-		// grab the tweet from the database and see if it matches expectations
-		$results = Post::getPostByPostDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
-		$this->assertCount(1, $results);
-		//enforce that no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
-		//use the first result to make sure that the inserted tweet meets expectations
-		$pdoPost = $results[0];
-		$this->assertEquals($pdoVote->getVotePostId(), $post->getVotePostId());
-		$this->assertEquals($pdoVote->getVoteProfileId(), $post->getVoteProfileId());
-		$this->assertEquals($pdoVote->getVoteValue(), $post->getVoteValue());
-		$this->assertEquals($pdoVote->getVoteDate()->getTimestamp(), $this->VALID_VOTEDATE->getTimestamp());
-	}
 
 	/**
 	 * test grabbing all Votes
 	 **/
-	public function testGetAllValidPosts(): void {
+	public function testGetAllValidVote(): void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("post");
-		// create a new Post and insert to into mySQL
-		$post = new Post(null, $this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$numRows = $this->getConnection()->getRowCount("vote");
+		// create a new Vote and insert to into mySQL
+		$post = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE,);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Post::getAllPosts($this->getPDO());
@@ -420,11 +401,9 @@ class VoteTest extends TownhallTest {
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
 		// grab the result from the array and validate it
-		$pdoPost = $results[0];
-		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_VOTEDATE->getTimestamp());
+		$pdoVote = $results[0];
+		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 	}
 
 	/**
