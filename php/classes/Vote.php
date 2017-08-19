@@ -62,7 +62,7 @@ class Vote {
 	/**
 	 * accessor method for votePostId
 	 *
-	 * @return int|null value of votePostID
+	 * @return int|null value of votePostId
 	 **/
 	public function getVotePostId(): int {
 		return ($this->votePostId);
@@ -82,7 +82,7 @@ class Vote {
 			return;
 		}
 
-		// verify the vote post is positive
+		// verify the votePostId is positive
 		if($newVotePostId <= 0) {
 			throw(new \RangeException("votePostId is not positive"));
 		}
@@ -93,9 +93,9 @@ class Vote {
 	}
 
 	/**
-	 * accessor method for vote profile id
+	 * accessor method for voteProfileId
 	 *
-	 * @return int value of vote profile id
+	 * @return int value of voteProfileId
 	 **/
 
 	public function getVoteProfileId(): int {
@@ -105,18 +105,18 @@ class Vote {
 	/**
 	 * mutator method for voteProfileId
 	 *
-	 * @param int $newVoteProfileId new value of vote profileId
+	 * @param int $newVoteProfileId new value of voteProfileId
 	 * @throws \RangeException if $newVoteProfileId is not positive
 	 * @throws \TypeError if $newVoteProfileId is not an integer
 	 **/
 	public function setVoteProfileId(int $newVoteProfileId): void {
 
-		// verify the voteProfile id is positive
+		// verify the voteProfileId is positive
 		if($newVoteProfileId <= 0) {
-			throw(new \RangeException("vote profile id is not positive"));
+			throw(new \RangeException("voteProfileId is not positive"));
 		}
 
-		// convert and store the vote profile id
+		// convert and store the voteProfileId
 		$this->voteProfileId = $newVoteProfileId;
 	}
 
@@ -140,7 +140,7 @@ class Vote {
 	public function setVoteDateTime($newVoteDateTime = null): void {
 		// base case: if the date is null, use the current date and time
 		if($newVoteDateTime === null) {
-			$this->VoteDate = null;
+			$this->voteDateTime = null;
 			return;
 		}
 
@@ -226,7 +226,7 @@ class Vote {
 		}
 
 // create query template
-		$query = "DELETE FROM vote WHERE postVoteId = :postVoteId";
+		$query = "DELETE FROM Vote WHERE postVoteId = : postVoteId";
 		$statement = $pdo->prepare($query);
 
 //bind the member variables to the place holder in the template
@@ -247,7 +247,7 @@ class Vote {
 		}
 
 		//create query temple
-		$query = "UPDATE vote SET votePostID= : votePostId, voteProfileId= : voteProfileId, voteDateTime= : voteDateTime, voteValue= : voteValue";
+		$query = "UPDATE vote SET votePostID= : votePostId, voteProfileId = : voteProfileId, voteDateTime = : voteDateTime, voteValue = : voteValue";
 		$statement = $pdo
 			->prepare($query);
 
@@ -391,7 +391,7 @@ class Vote {
 	}
 
 	/**
-	 * gets the Vote by Value
+	 * getVoteByValue
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $voteValue vote value to search by

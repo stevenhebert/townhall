@@ -179,10 +179,11 @@ class VoteTest extends TownhallTest {
 		$password = "abc123";
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
-		// create and insert a District to own the test Post
-		$poly = [[[0, 0], [9, 0], [12, 3], [9, 6], [0, 6], [3, 3], [0, 0]]];
-		$this->district = new District(null, $poly, "1");
+
+		// create and insert a District for the test Post
+		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$this->district->insert($this->getPDO());
+
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
 		$this->profile = new Profile(null, null, "123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc");
@@ -221,9 +222,10 @@ class VoteTest extends TownhallTest {
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testInsertInvalidPost(): void {
+
+	public function testInsertInvalidPost() : void {
 		// create a Post with a non null post id and watch it fail
-		$post = new Post(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, $this->VALID_POSTDATE);
+		$post = new Post(TownhallTest::INVALID_KEY, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
 	}
 
@@ -426,33 +428,46 @@ class VoteTest extends TownhallTest {
 	}
 
 	/**
-	 * test inserting a valid Vote and verify that the actual mySQL data matches
+	 * test inserting a valid Post and verify that the actual mySQL data matches
 	 **/
-	public function testInsertValidVote(): void {
+	public function testInsertValidVote() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new Vote and insert to into mySQL
-		$vote = new Vote(null, $this->VALID_VOTE_POST_ID, $this->VALID_VOTE_PROFILEID, $this->VALID_VOTE_DATETIME, $this->VALID_VOTE_VALUE);
-		$vote->insert($this->getPDO());
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVotePostId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
-		$this->assertEquals($pdoVote->getVotePostId(), $this->vote->getVotePostId());
-		$this->assertEquals($pdoVote->getVoteProfile(), $this->VALID_VOTEPROFILEID);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoVote->getVoteDateTime()->getTimestamp(), $this->VALID_VOTEDATETIME->getTimestamp());
-		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 	}
 
+
+
+		/**
+		 * test inserting a Vote, editing it, and then updating it
+		 **/
+		public function testUpdateValidVote() : void {
+			// count the number of rows and save it for later
+			$numRows = $this->getConnection()->getRowCount("vote");
+			// create a new Vote and insert to into mySQL
+
+			$vote = new Vote(null,$this->district->getDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE, null);
+			$vote->insert($this->getPDO());
+			// edit the Vote and update it in mySQL
+			$vote->setVoteValue($this->VALID_VOTEVALUE);
+			$vote->update($this->getPDO());
+			// grab the data from mySQL and enforce the fields match our expectations
+			$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVotePostId());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+			$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
+			$this->assertEquals($pdoVote->voteValue(), $this->VALID_VOTEVALUE);
+
+		}
+
 	/**
-	 * test inserting a Vote that already exists
+	 * test updating a Vote that already exists
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testInsertInvalidVote(): void {
-		// create a Vote with a non null vote id and watch it fail
-		$vote = new Vote(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_VOTEDATETIME, $this->VALID_VOTEVALUE);
-		$vote->insert($this->getPDO());
+	public function testUpdateInvalidVote() : void {
+		// create a Vote with a non null post id and watch it fail
+		$vote = new Vote(null, $this->district->getDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE, null);
+		$vote->update($this->getPDO());
 	}
 
 	/**
