@@ -73,7 +73,7 @@ class PostTest extends TownhallTest {
 	 * valid email to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_EMAIL
 	 */
-	protected $VALID_PROFILE_EMAIL = "myemail@email.com";
+	protected $VALID_PROFILE_EMAIL = "mytestemail@email.com";
 	/**
 	 * valid first name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_FIRSTNAME
@@ -293,7 +293,7 @@ class PostTest extends TownhallTest {
 		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Post::getPostByPostDistrictId($this->getPDO(), $post->getPostProfileId());
+		$results = Post::getPostByPostDistrictId($this->getPDO(), $post->getPostDistrictId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
@@ -313,6 +313,38 @@ class PostTest extends TownhallTest {
 
 
 
+
+
+	/*
+	 * get a post by parent id
+	 * row gets inserted but function fails because of parent setup
+	 */
+	/*public function testGetValidPostByPostParentId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("post");
+		// create a new Post and insert to into mySQL
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
+		$post->insert($this->getPDO());
+
+		//now insert a parent post based on 1st post
+		$postChild = new Post(null,$this->profile->getProfileDistrictId(),$post->getPostId(), $this->profile->getProfileId(), "oh yeah!",null);
+		$postChild->insert($this->getPDO());
+		var_dump($post);
+		var_dump($postChild);
+		var_dump($postChild->getPostParentId());
+
+
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Post::getPostByPostParentId($this->getPDO(), $postChild->getPostParentId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
+
+
+		//delete the post with a parent id so other tests don't fail
+		$postChild->delete($this->getPDO());
+	}*/
 
 
 	/*test getting post by profile id */
