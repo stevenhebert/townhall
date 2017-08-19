@@ -200,7 +200,7 @@ class Vote {
 			throw(new \PDOException("not a new vote"));
 		}
 		// create query template
-		$query = "INSERT INTO (votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, :voteProfileId, :voteDateTime, :voteValue)";
+		$query = "INSERT INTO vote (votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, :voteProfileId, :voteDateTime, :voteValue)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
@@ -261,8 +261,8 @@ class Vote {
 	/**gets the vote by postId and profileId, primary key
 	 *
 	 * @param \PDO $pdo connection object
-	 * @param int $postId to search for
-	 * @param int $profileId to search for
+	 * @param int $votePostId to search for
+	 * @param int $voteProfileId to search for
 	 * @return Vote | null Vote found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
@@ -302,7 +302,7 @@ class Vote {
 	/**gets the vote by votePostId
 	 *
 	 * @param \PDO $pdo connection object
-	 * @param int $postPostId to search for
+	 * @param int $PostId to search for
 	 * @return \SplFixedArray SplFixedArray of Posts found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type

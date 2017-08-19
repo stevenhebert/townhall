@@ -28,12 +28,12 @@ class VoteTest extends TownhallTest {
 	 * valid DISTRICT NAME to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_NAME
 	 */
-	protected $VALID_DISTRICT_NAME;
+	protected $VALID_DISTRICT_NAME = "DIstrict 1";
 	/**
 	 * valid district geom to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_GEOM
 	 */
-	protected $VALID_DISTRICT_GEOM;
+	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
 	/**
 	 * Profile that created the Post; this is for foreign key relations
 	 * @var Profile profile
@@ -190,13 +190,14 @@ class VoteTest extends TownhallTest {
 
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
-		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc");
+		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
 		//what is the district Id?  Need to get this
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
 
 		/*create a valid post */
-		$this->post = new Post(null, null, null, null,null, null);
+
+		$this->post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
 		$this->post->insert($this->getPDO());
 
 	}
@@ -212,6 +213,7 @@ class VoteTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("vote");
 
 		// create a new vote and insert to into mySQL
+		var_dump($this->post->getPostId());
 		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, 1);
 		$vote->insert($this->getPDO());
 
@@ -310,7 +312,7 @@ class VoteTest extends TownhallTest {
 		$results = Vote::getVoteByProfileId($this->getPDO(), $vote->getVoteProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Vote", $results);
 		// grab the result from the array and validate it
 		$pdoVote = $results[0];
 		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
