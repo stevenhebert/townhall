@@ -64,7 +64,7 @@ class PostTest extends TownhallTest {
 	 * @var string $VALID_PROFILE_ADDRESS2
 	 */
 	protected $VALID_PROFILE_ADDRESS2 = "Suite 311";
-		/**
+	/**
 	 * valid CITY to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_CITY
 	 */
@@ -126,6 +126,13 @@ class PostTest extends TownhallTest {
 	 **/
 	protected $VALID_POST_PARENTID = null;
 	/**
+	 * PARENT ID of the 2nd Post
+	 * @var int $VALID_POST_PARENTID2
+	 **/
+	protected $VALID_POST_PARENTID2 = null;
+
+
+	/**
 	 * PROFILE ID of the Post
 	 * @var int $VALID_POST_PROFILEID
 	 **/
@@ -140,7 +147,6 @@ class PostTest extends TownhallTest {
 	 * @var string $VALID_POSTCONTENT2
 	 **/
 	protected $VALID_POSTCONTENT2 = "Let's ask some serious questions here.";
-
 	/**
 	 * Valid timestamp to use as sunrisePostDate
 	 */
@@ -158,19 +164,14 @@ class PostTest extends TownhallTest {
 		$password = "abc123";
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
-
 		// create and insert a District for the test Post
 		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$this->district->insert($this->getPDO());
-
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
 		// create a new Profile and insert to into mySQL
 		$this->profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
 		$this->profile->insert($this->getPDO());
-
-
-
 		//format the sunrise date to use for testing
 		$this->VALID_SUNRISEDATE = new \DateTime();
 		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
@@ -185,20 +186,14 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-
-
-
 		$post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
-
 		$post->insert($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
-
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
-		}
+	}
 	/**
 	 * test inserting a Post that already exists
 	 *
@@ -216,7 +211,6 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-
 		$post = new Post(null,$this->district->getDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
 		// edit the Post and update it in mySQL
@@ -227,7 +221,6 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT2);
-
 	}
 	/**
 	 * test updating a Post that already exists
@@ -280,7 +273,6 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
-
 	}
 	/**
 	 * test grabbing a Post that does not exist
@@ -291,8 +283,40 @@ class PostTest extends TownhallTest {
 		$this->assertNull($tweet);
 	}
 	/**
-	 * test inserting a Post and regrabbing it from mySQL
+	 * test inserting a Post and regrabbing it from mySQL, using postprofileid
 	 **/
+	public function testGetValidPostByPostDistrictId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("post");
+		// create a new Post and insert to into mySQL
+		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
+		$post->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Post::getPostByPostDistrictId($this->getPDO(), $post->getPostProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
+		// grab the result from the array and validate it
+		$pdoPost = $results[0];
+		$this->assertEquals($pdoPost->getPostDistrictId(), $this->district->getDistrictId());
+		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+	}
+	/**
+	 * test grabbing a Post that does not exist
+	 **/
+	public function testGetInvalidPostByDistrictId() : void {
+		// grab a profile id that exceeds the maximum allowable profile id
+		$post = Post::getPostByPostDistrictId($this->getPDO(), TownhallTest::INVALID_KEY);
+		$this->assertCount(0, $post);
+	}
+
+
+
+
+
+	/*test getting post by profile id */
+
 	public function testGetValidPostByPostProfileId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
@@ -308,17 +332,16 @@ class PostTest extends TownhallTest {
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
-
 	}
 	/**
-	 * test grabbing a Post that does not exist
+	 * test grabbing a Post by profile that does not exist
 	 **/
 	public function testGetInvalidPostByPostProfileId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$post = POst::getPostByPostProfileId($this->getPDO(), TownhallTest::INVALID_KEY);
+		$post = Post::getPostByPostProfileId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertCount(0, $post);
-
 	}
+
 	/**
 	 * test grabbing a Post by post content
 	 **/
@@ -326,7 +349,6 @@ class PostTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -339,16 +361,15 @@ class PostTest extends TownhallTest {
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
-
 	}
 	/**
-	 * test grabbing a Post by content that does not exist
+	 * test inserting a Post and regrabbing it from mySQL, using postprofileid
 	 **/
+
 	public function testGetInvalidPostByPostContent() : void {
 		// grab a tweet by content that does not exist
 		$post = Post::getPostByPostContent($this->getPDO(), "Reports of my assimilation are greatly exaggerated.");
 		$this->assertCount(0, $post);
-
 	}
 	/**
 	 * test grabbing a valid Post by sunset and sunrise date
@@ -357,23 +378,15 @@ class PostTest extends TownhallTest {
 	public function testGetValidPostBySunDate() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
-
 		//create a new Post and insert it into the database
 		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
-
-
-
-
 		// grab the post from the database and see if it matches expectations
 		$results = Post::getPostByPostDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
-
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1,$results);
-
 		//enforce that no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
-
 		//use the first result to make sure that the inserted post meets expectations
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
@@ -382,9 +395,7 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
 		$this->assertEquals($pdoPost->getPostDateTime(), $post->getPostDateTime());
-
 	}
-
 	/**
 	 * test grabbing all Posts
 	 **/
@@ -403,6 +414,5 @@ class PostTest extends TownhallTest {
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
-
 	}
 }
