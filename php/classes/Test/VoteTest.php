@@ -112,7 +112,24 @@ class VoteTest extends TownhallTest {
 	 **/
 	protected $post = null;
 	/**
-
+	/**
+	 * Post to test vote; this is for foreign key relations
+	 * @var Post post
+	 **/
+	protected $post2 = null;
+	/**
+	 * Post to test vote; this is for foreign key relations
+	 * @var Post post
+	 **/
+	protected $post3 = null;
+	/**
+	 * Post to test vote; this is for foreign key relations
+	 * @var Post post
+	 **/
+	protected $post4 = null;
+	/**
+	/**
+	/**
 	/**
 	 * district id of the Post
 	 * @var string $VALID_POST_DISTRICTID
@@ -195,11 +212,16 @@ class VoteTest extends TownhallTest {
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
 
-		/*create a valid post */
+		/*create some valid posts to vote on */
 
 		$this->post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
 		$this->post->insert($this->getPDO());
-
+		$this->post2 = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
+		$this->post2->insert($this->getPDO());
+		$this->post3 = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
+		$this->post3->insert($this->getPDO());
+		$this->post4 = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
+		$this->post4->insert($this->getPDO());
 	}
 
 
@@ -212,9 +234,10 @@ class VoteTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
 
+
 		// create a new vote and insert to into mySQL
-		var_dump($this->post->getPostId());
-		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, 1);
+
+		$vote = new Vote($this->post2->getPostId(), $this->profile->getProfileId(), null, 1);
 		$vote->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -231,6 +254,7 @@ class VoteTest extends TownhallTest {
 	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidVote(): void {
+
 		// create a vote with a invalid Ids and watch it fail
 		$vote = new Vote(TownhallTest::INVALID_KEY, TownhallTest::INVALID_KEY, null, 1);
 		$vote->insert($this->getPDO());
