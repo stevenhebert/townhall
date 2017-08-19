@@ -432,7 +432,7 @@ class VoteTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new Vote and insert to into mySQL
-		$vote = new Vote(null, $this->VALID_VOTE_POST_ID, $this->VALID_VOTE_PARENTID, $this->VALID_VOTE_PROFILEID, $this->VALID_VOTE_DATETIME, $this->VALID_VOTE_DATETIME);
+		$vote = new Vote(null, $this->VALID_VOTE_POST_ID, $this->VALID_VOTE_PROFILEID, $this->VALID_VOTE_DATETIME, $this->VALID_VOTE_VALUE);
 		$vote->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVote = Vote::getVoteByVotePostId($this->getPDO(), $vote->getVotePostId());
