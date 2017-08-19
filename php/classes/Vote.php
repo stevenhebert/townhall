@@ -12,18 +12,18 @@ require_once("autoload.php");
 class Vote {
 	 use ValidateDate;
 	/**
-	 * id for this Post; this is the primary key
+	 * id for this Post; this and profileId is the primary key
 	 * @var int $votePostId
 	 **/
 	private $votePostId;
 	/**
-	 * profile id for this profile; this is a foreign key
+	 * profile id for this profile; this is part of the primary
 	 * @var int $voteProfileId
 	 **/
 	private $voteProfileId;
 	/**
 	 * timestamp of the post
-	 * @var \DateTime $postDateTime
+	 * @var \DateTime $voteDateTime
 	 **/
 	private $voteDateTime;
 	/**
@@ -226,11 +226,11 @@ class Vote {
 		}
 
 // create query template
-		$query = "DELETE FROM Vote WHERE postVoteId = : postVoteId";
+		$query = "DELETE FROM vote WHERE votePostId = : votePostId and voteProfileId = :voteProfileId";
 		$statement = $pdo->prepare($query);
 
 //bind the member variables to the place holder in the template
-		$parameters = ["votePostId" => $this->votePostId];
+		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId];
 		$statement->execute($parameters);
 	}
 
@@ -247,86 +247,130 @@ class Vote {
 		}
 
 		//create query temple
-		$query = "UPDATE vote SET votePostID= : votePostId, voteProfileId = : voteProfileId, voteDateTime = : voteDateTime, voteValue = : voteValue";
+		$query = "UPDATE vote SET votePostId = : votePostId, voteProfileId = : voteProfileId, voteDateTime = : voteDateTime, voteValue = : voteValue";
 		$statement = $pdo
 			->prepare($query);
 
 //bind the member variables to the place holders in the template
 		$formattedDateTime = $this->voteDateTime->format("Y-m-d H:i:s");
-		$parameters = ["votepostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => $formattedDateTime, "voteValue" => $this->voteValue];
+		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => $formattedDateTime, "voteValue" => $this->voteValue];
 		$statement->execute($parameters);
+	}
+
+
+	/**gets the vote by postId and profileId, primary key
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $postId to search for
+	 * @param int $profileId to search for
+	 * @return Vote | null Vote found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVoteByPostIdProfileId(\PDO $pdo, int $votePostId, $voteProfileId): ?Vote {
+		//sanitize the PostId before searching
+		if($votePostId <= 0) {
+			throw(new \PDOException("post Id is not positive"));
+		}
+		if($voteProfileId <= 0 ) {
+			throw(new \PDOException("profile Id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE votePostId = :votePostId and voteProfileId = :voteProfileId";
+		$statement = $pdo->prepare($query);
+
+		//bind the post id to the place holder in the template
+		$parameters = ["votePostId" => $votePostId, "voteProfileId" => $voteProfileId];
+		$statement->execute($parameters);
+
+		//grab post from mySQL
+		try {
+			$vote = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($vote);
 	}
 
 	/**gets the vote by votePostId
 	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param int $votePostId vote post id to search for
+	 * @param \PDO $pdo connection object
+	 * @param int $postPostId to search for
 	 * @return \SplFixedArray SplFixedArray of Posts found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws\TypeError when variables are not thecorrect datatype
-	 **/
-	public static function getVoteByVotePostId(\PDO $pdo, int $votePostId): ?Vote {
-		//sanitize the votePostId before searching
-		if($votePostId <= 0) {
-			throw(new \PDOException("votePostId is not positive"));
-		}
-
-
-// create query template
-		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE  votePostId = :votePostId";
-		$statement = $pdo->prepare($query);
-
-//bind the votePost id to the place holder in the template
-		$parameters = ["votePostId" => $votePostId];
-		$statement->execute($parameters);
-
-//grab the votePostId from mySQL
-		try {
-			$votePostId = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$votePostId = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
-			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return ($votePostId);
-	}
-
-	/**
-	 * gets the vote by profile id
-	 *
-	 * @param \PDO $pdo PDO connect object
-	 * @param int $voteProfileId profile id to search by
-	 * @return |SplFixedArray SplFixedArray of Votes found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getVoteProfileByVoteProfileId(\PDO $pdo, int $voteProfileId): \SPLFixedArray {
-		// sanitize the voteProfile id before searching
-		if($voteProfileId <= 0) {
-			throw(new \RangeException("vote profile id must be positive"));
+	public static function getVoteByPostId(\PDO $pdo, int $votePostId): \SplFixedArray {
+		//sanitize the postDistrictId before searching
+		if($votePostId <= 0) {
+			throw(new \PDOException("vote Post Id is not positive"));
 		}
 
-//create query template
-		$query = "SELECT postVoteId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :$voteProfileId";
+		//create query template
+		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE votePostId = :votePostId";
 		$statement = $pdo->prepare($query);
-// bind the vote profile id to the place holder in the template
-		$parameters = ["voteProfileId" => $voteProfileId];
+
+		//bind the post district id to the place holder in the template
+		$parameters = ["votePostId" => $votePostId];
 		$statement->execute($parameters);
-//build an array of votes
-		$votes = new \SplfixedArray($statement->rowcount());
+
+		//build an array of posts
+		$posts = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
-				$votes[$votes->key()] = $vote;
-				$votes->next();
+				$votes[$votes->key()]= $vote;
+				$vote->next();
 			} catch(\Exception $exception) {
-				//if te row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getmessage(), 0, $exception));
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($votes);
+	}
+
+
+	/**gets the vote by voteProfileId
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $postProfileId to search for
+	 * @return \SplFixedArray SplFixedArray of Profile found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getVoteByProfileId(\PDO $pdo, int $voteProfileId): \SplFixedArray {
+		//sanitize the voteProfileId before searching
+		if($voteProfileId <= 0) {
+			throw(new \PDOException("vote profile Id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :voteProfileId";
+		$statement = $pdo->prepare($query);
+
+		//bind the post district id to the place holder in the template
+		$parameters = ["voteProfileId" => voteProfileId];
+		$statement->execute($parameters);
+
+		//build an array of votes
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
+				$votes[$votes->key()]= $vote;
+				$vote->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
 		return ($votes);
@@ -465,8 +509,7 @@ class Vote {
 		$fields = get_object_vars($this);
 		//format the data so that the front end can consume it
 		$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) * 1000);
-		//unset the district array to avoid sending back a huge amount of data
-		unset($districtGeom);
+
 		return ($fields);
 	}
 }
