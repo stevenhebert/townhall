@@ -399,14 +399,14 @@ class VoteTest extends TownhallTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Post", $results);
 		//use the first result to make sure that the inserted tweet meets expectations
 		$pdoPost = $results[0];
-		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
-		$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
-		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
-		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+		$this->assertEquals($pdoVote->getVotePostId(), $post->getVotePostId());
+		$this->assertEquals($pdoVote->getVoteProfileId(), $post->getVoteProfileId());
+		$this->assertEquals($pdoVote->getVoteValue(), $post->getVoteValue());
+		$this->assertEquals($pdoVote->getVoteDate()->getTimestamp(), $this->VALID_VOTEDATE->getTimestamp());
 	}
 
 	/**
-	 * test grabbing all Posts
+	 * test grabbing all Votes
 	 **/
 	public function testGetAllValidPosts(): void {
 		// count the number of rows and save it for later
@@ -424,7 +424,7 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_POSTDATE->getTimestamp());
+		$this->assertEquals($pdoPost->getPostDate()->getTimestamp(), $this->VALID_VOTEDATE->getTimestamp());
 	}
 
 	/**
@@ -563,7 +563,7 @@ class VoteTest extends TownhallTest {
 		$vote = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE);
 		$vote->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Vote::getVoteByVoteValue($this->getPDO(), $post->getVoteValue());
+		$results = Vote::getVoteByVoteValue($this->getPDO(), $vote->getVoteValue());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$this->assertCount(1, $results);
 		// enforce no other objects are bleeding into the test
@@ -586,56 +586,54 @@ class VoteTest extends TownhallTest {
 	}
 
 	/**
-	 * test grabbing a valid Post by sunset and sunrise date
+	 * test grabbing a valid Vost by sunset and sunrise date
 	 *
 	 */
-	public function testGetValidPostBySunDate(): void {
+	public function testGetValidVostBySunDate(): void {
 		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("post");
+		$numRows = $this->getConnection()->getRowCount("vote");
 
-		//create a new Post and insert it into the database
-		$post = new Post(null, $this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
-		$post->insert($this->getPDO());
+		//create a new Vote and insert it into the database
+		$vote = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE, 1 || -1);
+		$vote->insert($this->getPDO());
 
 
-		// grab the post from the database and see if it matches expectations
-		$results = Post::getPostByPostDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
+		// grab the vote from the database and see if it matches expectations
+		$results = Vote::getVoteByVoteDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
 
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$this->assertCount(1, $results);
 
 		//enforce that no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
 
-		//use the first result to make sure that the inserted post meets expectations
-		$pdoPost = $results[0];
-		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
-		$this->assertEquals($pdoPost->getPostDistrictId(), $post->getPostDistrictId());
-		$this->assertEquals($pdoPost->getPostParentId(), $post->getPostParentId());
-		$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
-		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
-		$this->assertEquals($pdoPost->getPostDateTime(), $post->getPostDateTime());
+		//use the first result to make sure that the inserted vote meets expectations
+		$pdoVote = $results[0];
+		$this->assertEquals($pdoVote->getVotePostId(), $vote->getVotePostId());
+		$this->assertEquals($pdoVote->getVoteProfileId(), $vote->getVoteProfileId());
+		$this->assertEquals($pdoVote->getVoteValue(), $vote->getVoteValue());
+		$this->assertEquals($pdoVote->getVoteDateTime(), $vote->getVoteDateTime());
 
 	}
 
 	/**
-	 * test grabbing all Posts
+	 * test grabbing all Votes
 	 **/
-	public function testGetAllValidPosts(): void {
+	public function testGetAllValidVotes(): void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("post");
-		// create a new Post and insert to into mySQL
-		$post = new Post(null, $this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
-		$post->insert($this->getPDO());
+		$numRows = $this->getConnection()->getRowCount("vote");
+		// create a new Vote and insert to into mySQL
+		$vote = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE, 1 || -1);
+		$vote->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Post::getAllPosts($this->getPDO());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$results = Vote::getAllVotes($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Vote", $results);
 		// grab the result from the array and validate it
-		$pdoPost = $results[0];
-		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+		$pdoVote = $results[0];
+		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 
 	}
 }
