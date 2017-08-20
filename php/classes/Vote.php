@@ -38,7 +38,7 @@ class Vote {
 	 *
 	 * @param\null int $newPostVoteId for this vote or null if a new postVote
 	 * @param int $newVoteProfileId for the Profile that voted on this post
-	 * @param \DateTime|string|null $newVoteDateTime date and time vote was sent or null if set to current date and time
+	 * @param \DateTime null $newVoteDateTime timestamp of vote
 	 * @param int $newVoteValue value for this vote
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
@@ -148,7 +148,7 @@ class Vote {
 
 		// store the like date using the ValidateDate trait
 		try {
-			$newVoteDateTime = self::validateDate($newVoteDateTime);
+			$newVoteDateTime = self::validateDateTime($newVoteDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -250,13 +250,15 @@ class Vote {
 		}
 
 		//create query temple
-		$query = "UPDATE vote SET votePostId = :votePostId, voteProfileId = :voteProfileId, voteValue = :voteValue";
+		$query = "UPDATE vote SET voteValue = :voteValue
+					WHERE votePostId = :votePostId and voteProfileId = :voteProfileId";
 		$statement = $pdo
 			->prepare($query);
 
 //bind the member variables to the place holders in the template
 
-		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId,  "voteValue" => $this->voteValue];
+		$parameters = ["voteValue" => $this->voteValue, "votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId];
+
 		$statement->execute($parameters);
 	}
 
@@ -513,7 +515,6 @@ class Vote {
 		$fields = get_object_vars($this);
 		//format the data so that the front end can consume it
 		$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) * 1000);
-
 		return ($fields);
 	}
 }

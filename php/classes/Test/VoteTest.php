@@ -239,8 +239,6 @@ class VoteTest extends TownhallTest {
 		$vote->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		var_dump($this->post->getPostId());
-		var_dump($this->profile->getProfileId());
 		$pdoVote = Vote::getVoteByPostIdProfileId($this->getPDO(), $this->post->getPostId(), $this->profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 
@@ -264,12 +262,14 @@ class VoteTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new vote and insert to into mySQL
-		$vote = new Vote($this->post2->getPostId(),$this->post2->getPostProfileId(), null, -1);
+
+		$vote = new Vote($this->post->getPostId(),$this->post->getPostProfileId(), null, -1);
 		$vote->insert($this->getPDO());
 		// edit the vote and update it in mySQL
 		$vote->setVoteValue(-1);
 		$vote->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
+		var_dump("this is right before getpostbyboth", $vote->getVotePostId(), $vote->getVoteProfileId());
 		$pdoVote = Vote::getVoteByPostIdProfileId($this->getPDO(), $vote->getVotePostId(), $vote->getVoteProfileId());
 		$pdoVote = Vote::getVoteByProfileId($this->getPDO(), $vote->getVoteProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
