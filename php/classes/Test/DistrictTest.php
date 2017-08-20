@@ -27,7 +27,7 @@ class DistrictTest extends TownhallTest {
 	 * @var array $VALID_DISTRICT_GEOM
 	 *
 	 **/
-	protected $VALID_DISTRICT_GEOM = [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]];
+	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME
@@ -39,7 +39,7 @@ class DistrictTest extends TownhallTest {
 	 * @var array $VALID_DISTRICT_GEOM_4
 	 *
 	 **/
-	protected $VALID_DISTRICT_GEOM_4 = [[[0, 0], [10, 0], [10, -10], [0, -10], [0, 0]]];
+	protected $VALID_DISTRICT_GEOM_4 = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,-10],[0,-10],[0,0]]]}';
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME_4
@@ -51,7 +51,7 @@ class DistrictTest extends TownhallTest {
 	 * @var array $INVALID_DISTRICT_GEOM
 	 *
 	 **/
-	protected $INVALID_DISTRICT_GEOM = [[[181, 0], [10, 0], [10, -10], [0, -10], [181, 0]]];
+	protected $INVALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[181,0],[10,0],[10,-10],[0,-10],[181,0]]]}';
 
 	/**
 	 * @var string $VALID_DISTRICT_NAME_4
@@ -228,7 +228,22 @@ class DistrictTest extends TownhallTest {
 	 * testing to see if lat long exceptions work correctly
 	 *
 	 **/
-	public function testValidDistrictNameGet() {
+	public function testValidGetDistrictByLongLat(): void {
+		// create district object
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+
+		//insert new object into mySQL
+		$district->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(), $district->getProfileEmail());
+
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
+
+
+
+
+
 
 	}
 
@@ -237,7 +252,17 @@ class DistrictTest extends TownhallTest {
 	 * testing to see if lat long exceptions work correctly
 	 *
 	 **/
-	public function testValidDistrictGetAll() {
+	public function testInvalidGetByLongLat() {
 
 	}
+
+	/**
+	 * test valid GET by district by districtGeom
+	 *
+	 **/
+
+	/**
+	 * test valid GET by district by districtGeom
+	 *
+	 **/
 }

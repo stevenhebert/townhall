@@ -293,7 +293,6 @@ class District {
 			//if row can't be converted re-throw it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
 		return ($district);
 	}
 }
