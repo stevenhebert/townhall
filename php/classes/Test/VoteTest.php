@@ -231,9 +231,6 @@ class VoteTest extends TownhallTest {
 	public function testInsertValidVote(): void {
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new vote and insert to into mySQL
-		var_dump($this->post->getPostId());
-		var_dump($this->profile->getProfileId());
-		var_dump($this->VALID_VOTEVALUE);
 
 
 		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null,$this->VALID_VOTEVALUE);
@@ -242,6 +239,8 @@ class VoteTest extends TownhallTest {
 		$vote->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
+		var_dump($this->post->getPostId());
+		var_dump($this->profile->getProfileId());
 		$pdoVote = Vote::getVoteByPostIdProfileId($this->getPDO(), $this->post->getPostId(), $this->profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 
@@ -335,7 +334,7 @@ class VoteTest extends TownhallTest {
 	/**
 	 * test grabbing a Vote that does not exist
 	 **/
-	public function testGetInvalidVoteByVoteId(): void {
+	public function testGetInvalidVoteByVotePostId(): void {
 		// grab a profile id that exceeds the maximum allowable profile id
 		$tweet = Post::getPostByPostId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertNull($tweet);
