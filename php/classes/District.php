@@ -201,7 +201,7 @@ class District {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo): void {
-		//enforce the district id is null b/c dont want to insert into a district that already exists
+		//enforce the district id is null b/c don't want to insert into a district that already exists
 		if($this->districtId !== null) {
 			throw(new \PDOException("districtId already assigned"));
 		}
