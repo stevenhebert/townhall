@@ -73,7 +73,7 @@ class PostTest extends TownhallTest {
 	 * valid email to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_EMAIL
 	 */
-	protected $VALID_PROFILE_EMAIL = "mytestemail@email.com";
+	protected $VALID_PROFILE_EMAIL = "mybestemailever@email.com";
 	/**
 	 * valid first name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_FIRSTNAME
@@ -183,7 +183,6 @@ class PostTest extends TownhallTest {
 	 * test inserting a valid Post and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidPost() : void {
-		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
 		$post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
@@ -337,7 +336,7 @@ class PostTest extends TownhallTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Post::getPostByPostParentId($this->getPDO(), $postChild->getPostParentId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertEquals($numRows + 2, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
 
@@ -345,6 +344,15 @@ class PostTest extends TownhallTest {
 		//delete the post with a parent id so other tests don't fail
 		$postChild->delete($this->getPDO());
 	}*/
+
+	/*test inserting an invalid parent key.  key must exist as a post in  the table */
+
+	public function testGetInvalidPostByParentId() : void {
+		//try to get post by invalid parent key
+
+		$post = Post::getPostByPostParentId($this->getPDO(), TownhallTest::INVALID_KEY);
+		$this->assertCount(0, $post);
+	}
 
 
 	/*test getting post by profile id */
