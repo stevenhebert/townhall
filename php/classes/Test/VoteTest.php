@@ -21,7 +21,7 @@ class VoteTest extends TownhallTest {
 	protected $district = null;
 	/**
 	 * valid district id to use to create the profile object to own the test
-	 * @var string $VALID_DISTRICT_ID
+	 * @var int $VALID_DISTRICT_ID
 	 */
 	protected $VALID_DISTRICT_ID;
 	/**
@@ -51,7 +51,7 @@ class VoteTest extends TownhallTest {
 	protected $VALID_PROFILE_DISTRICT_ID;
 	/**
 	 * valid activation token to use to create the profile object to own the test
-	 * @var int $VALID_PROFILE_ACTIVATION_TOKEN
+	 * @var string $VALID_PROFILE_ACTIVATION_TOKEN
 	 */
 	protected $VALID_PROFILE_ACTIVATION_TOKEN;
 	/**
@@ -127,22 +127,20 @@ class VoteTest extends TownhallTest {
 	 * @var Post post
 	 **/
 	protected $post4 = null;
-	/**
-	/**
-	/**
+
 	/**
 	 * district id of the Post
-	 * @var string $VALID_POST_DISTRICTID
+	 * @var int $VALID_POST_DISTRICTID
 	 **/
 	protected $VALID_POST_DISTRICTID;
 	/**
 	 * PARENT ID of the Post
-	 * @var string $VALID_POST_PARENTID
+	 * @var int $VALID_POST_PARENTID
 	 **/
 	protected $VALID_POST_PARENTID;
 	/**
 	 * PROFILE ID of the Post
-	 * @var string $VALID_POST_PROFILEID
+	 * @var int $VALID_POST_PROFILEID
 	 **/
 	protected $VALID_POST_PROFILEID;
 	/**
@@ -170,13 +168,13 @@ class VoteTest extends TownhallTest {
 	protected $VALID_SUNSETDATE = null;
 	/**
 	 * vote id of the Post
-	 * @var string $VALID_VOTE_POSTID
+	 * @var int $VALID_VOTE_POSTID
 	 **/
 	protected $VALID_VOTE_POSTID;
 
 	/**
 	 * PROFILE ID of the Vote
-	 * @var string $VALID_VOTE_PROFILEID
+	 * @var int $VALID_VOTE_PROFILEID
 	 **/
 	protected $VALID_VOTE_PROFILEID;
 	/**
@@ -187,9 +185,9 @@ class VoteTest extends TownhallTest {
 
 	/**
 	 * VALUE of the VOTE
-	 * @var string $VALID_VOTEVALUE
+	 * @var int $VALID_VOTEVALUE
 	 **/
-	protected $VALID_VOTEVALUE = "1";
+	protected $VALID_VOTEVALUE = 1;
 
 	/**
 	 * create dependent objects before running each test
@@ -231,13 +229,16 @@ class VoteTest extends TownhallTest {
 	 * test inserting a valid Vote and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidVote(): void {
-		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
-
-
 		// create a new vote and insert to into mySQL
+		var_dump($this->post->getPostId());
+		var_dump($this->profile->getProfileId());
+		var_dump($this->VALID_VOTEVALUE);
 
-		$vote = new Vote($this->post2->getPostId(), $this->profile->getProfileId(), null, 1);
+
+		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null,$this->VALID_VOTEVALUE);
+
+
 		$vote->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -259,6 +260,23 @@ class VoteTest extends TownhallTest {
 		$vote = new Vote(TownhallTest::INVALID_KEY, TownhallTest::INVALID_KEY, null, 1);
 		$vote->insert($this->getPDO());
 	}
+/* update a valid vote */
+	public function testUpdateValidVote() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("vote");
+		// create a new vote and insert to into mySQL
+		$vote = new Vote($this->post2->getPostId(),$this->post2->getPostProfileId(), null, -1);
+		$vote->insert($this->getPDO());
+		// edit the vote and update it in mySQL
+		$vote->setVoteValue(-1);
+		$vote->update($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoVote = Vote::getVoteByPostIdProfileId($this->getPDO(), $vote->getVotePostId(), $vote->getVoteProfileId());
+		$pdoVote = Vote::getVoteByProfileId($this->getPDO(), $vote->getVoteProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+
+
+	}
 
 	/**
 	 * test updating a Vote that already exists
@@ -267,7 +285,7 @@ class VoteTest extends TownhallTest {
 	 **/
 	public function testUpdateInvalidVote(): void {
 		// create a Vote with a non null post id and watch it fail
-		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE, 1 || -1);
+		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->update($this->getPDO());
 	}
 
@@ -278,7 +296,7 @@ class VoteTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new Vote and insert to into mySQL
-		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE1);
+		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->insert($this->getPDO());
 		// delete the Vote from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
@@ -396,7 +414,7 @@ class VoteTest extends TownhallTest {
 		$numRows = $this->getConnection()->getRowCount("vote");
 
 		//create a new Vote and insert it into the database
-		$vote = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE, 1 || -1);
+		$vote = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE);
 		$vote->insert($this->getPDO());
 
 

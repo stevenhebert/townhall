@@ -138,10 +138,12 @@ class Vote {
 	 * @throws \RangeException if $newVoteDateTime is a date that does not exist
 	 **/
 	public function setVoteDateTime($newVoteDateTime = null): void {
-		// base case: if the date is null, use the current date and time
+		// base case: if the date is null, wait for mysql
 		if($newVoteDateTime === null) {
 			$this->voteDateTime = null;
 			return;
+
+
 		}
 
 		// store the like date using the ValidateDate trait
@@ -177,9 +179,11 @@ class Vote {
 			return;
 		}
 
-		// verify the value is -1 || 1
-		if($newVoteValue <= 0) {
-			throw(new \RangeException("voteValue is not -1 || 1"));
+		// verify the value is -1 or 1
+
+		if($newVoteValue !== 1 || $newVoteValue !== -1) {
+			var_dump($newVoteValue);
+			throw(new \RangeException("voteValue is not -1 or 1"));
 		}
 
 
@@ -196,16 +200,16 @@ class Vote {
 	 **/
 	public function insert(\PDO $pdo): void {
 		//enforce the postVoteId is null (i.e, don't insert a vote that already exist)
-		if($this->votePostId !== null) {
-			throw(new \PDOException("not a new vote"));
+		if($this->votePostId === null || $this->voteProfileId===null) {
+			throw(new \PDOException("unable to insert a vote with no profile or post "));
 		}
+
 		// create query template
 		$query = "INSERT INTO vote (votePostId, voteProfileId, voteDateTime, voteValue) VALUES(:votePostId, :voteProfileId, :voteDateTime, :voteValue)";
 		$statement = $pdo->prepare($query);
 
-		//bind the member variables to the place holders in the template
-		$formattedDateTime = $this->voteDateTime->format("Y-m-d H:i:s");
-		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteDateTime" => $formattedDateTime, "voteValue" => $this->voteValue];
+
+		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId,"voteDateTime" => $this->voteDateTime, "voteValue" => $this->voteValue];
 		$statement->execute($parameters);
 
 		// update the null votePostId with what mySql just gave us
@@ -226,7 +230,7 @@ class Vote {
 		}
 
 // create query template
-		$query = "DELETE FROM vote WHERE votePostId = : votePostId and voteProfileId = :voteProfileId";
+		$query = "DELETE FROM vote WHERE votePostId = :votePostId and voteProfileId = :voteProfileId";
 		$statement = $pdo->prepare($query);
 
 //bind the member variables to the place holder in the template
@@ -247,7 +251,7 @@ class Vote {
 		}
 
 		//create query temple
-		$query = "UPDATE vote SET votePostId = : votePostId, voteProfileId = : voteProfileId, voteDateTime = : voteDateTime, voteValue = : voteValue";
+		$query = "UPDATE vote SET votePostId = :votePostId, voteProfileId = :voteProfileId, voteDateTime = :voteDateTime, voteValue = :voteValue";
 		$statement = $pdo
 			->prepare($query);
 
@@ -443,10 +447,11 @@ class Vote {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getVotebyVoteValue(\ PDO $pdo, int $voteValue): \SPLFixedArray {
+	public static function getVotebyVoteValue(\ PDO $pdo, int $voteValue) : \SPLFixedArray {
 		// sanitize the value before searching
 		if($voteValue !== -1 || $voteValue !== 1) {
-			throw(new \RangeException("vote value must be an int"));
+			var_dump($voteValue);
+			throw(new \RangeException("vote value must be 1 or -1"));
 		}
 		// create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteValue =voteValue";
