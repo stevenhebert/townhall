@@ -318,7 +318,7 @@ class PostTest extends TownhallTest {
 	 * get a post by parent id
 	 * row gets inserted but function fails because of parent setup
 	 */
-	/*public function testGetValidPostByPostParentId() {
+	public function testGetValidPostByPostParentId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
@@ -328,11 +328,6 @@ class PostTest extends TownhallTest {
 		//now insert a parent post based on 1st post
 		$postChild = new Post(null,$this->profile->getProfileDistrictId(),$post->getPostId(), $this->profile->getProfileId(), "oh yeah!",null);
 		$postChild->insert($this->getPDO());
-		var_dump($post);
-		var_dump($postChild);
-		var_dump($postChild->getPostParentId());
-
-
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Post::getPostByPostParentId($this->getPDO(), $postChild->getPostParentId());
@@ -343,7 +338,7 @@ class PostTest extends TownhallTest {
 
 		//delete the post with a parent id so other tests don't fail
 		$postChild->delete($this->getPDO());
-	}*/
+	}
 
 	/*test inserting an invalid parent key.  key must exist as a post in  the table */
 
