@@ -36,7 +36,7 @@ class Vote {
 	 *
 	 * constructor for this vote
 	 *
-	 * @param\null int $newPostVoteId for this vote or null if a new postVote
+	 * @param\null int $newPostVoteId for the post that is voted on
 	 * @param int $newVoteProfileId for the Profile that voted on this post
 	 * @param \DateTime null $newVoteDateTime timestamp of vote
 	 * @param int $newVoteValue value for this vote
@@ -46,7 +46,7 @@ class Vote {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct(?int $newVotePostId, int $newVoteProfileId, $newVoteDateTime = null, int $newVoteValue = null) {
+	public function __construct(int $newVotePostId, int $newVoteProfileId, $newVoteDateTime = null, int $newVoteValue = null) {
 		try {
 			$this->setVotePostId($newVotePostId);
 			$this->setVoteProfileId($newVoteProfileId);
@@ -71,11 +71,11 @@ class Vote {
 	/**
 	 * mutator method for votePostId
 	 *
-	 * @param int|null $newPostVoteId new value of newPostVoteId
+	 * @param int $newPostVoteId new value of newPostVoteId
 	 * @throws \RangeException if $newPostVoteId is not positive
 	 * @throws \TypeError if $newPostVoteId is not an integer
 	 **/
-	public function setVotePostId(?int $newVotePostId): void {
+	public function setVotePostId(int $newVotePostId): void {
 		//if votePostId is null immediately return it
 		if($newVotePostId === null) {
 			$this->votePostId = null;
@@ -172,7 +172,7 @@ class Vote {
 	 * @throws \RangeException if $newVoteValue is -1 and 1
 	 * @throws \TypeError if $newVoteValue is not an integer
 	 **/
-	public function setVoteValue(?int $newVoteValue): void {
+	public function setVoteValue(int $newVoteValue): void {
 		//if votevalue is null immediately return it
 		if($newVoteValue === null) {
 			$this->voteValue = null;
@@ -211,8 +211,7 @@ class Vote {
 		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteValue" => $this->voteValue];
 		$statement->execute($parameters);
 
-		// update the null votePostId with what mySql just gave us
-		$this->votePostId = intval($pdo->lastInsertId());
+
 	}
 
 	/**
@@ -224,6 +223,7 @@ class Vote {
 	 **/
 	public function delete(\PDO $pdo): void {
 		//enforce the votePostId is not null
+
 		if($this->votePostId === null and $this->voteProfileId === null) {
 			throw(new \PDOException("unable to delete a vote that does not exist "));
 		}
@@ -233,6 +233,7 @@ class Vote {
 		$statement = $pdo->prepare($query);
 
 //bind the member variables to the place holder in the template
+
 		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId];
 		$statement->execute($parameters);
 	}
@@ -327,14 +328,14 @@ class Vote {
 		$parameters = ["votePostId" => $votePostId];
 		$statement->execute($parameters);
 
-		//build an array of posts
-		$posts = new \SplFixedArray($statement->rowCount());
+		//build an array of votes
+		$votes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
 				$votes[$votes->key()]= $vote;
-				$vote->next();
+				$votes->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));

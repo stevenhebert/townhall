@@ -267,16 +267,11 @@ class VoteTest extends TownhallTest {
 
 		$vote->insert($this->getPDO());
 		// edit the vote and update it in mySQL
-		var_dump($vote);
-		var_dump("dump of this", $this->post->getPostId(), $this->profile->getProfileId());
-		var_dump("dump of vote", $vote->getVotePostId(), $vote->getVoteProfileId());
 		$vote->setVoteValue(-1);
 		$vote->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 
-		var_dump("this is right before getpostbyboth", $vote->getVotePostId(), $vote->getVoteProfileId());
 		$pdoVote = Vote::getVoteByPostIdProfileId($this->getPDO(), $vote->getVotePostId(), $vote->getVoteProfileId());
-		$pdoVote = Vote::getVoteByProfileId($this->getPDO(), $vote->getVoteProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 
 
@@ -288,8 +283,8 @@ class VoteTest extends TownhallTest {
 	 * @expectedException \PDOException
 	 **/
 	public function testUpdateInvalidVote(): void {
-		// create a Vote with a non null post id and watch it fail
-		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
+		// create a Vote and update post or profile id--should fail
+		$vote = new Vote(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->update($this->getPDO());
 	}
 
@@ -306,7 +301,7 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$vote->delete($this->getPDO());
 		// grab the data from mySQL and enforce the Vote does not exist
-		$pdoVote = Vote::delete($this->getPDO());
+		$pdoVote = Vote::getVoteByPostIdProfileId($this->getPDO(), $vote->getVotePostId(), $vote->getVoteProfileId());
 		$this->assertNull($pdoVote);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("vote"));
 	}
@@ -329,10 +324,14 @@ class VoteTest extends TownhallTest {
 		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoVote = Vote::getVoteByPostId($this->getPDO(), $vote->getVotePostId());
+		$results = Vote::getVoteByPostId($this->getPDO(), $vote->getVotePostId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
-		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Vote", $results);
+		// grab the result from the array and validate it
+		$pdoVote = $results[0];
+		$this->assertEquals($pdoVote->getVoteByVotePostId(), $this->post->getPostId());
+
 
 	}
 
@@ -409,36 +408,7 @@ class VoteTest extends TownhallTest {
 
 	}
 
-	/**
-	 * test grabbing a valid Vost by sunset and sunrise date
-	 *
-	 */
-	public function testGetValidVostBySunDate(): void {
-		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("vote");
 
-		//create a new Vote and insert it into the database
-		$vote = new Vote(null, $this->profile->getProfileDistrictId(), $this->profile->getProfileId(), $this->VALID_VOTEVALUE);
-		$vote->insert($this->getPDO());
-
-
-		// grab the vote from the database and see if it matches expectations
-		$results = Vote::getVoteByVoteDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
-
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
-		$this->assertCount(1, $results);
-
-		//enforce that no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
-
-		//use the first result to make sure that the inserted vote meets expectations
-		$pdoVote = $results[0];
-		$this->assertEquals($pdoVote->getVotePostId(), $vote->getVotePostId());
-		$this->assertEquals($pdoVote->getVoteProfileId(), $vote->getVoteProfileId());
-		$this->assertEquals($pdoVote->getVoteValue(), $vote->getVoteValue());
-		$this->assertEquals($pdoVote->getVoteDateTime(), $vote->getVoteDateTime());
-
-	}
 
 	/**
 	 * test grabbing all Votes
