@@ -1,4 +1,5 @@
 <?php
+
 namespace Edu\Cnm\TownHall;
 
 require_once("autoload.php");
@@ -16,7 +17,6 @@ require_once("autoload.php");
  * @author Steven Hebert <shebert2@cnm.edu>
  * @version 1.0
  **/
-
 class District {
 	/**
 	 * id for this district
@@ -120,14 +120,14 @@ class District {
 	 **/
 	public function setDistrictGeom($newDistrictGeom): void {
 		// create temporary object
-		if (gettype($newDistrictGeom) === "string") {
+		if(gettype($newDistrictGeom) === "string") {
 			$geomObject = json_decode($newDistrictGeom);
 			if(empty($geomObject) === true) {
 				throw(new \InvalidArgumentException("geom object empty or invalid"));
 			}
-		}elseif(gettype($newDistrictGeom) === "array"){
+		} elseif(gettype($newDistrictGeom) === "array") {
 			$geomObject = $newDistrictGeom;
-		}else {
+		} else {
 			throw(new \TypeError("hit the road Jack - geometry needs to be GeoJson or array"));
 		}
 		foreach($geomObject->coordinates[0] as $coordinates) {
@@ -201,7 +201,7 @@ class District {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo): void {
-		//enforce the district id is null b/c don't want to insert into a district that already exists
+		//enforce the district id is null b/c dont want to insert into a district that already exists
 		if($this->districtId !== null) {
 			throw(new \PDOException("districtId already assigned"));
 		}
@@ -255,7 +255,7 @@ class District {
 
 		//bind the member variables to the place holders in the template
 
-		$parameters = ["districtId" => $this->districtId,"districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
+		$parameters = ["districtId" => $this->districtId, "districtGeom" => $this->districtGeom, "districtName" => $this->districtName];
 		$statement->execute($parameters);
 	}
 
@@ -281,6 +281,47 @@ class District {
 		//bind the districtId ti the place holder in the template
 		$parameters = ["districtId" => $districtId];
 		$statement->execute($parameters);
+		//get district from mySQL
+		try {
+			$district = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$district = new District($row["districtId"], $row["ST_AsGeoJson(districtGeom)"], $row["districtName"]);
+			}
+		} catch(\Exception $exception) {
+			//if row can't be converted re-throw it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($district);
+	}
+
+	public function getDistrictByLongLat(\PDO $pdo, float $long, float $lat): ?district {
+		// create temporary object
+		if(gettype($long) === "float") {
+			if(empty($long) === true) {
+				throw(new \InvalidArgumentException("invalid longitude"));
+			}
+			throw(new \TypeError("not a float"));
+
+		}
+		if(gettype($lat) === "float") {
+			if(empty($lat) === true) {
+				throw(new \InvalidArgumentException("invalid longitude"));
+			}
+			throw(new \TypeError("not a float"));
+		}
+		try {
+			self::validateLatitude($long);
+			self::validateLongitude($lat);
+		} catch(\Exception | \RangeException | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		//create query
+		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText( POINT($long $lat))) = 1";
+		$statement = $pdo->prepare($query);
+
 		//get district from mySQL
 		try {
 			$district = null;
