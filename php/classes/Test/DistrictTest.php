@@ -2,9 +2,7 @@
 
 namespace Edu\Cnm\Townhall\Test;
 
-use Edu\Cnm\Townhall\{
-	District
-};
+use Edu\Cnm\Townhall\District;
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -24,7 +22,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  **/
 class DistrictTest extends TownhallTest {
 	/**
-	 * @var array $VALID_DISTRICT_GEOM
+	 * @var string $VALID_DISTRICT_GEOM
 	 *
 	 **/
 	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
@@ -36,7 +34,7 @@ class DistrictTest extends TownhallTest {
 	protected $VALID_DISTRICT_NAME = "district1";
 
 	/**
-	 * @var array $VALID_DISTRICT_GEOM_4
+	 * @var string $VALID_DISTRICT_GEOM_4
 	 *
 	 **/
 	protected $VALID_DISTRICT_GEOM_4 = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,-10],[0,-10],[0,0]]]}';
@@ -48,7 +46,7 @@ class DistrictTest extends TownhallTest {
 	protected $VALID_DISTRICT_NAME_4 = "district4";
 
 	/**
-	 * @var array $INVALID_DISTRICT_GEOM
+	 * @var string $INVALID_DISTRICT_GEOM
 	 *
 	 **/
 	protected $INVALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[181,0],[10,0],[10,-10],[0,-10],[181,0]]]}';
@@ -67,13 +65,14 @@ class DistrictTest extends TownhallTest {
 
 	/**
 	 * create dependent objects before running each test
+	 *
 	 **/
-
 	public final function setUp() {
 		// run the setup method so the test can run properly
 		// this is where all dependencies would be squashed so the test could be run properly.
 		parent::setUp();
 	}
+
 
 	/**
 	 * test valid INSERT district
@@ -242,9 +241,12 @@ class DistrictTest extends TownhallTest {
 		//insert new object into mySQL
 		$district->insert($this->getPDO());
 
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(),));
-		$this->assertEquals($pdoDistrict->getDistrictByLongLat(), $district->getDistrictId());
+		// grab the tweet from the database and see if it matches expectations
+		$results = District::getDistrictByLongLat($this->getPDO(), $this->VALID_LONG, $this->VALID_LAT);
+		$this->assertEquals($results, $this->VALID_DISTRICT_NAME);
+
+		//enforce that no other objects are bleeding into the test
+		//$this->assertContainsOnlyInstancesOf("Edu\Cnm\Townhall\Test", $results);
 	}
 
 	/**

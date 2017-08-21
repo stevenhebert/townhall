@@ -16,12 +16,14 @@ require_once("autoload.php");
  *
  * @author Steven Hebert <shebert2@cnm.edu>
  * @version 1.0
+ *
  **/
 class District {
 	/**
 	 * id for this district
 	 * this is the primary key
 	 * @var int districtId
+	 *
 	 **/
 	private $districtId;
 
@@ -39,14 +41,18 @@ class District {
 	 **/
 	private $districtName;
 
-	/** constructor for this district
+	/**
+	 * constructor for this district
+	 *
 	 * @param int $newDistrictId
 	 * @param string $newDistrictGeom
 	 * @param string $newDistrictName
+	 *
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
+	 *
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 *
 	 **/
@@ -66,7 +72,7 @@ class District {
 	/**
 	 * accessor for district id
 	 *
-	 * return int | null value of districtId
+	 * @return int | null value of districtId
 	 * lets user know to which district they belong
 	 *
 	 **/
@@ -100,9 +106,6 @@ class District {
 	 * accessor for districtGeom
 	 *
 	 * @return string value (no longer array) of districtGeom
-	 * reads district geometry data in order to run contains fn
-	 * -> conceptually is the contains fn calling this from php or from mysql?
-	 * ->-> if the latter, will this accessor actually be used?
 	 *
 	 **/
 	public function getDistrictGeom(): string {
@@ -206,6 +209,7 @@ class District {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
+	 *
 	 **/
 	public function insert(\PDO $pdo): void {
 		//enforce the district id is null b/c dont want to insert into a district that already exists
@@ -224,11 +228,14 @@ class District {
 		$this->districtId = intval($pdo->lastInsertId());
 	}
 
-	/** deletes this district from mySQL
+	/**
+	 * deletes this district from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
+	 *
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
+	 *
 	 **/
 	public function delete(\PDO $pdo): void {
 		//enforce the districtId is not null, cant delete something that doesn't exist
@@ -247,6 +254,7 @@ class District {
 	 * updates this district in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
+	 *
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
@@ -271,7 +279,9 @@ class District {
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $districtId to search for
-	 * @return district|null
+	 *
+	 * @return district | null
+	 *
 	 * @throws \PDOException when mySQL error occur
 	 * @throws \TypeError when variables are not the correct data type
 	 *
@@ -304,11 +314,13 @@ class District {
 	}
 
 	/**
-	 * get district by Long Lat
+	 * GET district by Long Lat
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $districtId to search for
-	 * @return district|null
+	 *
+	 * @return district | null
+	 *
 	 * @throws \PDOException when mySQL error occur
 	 * @throws \TypeError when variables are not the correct data type
 	 *
@@ -336,8 +348,8 @@ class District {
 		}
 		//create query
 		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText(POINT($long $lat))) = 1";
-		$statement = $pdo->prepare($query);
-		$statement->execute();
+		$district = $pdo->prepare($query);
+		$district->execute();
 		return ($district);
 	}
 }
