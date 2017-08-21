@@ -403,7 +403,7 @@ class VoteTest extends TownhallTest {
 	 **/
 	public function testGetInvalidVoteByVoteValue(): void {
 		// grab a vote by value that does not exist
-		$vote = Vote::getVotebyVoteValue($this->getPDO(), "Reports of my assimilation are greatly exaggerated.");
+		$vote = Vote::getVotebyVoteValue($this->getPDO(), 1);
 		$this->assertCount(0, $vote);
 
 	}
