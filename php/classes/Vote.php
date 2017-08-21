@@ -217,8 +217,8 @@ class Vote {
 	/**
 	 * deletes this vote from mySQL
 	 *
-	 * @param\PDO $pdo PDO connection object
-	 * @throws \PDOException when my SQL related errors occur
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo): void {
@@ -240,7 +240,8 @@ class Vote {
 
 	/**
 	 * updates this Vote in mySQL
-	 *@param \PDO $pdo PDO connection object
+	 *
+	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/

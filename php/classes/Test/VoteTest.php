@@ -278,6 +278,16 @@ class VoteTest extends TownhallTest {
 
 	}
 
+	/**
+	 * test updating a Vote that doesn't exist
+	 *
+	 * @expectedException \TypeError
+	 **/
+	public function testUpdateInvalidVote(): void {
+		// create a Vote and update post or profile id--should fail
+		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
+		$vote->update($this->getPDO());
+	}
 
 	/**
 	 * test creating a Vote and then deleting it
@@ -297,6 +307,16 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("vote"));
 	}
 
+	/**
+	 * test deleting a Vote that does not exist
+	 *
+	 * @expectedException \TypeError
+	 **/
+	public function testDeleteInvalidVote(): void {
+		// create a Vote and try to delete it without actually inserting it
+		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
+		$vote->delete($this->getPDO());
+	}
 
 	public function testGetValidVoteByVotePostId(): void {
 		// count the number of rows and save it for later
