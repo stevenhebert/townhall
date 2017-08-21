@@ -364,17 +364,17 @@ class Vote {
 		$statement = $pdo->prepare($query);
 
 		//bind the post district id to the place holder in the template
-		$parameters = ["voteProfileId" => voteProfileId];
+		$parameters = ["voteProfileId" => $voteProfileId];
 		$statement->execute($parameters);
 
 		//build an array of votes
-		$posts = new \SplFixedArray($statement->rowCount());
+		$votes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
 				$votes[$votes->key()]= $vote;
-				$vote->next();
+				$votes->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -456,7 +456,7 @@ class Vote {
 			throw(new \RangeException("vote value must be 1 or -1"));
 		}
 		// create query template
-		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteValue =voteValue";
+		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteValue = :voteValue";
 		$statement = $pdo->prepare($query);
 		// bind the vote value to the place holder in the template
 		$parameters = ["voteValue" => $voteValue];
@@ -467,7 +467,7 @@ class Vote {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
-				$vote[$votes->key()] = $vote;
+				$votes[$votes->key()] = $vote;
 				$votes->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, retrow it

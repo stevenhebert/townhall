@@ -278,13 +278,13 @@ class VoteTest extends TownhallTest {
 	}
 
 	/**
-	 * test updating a Vote that already exists
+	 * test updating a Vote that doesn't exist
 	 *
 	 * @expectedException \PDOException
 	 **/
 	public function testUpdateInvalidVote(): void {
 		// create a Vote and update post or profile id--should fail
-		$vote = new Vote(TownhallTest::INVALID_KEY, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
+		$vote = new Vote($this->post3->getPostId(), $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->update($this->getPDO());
 	}
 
@@ -330,7 +330,7 @@ class VoteTest extends TownhallTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Vote", $results);
 		// grab the result from the array and validate it
 		$pdoVote = $results[0];
-		$this->assertEquals($pdoVote->getVoteByVotePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
 
 
 	}
@@ -340,8 +340,9 @@ class VoteTest extends TownhallTest {
 	 **/
 	public function testGetInvalidVoteByVotePostId(): void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$tweet = Post::getPostByPostId($this->getPDO(), TownhallTest::INVALID_KEY);
-		$this->assertNull($tweet);
+		$vote = Vote::getVoteByPostId($this->getPDO(), TownhallTest::INVALID_KEY);
+		$this->assertCount(0, $vote);
+
 	}
 
 	/**
@@ -393,7 +394,7 @@ class VoteTest extends TownhallTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Vote", $results);
 		// grab the result from the array and validate it
 		$pdoVote = $results[0];
-		$this->assertEquals($pdoVote->getPostProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoVote->getvoteProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 
 	}
