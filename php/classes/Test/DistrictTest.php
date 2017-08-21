@@ -213,7 +213,7 @@ class DistrictTest extends TownhallTest {
 		$pdoDistrict = District::getDistrictByDistrictId($this->getPDO(), $district->getDistrictId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
 		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
-		$this->assertEquals($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
+		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
 		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
 	}
 
@@ -243,6 +243,7 @@ class DistrictTest extends TownhallTest {
 
 		// grab the tweet from the database and see if it matches expectations
 		$results = District::getDistrictByLongLat($this->getPDO(), $this->VALID_LONG, $this->VALID_LAT);
+
 		$this->assertEquals($results, $this->VALID_DISTRICT_NAME);
 
 		//enforce that no other objects are bleeding into the test

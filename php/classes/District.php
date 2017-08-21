@@ -325,31 +325,33 @@ class District {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
-	public static function getDistrictByLongLat(\PDO $pdo, float $long, float $lat): ?district {
+	public static function getDistrictByLongLat(\PDO $pdo, float $longitude, float $latitude): ?district {
 		// create temporary object
-		if(gettype($long) === "float") {
-			if(empty($long) === true) {
-				throw(new \InvalidArgumentException("invalid longitude"));
-			}
-			throw(new \TypeError("not a float"));
-		}
-		if(gettype($lat) === "float") {
-			if(empty($lat) === true) {
-				throw(new \InvalidArgumentException("invalid longitude"));
-			}
-			throw(new \TypeError("not a float"));
-		}
 		try {
-			self::validateLatitude($long);
-			self::validateLongitude($lat);
+			self::validateLatitude($longitude);
+			self::validateLongitude($latitude);
 		} catch(\Exception | \RangeException | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		//create query
-		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText(POINT($long $lat))) = 1";
-		$district = $pdo->prepare($query);
-		$district->execute();
+		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, POINT(:longitude, :latitude)) = 1";
+		$statement = $pdo->prepare($query);
+		$parameters = ["longitude" => $longitude, "latitude" => $latitude];
+		$statement->execute($parameters);
+
+
+		try {
+			$district = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$district = new District($row["districtId"], $row["districtGeom"], $row["districtName"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 		return ($district);
 	}
-}
+	}
