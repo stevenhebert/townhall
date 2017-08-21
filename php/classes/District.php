@@ -335,11 +335,10 @@ class District {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		//create query
-		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, POINT(:longitude, :latitude)) = 1";
+		$query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText('POINT(:longitude :latitude)', 4326)) = 1";
 		$statement = $pdo->prepare($query);
 		$parameters = ["longitude" => $longitude, "latitude" => $latitude];
 		$statement->execute($parameters);
-
 
 		try {
 			$district = null;
