@@ -235,14 +235,12 @@ class DistrictTest extends TownhallTest {
 		//insert new object into mySQL
 		$district->insert($this->getPDO());
 
+
+
+
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(), $district->get());
-
-		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
-
-
-
-
+		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(), $district->getDistrictId());
+		$this->assertEquals($pdoDistrict->getDistrictByLongLat(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
 
 
 	}

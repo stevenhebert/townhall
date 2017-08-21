@@ -148,8 +148,8 @@ class District {
 
 	/**
 	 * helper methods for coordinate range validation
-	 *
-	 * @throws \RangeException if (-90 > lat > 90) and (-180 > long > 180)
+	 * @returns float $newLat
+	 * @throws \RangeException if (-90 > lat > 90)
 	 *
 	 **/
 
@@ -160,6 +160,13 @@ class District {
 			return $newLat;
 		}
 	}
+
+	/**
+	 * helper methods for coordinate range validation
+	 * @returns float $newLong
+	 * @throws \RangeException if (-180 > long > 180)
+	 *
+	 **/
 
 	public static function validateLongitude(float $newLong): float {
 		if($newLong < -180 || $newLong > 180) {
@@ -269,7 +276,7 @@ class District {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
-	public static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?District {
+	public static function getDistrictByDistrictId(\PDO $pdo, int $districtId): ?district {
 		//negative district id absurd
 		if($districtId <= 0) {
 			throw(new \PDOException("districtId is not positive"));
@@ -296,6 +303,16 @@ class District {
 		return ($district);
 	}
 
+	/**
+	 * get district by Long Lat
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param int $districtId to search for
+	 * @return district|null
+	 * @throws \PDOException when mySQL error occur
+	 * @throws \TypeError when variables are not the correct data type
+	 *
+	 */
 	public function getDistrictByLongLat(\PDO $pdo, float $long, float $lat): ?district {
 		// create temporary object
 		if(gettype($long) === "float") {
@@ -303,7 +320,6 @@ class District {
 				throw(new \InvalidArgumentException("invalid longitude"));
 			}
 			throw(new \TypeError("not a float"));
-
 		}
 		if(gettype($lat) === "float") {
 			if(empty($lat) === true) {
@@ -319,21 +335,9 @@ class District {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		//create query
-		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText( POINT($long $lat))) = 1";
+		$query = "SELECT districtId FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText(POINT($long $lat))) = 1";
 		$statement = $pdo->prepare($query);
-
-		//get district from mySQL
-		try {
-			$district = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$district = new District($row["districtId"], $row["ST_AsGeoJson(districtGeom)"], $row["districtName"]);
-			}
-		} catch(\Exception $exception) {
-			//if row can't be converted re-throw it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
+		$statement->execute();
 		return ($district);
 	}
 }
