@@ -252,7 +252,7 @@ class DistrictTest extends TownhallTest {
 		// grab the tweet from the database and see if it matches expectations
 		$results = District::getDistrictByLongLat($this->getPDO(), $this->VALID_LONG, $this->VALID_LAT);
 
-		$this->assertEquals($results, $this->VALID_DISTRICT_NAME)
+		$this->assertEquals($results, $this->VALID_DISTRICT_NAME);
 
 		//enforce that no other objects are bleeding into the test
 		//$this->assertContainsOnlyInstancesOf("Edu\Cnm\Townhall\Test", $results);

@@ -332,7 +332,7 @@ class District {
 			self::validateLongitude($latitude);
 		} catch(\Exception | \RangeException | \TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//create query
 		$query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText('POINT(:longitude :latitude)', 4326)) = 1";
