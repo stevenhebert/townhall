@@ -144,7 +144,8 @@ class District {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
-			$this->districtGeom = $newDistrictGeom;
+			$geomObject->crs = json_decode("{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}");
+			$this->districtGeom = json_encode($geomObject);
 		}
 	}
 
@@ -218,6 +219,7 @@ class District {
 		}
 
 		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
+		var_dump($this);
 
 		$statement = $pdo->prepare($query);
 
@@ -334,12 +336,10 @@ class District {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//create query
-		$query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText('POINT(:longitude :latitude)', 4326)) = 1";
+		$query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district WHERE ST_CONTAINS(districtGeom, POINT(:longitude, :latitude)) = 1";
 		$statement = $pdo->prepare($query);
 		$parameters = ["longitude" => strval($longitude), "latitude" => strval($latitude)];
 		$statement->execute($parameters);
-
-		$statement->debugDumpParams();
 
 		try {
 			$district = null;
