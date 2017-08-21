@@ -54,10 +54,16 @@ class DistrictTest extends TownhallTest {
 	protected $INVALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[181,0],[10,0],[10,-10],[0,-10],[181,0]]]}';
 
 	/**
-	 * @var string $VALID_DISTRICT_NAME_4
+	 * @var string $VALID_LONG
 	 *
-	 * protected $INVALID_DISTRICT_NAME = "districtInvalidGeom";
 	 **/
+	protected $VALID_LONG = "5";
+
+	/**
+	 * @var string $VALID_LAT
+	 *
+	 **/
+	protected $VALID_LAT = "5";
 
 	/**
 	 * create dependent objects before running each test
@@ -219,9 +225,10 @@ class DistrictTest extends TownhallTest {
 	 **/
 	public function testInvalidGetByDistrictId() {
 		// try to GET a district using an invalid districtId
-		$district = District::getDistrictByDistrictId($this->getPDO(),TownhallTest::INVALID_KEY);
+		$district = District::getDistrictByDistrictId($this->getPDO(), TownhallTest::INVALID_KEY);
 		// verify GET returned empty row
-		$this->assertNull($district);	}
+		$this->assertNull($district);
+	}
 
 	/**
 	 * test valid GET by district by long lat
@@ -235,32 +242,18 @@ class DistrictTest extends TownhallTest {
 		//insert new object into mySQL
 		$district->insert($this->getPDO());
 
-
-
-
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(), $district->getDistrictId());
-		$this->assertEquals($pdoDistrict->getDistrictByLongLat(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
-
-
+		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(),));
+		$this->assertEquals($pdoDistrict->getDistrictByLongLat(), $district->getDistrictId());
 	}
 
 	/**
 	 * test invalid GET by district by long lat
-	 * testing to see if lat long exceptions work correctly
 	 *
 	 **/
-	public function testInvalidGetByLongLat() {
-
+	public function testInvalidGetByLongLat(): void {
+		// search for a district without one existing in the table
+		$district = District::getDistrictByLongLat($this->getPDO(), "5", "5");
+		$this->assertNull($district);
 	}
-
-	/**
-	 * test valid GET by district by districtGeom
-	 *
-	 **/
-
-	/**
-	 * test valid GET by district by districtGeom
-	 *
-	 **/
 }

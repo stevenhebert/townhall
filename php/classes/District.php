@@ -313,7 +313,7 @@ class District {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
-	public function getDistrictByLongLat(\PDO $pdo, float $long, float $lat): ?district {
+	public static function getDistrictByLongLat(\PDO $pdo, float $long, float $lat): ?district {
 		// create temporary object
 		if(gettype($long) === "float") {
 			if(empty($long) === true) {
