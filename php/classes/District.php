@@ -319,9 +319,9 @@ class District {
 	 * @param \PDO $pdo connection object
 	 * @param int $districtId to search for
 	 *
-	 * @return district | null
+	 * @returns district | null
 	 *
-	 * @throws \PDOException when mySQL error occur
+	 * @throws \PDOException when mySQL error occurs
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
@@ -331,14 +331,15 @@ class District {
 			self::validateLatitude($longitude);
 			self::validateLongitude($latitude);
 		} catch(\Exception | \RangeException | \TypeError $exception) {
-			$exceptionType = get_class($exception);
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//create query
 		$query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district WHERE ST_CONTAINS(districtGeom, ST_GeomFromText('POINT(:longitude :latitude)', 4326)) = 1";
 		$statement = $pdo->prepare($query);
-		$parameters = ["longitude" => $longitude, "latitude" => $latitude];
+		$parameters = ["longitude" => strval($longitude), "latitude" => strval($latitude)];
 		$statement->execute($parameters);
+
+		$statement->debugDumpParams();
 
 		try {
 			$district = null;
@@ -353,4 +354,4 @@ class District {
 		}
 		return ($district);
 	}
-	}
+}
