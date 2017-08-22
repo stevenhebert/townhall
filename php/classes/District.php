@@ -144,8 +144,8 @@ class District {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
-			$geomObject->crs = json_decode("{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}");
-			$this->districtGeom = json_encode($geomObject);
+			//$geomObject->crs = json_decode("{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}");
+			$this->districtGeom = $newDistrictGeom;
 		}
 	}
 
@@ -218,8 +218,7 @@ class District {
 			throw(new \PDOException("districtId already assigned"));
 		}
 
-		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
-		var_dump($this);
+		$query = "INSERT INTO district(districtGeom, districtName) VALUES (ST_GeomFromText(ST_AsText(ST_GeomFromGeoJSON(:districtGeom))), :districtName)";
 
 		$statement = $pdo->prepare($query);
 
@@ -346,7 +345,7 @@ class District {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$district = new District($row["districtId"], $row["districtGeom"], $row["districtName"]);
+				$district = new District($row["districtId"], $row["ST_AsGeoJson(districtGeom)"], $row["districtName"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

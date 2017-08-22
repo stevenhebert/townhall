@@ -227,7 +227,7 @@ class DistrictTest extends TownhallTest {
 	 * test invalid GET district by districtId
 	 * try to grab a district that doesn't exist
 	 *
-	 * @expectedException \PDOException
+	 *
 	 *
 	 **/
 	public function testInvalidGetByDistrictId() {
@@ -250,9 +250,9 @@ class DistrictTest extends TownhallTest {
 		$district->insert($this->getPDO());
 
 		// grab the tweet from the database and see if it matches expectations
-		$results = District::getDistrictByLongLat($this->getPDO(), $this->VALID_LONG, $this->VALID_LAT);
+		$pdoDistrict = District::getDistrictByLongLat($this->getPDO(), $this->VALID_LONG, $this->VALID_LAT);
 
-		$this->assertEquals($results, $this->VALID_DISTRICT_NAME);
+		$this->assertEquals($pdoDistrict->getDistrictName(),$district->getDistrictName());
 
 		//enforce that no other objects are bleeding into the test
 		//$this->assertContainsOnlyInstancesOf("Edu\Cnm\Townhall\Test", $results);
@@ -261,7 +261,7 @@ class DistrictTest extends TownhallTest {
 	/**
 	 * test invalid GET by district by long lat
 	 *
-	 * @expectedException \PDOException
+	 *
 	 *
 	 **/
 	public function testInvalidGetByLongLat(): void {
