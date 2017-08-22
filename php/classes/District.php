@@ -121,18 +121,14 @@ class District {
 	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	public function setDistrictGeom($newDistrictGeom): void {
+	public function setDistrictGeom(string $newDistrictGeom): void {
 		// create temporary object
-		if(gettype($newDistrictGeom) === "string") {
-			$geomObject = json_decode($newDistrictGeom);
-			if(empty($geomObject) === true) {
-				throw(new \InvalidArgumentException("geom object empty or invalid"));
-			}
-		} elseif(gettype($newDistrictGeom) === "array") {
-			$geomObject = $newDistrictGeom;
-		} else {
-			throw(new \TypeError("hit the road Jack - geometry needs to be GeoJson or array"));
+
+		$geomObject = json_decode($newDistrictGeom);
+		if(empty($geomObject) === true) {
+			throw(new \InvalidArgumentException("geom object empty or invalid"));
 		}
+
 		foreach($geomObject->coordinates[0] as $coordinates) {
 			if(count($coordinates) !== 2) {
 				throw(new \RangeException("more than two coordinates given"));
@@ -144,7 +140,6 @@ class District {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
-			//$geomObject->crs = json_decode("{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}");
 			$this->districtGeom = $newDistrictGeom;
 		}
 	}
