@@ -561,7 +561,7 @@ class Post {
 	 * @throws \TypeError when variables are not the correct data type
 	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
 	 **/
-	public static function getPostByPostDate(\PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate): \SplFixedArray {
+	public static function getPostByPostDate(\PDO $pdo, $sunrisePostDate, $sunsetPostDate): \SplFixedArray {
 		//enforce both dates are present
 		if((empty($sunrisePostDate) === true) || (empty($sunsetPostDate) === true)) {
 			throw(new \InvalidArgumentException("dates are empty or insecure"));
