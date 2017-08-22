@@ -2,9 +2,9 @@
 	<testsuites>
 		<testsuite name="townhall">
 			<file>DistrictTest.php</file>
-			<!-- file>ProfileTest.php</file -->
-			<!-- file>PostTest.php</file -->
-			<!-- file>VoteTest.php</file -->
+			<file>ProfileTest.php</file>
+			<file>PostTest.php</file>
+			<file>VoteTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
