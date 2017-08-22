@@ -222,6 +222,7 @@ class District {
 		$statement->execute($parameters);
 		//update the null districtId with what mySQL returns
 		$this->districtId = intval($pdo->lastInsertId());
+
 	}
 
 	/**

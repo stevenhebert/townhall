@@ -240,9 +240,9 @@ class Vote {
 
 	/**
 	 * updates this Vote in mySQL
-	 *
-	 * @parm \PDO $pdo PDO connect object
-	 * @throws \TypeError if $pdo is not a PDO connect object
+	 *@param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo): void {
 		// enforce the postVoteId is not null (i.e., don't update a vote that hasn't been inserted)
