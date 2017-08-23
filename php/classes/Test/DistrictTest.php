@@ -90,7 +90,6 @@ class DistrictTest extends TownhallTest {
 
 		// grab the data from MySQL and enforce that it meets expectations
 		$pdoDistrict = District::getDistrictByDistrictId($this->getPDO(), $district->getDistrictId());
-		var_dump($pdoDistrict->getDistrictId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
 		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
 		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictGeom());

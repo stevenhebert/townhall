@@ -8,7 +8,7 @@ namespace Edu\Cnm\Townhall;
  * @version 1.0.0
  **/
 
-class Profile {
+class Profile implements \JsonSerializable {
 	/**
 	 * id for this profile; this is the primary key
 	 * @var int $profileId
@@ -847,5 +847,11 @@ class Profile {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($profile);
+	}
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		unset($fields["profileHash"]);
+		unset($fields["profileSalt"]);
+		return($fields);
 	}
 }

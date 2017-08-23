@@ -350,11 +350,10 @@ class Vote {
 	 * @param int $postProfileId to search for
 	 * @return \SplFixedArray SplFixedArray of Profile found
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
+
 	 **/
 	public static function getVoteByProfileId(\PDO $pdo, int $voteProfileId): \SplFixedArray {
 		//sanitize the voteProfileId before searching
-
 
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :voteProfileId";
