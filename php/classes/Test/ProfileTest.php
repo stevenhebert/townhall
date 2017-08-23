@@ -149,7 +149,19 @@ class ProfileTest extends TownhallTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileDistrictId(), $this->district->getDistrictId());
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
+		$this->assertEquals($pdoProfile->getProfileAddress1(), $this->VALID_PROFILE_ADDRESS1);
+		$this->assertEquals($pdoProfile->getProfileAddress2(), $this->VALID_PROFILE_ADDRESS2);
+		$this->assertEquals($pdoProfile->getProfileCity(), $this->VALID_PROFILE_CITY);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
 		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->VALID_PROFILE_FIRST_NAME);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_PROFILE_HASH);
+		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_PROFILE_LAST_NAME);
+		$this->assertEquals($pdoProfile->getProfileRepresentative(), $this->VALID_PROFILE_REPRESENTATIVE);
+		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_PROFILE_STATE);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_PROFILE_USER_NAME);
+		$this->assertEquals($pdoProfile->getProfileZip(), $this->VALID_PROFILE_ZIP);
 
 	}
 

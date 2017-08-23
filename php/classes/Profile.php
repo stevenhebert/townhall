@@ -256,12 +256,12 @@ class Profile {
 
 	/**
 	 * accessor method for profileAddress2
-	 *
+	 * @param string|null $newProfileAddress2 new value of profile address 2
 	 * @return string value of profileAddress2
 	 **/
 	public function getProfileAddress2(): string {
-		return ($this->profileAddress2);
-	}
+			return ($this->profileAddress2);
+		}
 
 	/**
 	 * mutator method for profileAddress2
@@ -610,7 +610,7 @@ class Profile {
 		$query = "INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(:profileDistrictId, :profileActivationToken, :profileAddress1, :profileAddress2, :profileCity, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profileRepresentative, :profileSalt, :profileState, :profileUserName, :profileZip)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" =>$this->profileUserName, "profileZip" => $this->profileZip];
+		$parameters = ["profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
 
 		$statement->execute($parameters);
 		// update the null profileId with what mySQL just gave us
@@ -658,6 +658,7 @@ class Profile {
 
 		$statement->execute($parameters);
 	}
+
 	/**
 	 * GET profile by profileId
 	 *
