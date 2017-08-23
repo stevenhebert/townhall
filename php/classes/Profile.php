@@ -471,7 +471,7 @@ class Profile implements \JsonSerializable {
 			return;
 		}
 		// verify the  profile representative is 0 if not NULL
-		if($newProfileRepresentative !== 1) {
+		if($newProfileRepresentative !== 1 ){
 			throw(new \RangeException("profile representative is not zero"));
 		}
 		// convert and store the profile representative
