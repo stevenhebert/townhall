@@ -396,6 +396,7 @@ class VoteTest extends TownhallTest {
 		// grab the result from the array and validate it
 		$pdoVote = $results[0];
 		$this->assertEquals($pdoVote->getvoteProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoVote->getvotePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 
 	}
@@ -429,6 +430,7 @@ class VoteTest extends TownhallTest {
 		// grab the result from the array and validate it
 		$pdoVote = $results[0];
 		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 
 	}
