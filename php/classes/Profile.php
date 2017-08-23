@@ -135,7 +135,7 @@ class Profile implements \JsonSerializable {
 	/**
 	 * accessor method for profileId
 	 *
-	 * @return int|null value of productId
+	 * @return int|null value of profileId
 	 **/
 	public function getProfileId(): int {
 		return ($this->profileId);
@@ -144,12 +144,12 @@ class Profile implements \JsonSerializable {
 	/**
 	 * mutator method for profileId
 	 *
-	 * @param int|null $newProfileId new value of product id
+	 * @param int|null $newProfileId new value of profile id
 	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if $newProfileId is not an integer
 	 **/
 	public function setProfileId(?int $newProfileId): void {
-		//if product id is null immediately return it
+		//if profile id is null immediately return it
 		if($newProfileId === null) {
 			$this->profileId = null;
 			return;
@@ -179,7 +179,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if $newProfileDistrictId is not an integer
 	 **/
 	public function setProfileDistrictId(?int $newProfileDistrictId): void {
-		//if product id is null immediately return it
+		//if profile id is null immediately return it
 		if($newProfileDistrictId === null) {
 			$this->profileDistrictId = null;
 			return;
@@ -204,7 +204,7 @@ class Profile implements \JsonSerializable {
 	/**
 	 * mutator method for profileActivationToken
 	 *
-	 * @param string $newProfileActivationToken new value of productDescription
+	 * @param string $newProfileActivationToken new value of profileDescription
 	 * @throws \InvalidArgumentException if $newProfileActivationToken is not a string or insecure
 	 * @throws \TypeError if $newProfileActivationToken is not a string
 	 **/
@@ -271,6 +271,11 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if $newProfileAddress2 is not a string
 	 **/
 	public function setProfileAddress2(string $newProfileAddress2): void {
+		//if address 2 is null immediately return it
+		if($newProfileAddress2 === null) {
+			$this->profileAddress2 = null;
+			return;
+		}
 		// verify the profileAddress2 is secure
 		$newProfileAddress2 = trim($newProfileAddress2);
 		$newProfileAddress2 = filter_var($newProfileAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -455,7 +460,7 @@ class Profile implements \JsonSerializable {
 	/**
 	 * mutator method for profile representative
 	 *
-	 * @param int|null $newProfileRepresentative new value of product id
+	 * @param int|null $newProfileRepresentative new value of profile id
 	 * @throws \RangeException if $newProfileRepresentative is not zero
 	 * @throws \TypeError if $newProfileRepresentative is not an integer
 	 **/
