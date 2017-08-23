@@ -242,6 +242,9 @@ class VoteTest extends TownhallTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoVote = Vote::getVoteByPostIdAndProfileId($this->getPDO(), $this->post->getPostId(), $this->profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoVote->getVotePostId(), $this->profile->getProfileId());
+
 
 
 	}
@@ -274,6 +277,9 @@ class VoteTest extends TownhallTest {
 
 		$pdoVote = Vote::getVoteByPostIdAndProfileId($this->getPDO(), $vote->getVotePostId(), $vote->getVoteProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoVote->getVotePostId(), $this->profile->getProfileId());
+
 
 
 	}
