@@ -274,7 +274,7 @@ class Vote {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getVoteByPostIdProfileId(\PDO $pdo, int $votePostId, int $voteProfileId): ?Vote {
+	public static function getVoteByPostIdAndProfileId(\PDO $pdo, int $votePostId, int $voteProfileId): ?Vote {
 		//sanitize the PostId before searching
 		if($votePostId <= 0) {
 			throw(new \PDOException("post Id is not positive"));
