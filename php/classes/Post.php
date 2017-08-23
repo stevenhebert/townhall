@@ -18,7 +18,7 @@ require_once("autoload.php");
  * @author Leonora Sanchez-Rees <leonora621@yahoo.com>
  * @version 1.0.0
  **/
-class Post {
+class Post implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for this post; this is the primary key
@@ -583,8 +583,7 @@ class Post {
 		//format the dates so that mySQL can use them
 		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
 		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
-		$sunriseTimestamp = $sunrisePostDate->getTimestamp();
-		$sunsetTimeStamp = $sunsetPostDate->getTimestamp();
+
 
 
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
