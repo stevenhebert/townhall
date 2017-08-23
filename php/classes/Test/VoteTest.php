@@ -206,7 +206,7 @@ class VoteTest extends TownhallTest {
 
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
-		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", 0, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
+		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", null, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
 		//what is the district Id?  Need to get this
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
