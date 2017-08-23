@@ -123,18 +123,14 @@ class District {
 	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	public function setDistrictGeom($newDistrictGeom): void {
+	public function setDistrictGeom(string $newDistrictGeom): void {
 		// create temporary object
-		if(gettype($newDistrictGeom) === "string") {
-			$geomObject = json_decode($newDistrictGeom);
-			if(empty($geomObject) === true) {
-				throw(new \InvalidArgumentException("geom object empty or invalid"));
-			}
-		} elseif(gettype($newDistrictGeom) === "array") {
-			$geomObject = $newDistrictGeom;
-		} else {
-			throw(new \TypeError("hit the road Jack - geometry needs to be GeoJson or array"));
+
+		$geomObject = json_decode($newDistrictGeom);
+		if(empty($geomObject) === true) {
+			throw(new \InvalidArgumentException("geom object empty or invalid"));
 		}
+
 		foreach($geomObject->coordinates[0] as $coordinates) {
 			if(count($coordinates) !== 2) {
 				throw(new \RangeException("more than two coordinates given"));
@@ -146,8 +142,7 @@ class District {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
-			$geomObject->crs = json_decode("{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}");
-			$this->districtGeom = json_encode($geomObject);
+			$this->districtGeom = $newDistrictGeom;
 		}
 	}
 
@@ -220,8 +215,7 @@ class District {
 			throw(new \PDOException("districtId already assigned"));
 		}
 
-		$query = "INSERT INTO district(districtGeom, districtName) VALUES(ST_GeomFromGeoJSON(:districtGeom), :districtName)";
-		var_dump($this);
+		$query = "INSERT INTO district(districtGeom, districtName) VALUES (ST_GeomFromText(ST_AsText(ST_GeomFromGeoJSON(:districtGeom))), :districtName)";
 
 		$statement = $pdo->prepare($query);
 
@@ -230,6 +224,7 @@ class District {
 		$statement->execute($parameters);
 		//update the null districtId with what mySQL returns
 		$this->districtId = intval($pdo->lastInsertId());
+
 	}
 
 	/**
@@ -348,7 +343,7 @@ class District {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$district = new District($row["districtId"], $row["districtGeom"], $row["districtName"]);
+				$district = new District($row["districtId"], $row["ST_AsGeoJson(districtGeom)"], $row["districtName"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it

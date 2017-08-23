@@ -217,8 +217,8 @@ class Vote {
 	/**
 	 * deletes this vote from mySQL
 	 *
-	 * @param\PDO $pdo PDO connection object
-	 * @throws \PDOException when my SQL related errors occur
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo): void {
@@ -241,8 +241,9 @@ class Vote {
 	/**
 	 * updates this Vote in mySQL
 	 *
-	 * @parm \PDO $pdo PDO connect object
-	 * @throws \TypeError if $pdo is not a PDO connect object
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo): void {
 		// enforce the postVoteId is not null (i.e., don't update a vote that hasn't been inserted)
@@ -316,9 +317,7 @@ class Vote {
 	 **/
 	public static function getVoteByPostId(\PDO $pdo, int $votePostId): \SplFixedArray {
 		//sanitize the postDistrictId before searching
-		if($votePostId <= 0) {
-			throw(new \PDOException("vote Post Id is not positive"));
-		}
+
 
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE votePostId = :votePostId";
@@ -351,13 +350,10 @@ class Vote {
 	 * @param int $postProfileId to search for
 	 * @return \SplFixedArray SplFixedArray of Profile found
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
+
 	 **/
 	public static function getVoteByProfileId(\PDO $pdo, int $voteProfileId): \SplFixedArray {
 		//sanitize the voteProfileId before searching
-		if($voteProfileId <= 0) {
-			throw(new \PDOException("vote profile Id is not positive"));
-		}
 
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :voteProfileId";
@@ -394,52 +390,7 @@ class Vote {
 	 * @throws \TypeError when variables are not the correct data type
 	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
 	 */
-	public static function getVoteByVoteDateTime(\PDO $pdo, \DateTime $sunriseVoteDateTime, \DateTime $sunsetVoteDateTime): \SplFixedArray {
-		//enforce both date are present
-		if((empty ($sunriseVoteDateTime) === true) || (empty($sunsetVoteDateTime) === true)) {
-			throw (new \InvalidArgumentException("dates are empty of insecure"));
-		}
 
-		//ensure both dates are in the correct format and are secure
-		try {
-			$sunriseVoteDateTime = self::validateDateTime($sunriseVoteDateTime);
-			$sunsetVoteDateTime = self::validateDateTime($sunsetVoteDateTime);
-
-		} catch(\InvalidArgumentException|\RangeException $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-//create query template
-		$query = "SELECT votePostId, voteProfileID, voteDateTime, voteValue from vote WHERE voteDateTime >= :sunriseVoteDateTime AND voteDateTime <= : sunsetVoteDateTime";
-		$statement = $pdo->prepare($query);
-
-
-		//format the dates so that mySQL can use them
-		$formattedSunriseDate = $sunriseVoteDateTime->format("Y-m-d H:i:s");
-		$formattedSunsetDateTime = $sunsetVoteDateTime->format("Y-m-d H:i:s");
-
-
-		$parameters = ["sunriseVoteDateTime" => $formattedSunriseDate, "sunsetVoteDateTime" => $formattedSunsetDateTime];
-		$statement->execute($parameters);
-
-
-//build an array of votes
-		$votes = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-
-		while(($row = $statement->fetch()) !== false) {
-			try {
-
-				$vote = new Vote($row["votePostId"], $row["voteProfileId"], $row["voteDateTime"], $row["voteValue"]);
-				$votes[$votes->key()] = $vote;
-				$votes->next();
-			} catch(\Exception $exception) {
-				throw (new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return ($votes);
-	}
 
 	/**
 	 * getVoteByValue

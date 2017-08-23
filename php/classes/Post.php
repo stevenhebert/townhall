@@ -18,7 +18,7 @@ require_once("autoload.php");
  * @author Leonora Sanchez-Rees <leonora621@yahoo.com>
  * @version 1.0.0
  **/
-class Post {
+class Post implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for this post; this is the primary key
@@ -561,7 +561,7 @@ class Post {
 	 * @throws \TypeError when variables are not the correct data type
 	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
 	 **/
-	public static function getPostByPostDate(\PDO $pdo, \DateTime $sunrisePostDate, \DateTime $sunsetPostDate): \SplFixedArray {
+	public static function getPostByPostDate(\PDO $pdo, $sunrisePostDate, $sunsetPostDate): \SplFixedArray {
 		//enforce both dates are present
 		if((empty($sunrisePostDate) === true) || (empty($sunsetPostDate) === true)) {
 			throw(new \InvalidArgumentException("dates are empty or insecure"));
@@ -583,8 +583,7 @@ class Post {
 		//format the dates so that mySQL can use them
 		$formattedSunriseDate = $sunrisePostDate->format("Y-m-d H:i:s.u");
 		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
-		$sunriseTimestamp = $sunrisePostDate->getTimestamp();
-		$sunsetTimeStamp = $sunsetPostDate->getTimestamp();
+
 
 
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
@@ -634,6 +633,10 @@ class Post {
 		}
 		return ($posts);
 	}
+	/*
+			 * needed to add the microsecond to the postDateTime field
+			 * @param $fields object to process postDateTime
+			 */
 	public function jsonSerialize () {
 		$fields =get_object_vars($this);
 		//format the data so that the front end can consume it

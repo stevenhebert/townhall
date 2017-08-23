@@ -21,8 +21,8 @@ require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
  *
  * 1. Rename the class from DataDesignTest to a project specific name (e.g., ProjectNameTest)
  * 2. Rename the namespace to be the same as (1) (e.g., Edu\Cnm\ProjectName\Test)
- * 3. Modify DataDesignTest::getDataSet() to include all the tables in your project.
- * 4. Modify DataDesignTest::getConnection() to include the correct mySQL properties file.
+ * 3. Modify TownHallTest::getDataSet() to include all the tables in your project.
+ * 4. Modify TownHallTest::getConnection() to include the correct mySQL properties file.
  * 5. Have all table specific tests include this class.
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).

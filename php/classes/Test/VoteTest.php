@@ -281,11 +281,11 @@ class VoteTest extends TownhallTest {
 	/**
 	 * test updating a Vote that doesn't exist
 	 *
-	 * @expectedException \PDOException
+	 * @expectedException \TypeError
 	 **/
 	public function testUpdateInvalidVote(): void {
 		// create a Vote and update post or profile id--should fail
-		$vote = new Vote($this->post3->getPostId(), $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
+		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->update($this->getPDO());
 	}
 
@@ -310,11 +310,11 @@ class VoteTest extends TownhallTest {
 	/**
 	 * test deleting a Vote that does not exist
 	 *
-	 * @expectedException \PDOException
+	 * @expectedException \TypeError
 	 **/
 	public function testDeleteInvalidVote(): void {
 		// create a Vote and try to delete it without actually inserting it
-		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
+		$vote = new Vote(null, $this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
 		$vote->delete($this->getPDO());
 	}
 
