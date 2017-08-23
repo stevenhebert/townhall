@@ -445,7 +445,10 @@ class Profile {
 	 *
 	 * @return int|null value of profileRepresentative
 	 **/
-	public function getProfileRepresentative(): int {
+	public function getProfileRepresentative(): ?int {
+		if($this->profileRepresentative === Null){
+			return $this->profileDistrictId = null;
+		}
 		return ($this->profileRepresentative);
 	}
 
@@ -709,7 +712,7 @@ class Profile {
 			throw(new \RangeException("district profile id must be positive"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName FROM profile WHERE profileDistrictId = :profileDistrictId";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileDistrictId = :profileDistrictId";
 		$statement = $pdo->prepare($query);
 
 		// bind the profile district id to the place holder in the template
@@ -722,6 +725,7 @@ class Profile {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$profile = new profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+
 				$profiles[$profiles->key()] = $profile;
 				$profiles->next();
 			} catch(\Exception $exception) {
@@ -751,7 +755,7 @@ class Profile {
 			throw(new \PDOException("profile activation token is invalid"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUsername, profileZip FROM profile WHERE profileId = :profileId";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileActivationToken = :profileActivationToken";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileActivationToken" => $profileActivationToken];

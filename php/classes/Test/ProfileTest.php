@@ -38,6 +38,11 @@ class ProfileTest extends TownhallTest {
 	protected $VALID_PROFILE_ACTIVATION_TOKEN = "111111111111";
 
 	/**
+	 * invalid profile activation token to create the profile object to own the test
+	 * @var $INVALID_PROFILE_ACTIVATION_TOKEN
+	 **/
+	protected $INVALID_PROFILE_ACTIVATION_TOKEN = "2222222222222";
+	/**
 	 * valid address1 to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ADDRESS1
 	 */
@@ -159,7 +164,7 @@ class ProfileTest extends TownhallTest {
 		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_PROFILE_HASH);
 		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_PROFILE_LAST_NAME);
 		$this->assertEquals($pdoProfile->getProfileRepresentative(), $this->VALID_PROFILE_REPRESENTATIVE);
-		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_PROFILE_STATE);
+		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_PROFILE_SALT);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_PROFILE_USER_NAME);
 		$this->assertEquals($pdoProfile->getProfileZip(), $this->VALID_PROFILE_ZIP);
 
@@ -319,5 +324,50 @@ class ProfileTest extends TownhallTest {
 		// grab a profile email that is not valid
 		$profile = Profile::getProfileByProfileUserName($this->getPDO(), "unrowdyryan");
 		$this->assertNull($profile);
+	}
+
+	public function testGetProfileByValidActivationToken(): void {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		//create a new Profile and insert to into mySQL
+		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRST_NAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByActivationToken($this->getPDO(), $profile->getProfileActivationToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_PROFILE_USER_NAME);
+	}
+
+	/**
+	 * test grabbing a Profile with an invalid profile activation token that does not exist
+	 **/
+	public function testGetProfileByInvalidActivationToken(): void {
+		// grab a profile email that is not valid
+		$profile = Profile::getProfileByProfileUserName($this->getPDO(), $this->INVALID_PROFILE_ACTIVATION_TOKEN);
+		$this->assertNull($profile);
+	}
+	/**
+	 * test grabbing Profiles by district ID
+	 **/
+	public function testGetProfileByProfileDistrictId() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		// create a new Tweet and insert to into mySQL
+		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRST_NAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$profile = Profile::getProfileByProfileDistrictId($this->getPDO(), $this->district->getDistrictId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $profile);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Profile", $profile);
+
+		// grab the result from the array and validate it
+		$pdoProfile = $profile[0];
+		$this->assertEquals($pdoProfile->getProfileDistrictId(), $this->district->getDistrictId());
+		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->VALID_PROFILE_FIRST_NAME);
 	}
 }
