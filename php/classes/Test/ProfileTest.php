@@ -205,7 +205,7 @@ class ProfileTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileDistrictId(), $this->district->getDistrictId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
-		$this->assertEquals($pdoProfile->getProfileAddress1(), $this->VALID_PROFILE_ADDRESS1);
+		$this->assertEquals($pdoProfile->getProfileAddress1(), $this->VALID_PROFILE_ADDRESS_TEST);
 		$this->assertEquals($pdoProfile->getProfileAddress2(), $this->VALID_PROFILE_ADDRESS2);
 		$this->assertEquals($pdoProfile->getProfileCity(), $this->VALID_PROFILE_CITY);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
@@ -216,7 +216,7 @@ class ProfileTest extends TownhallTest {
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_PROFILE_SALT);
 		$this->assertEquals($pdoProfile->getProfileState(), $this->VALID_PROFILE_STATE);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_PROFILE_USER_NAME);
-		$this->assertEquals($pdoProfile->getProfileZip(), $this->VALID_PROFILE_ZIP);
+		$this->assertEquals($pdoProfile->getProfileZip(), $this->VALID_PROFILE_ZIP_TEST);
 	}
 
 	/**
