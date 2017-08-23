@@ -20,7 +20,6 @@ require_once("autoload.php");
  **/
 class District implements \JsonSerializable {
 
-class District {
 	/**
 	 * id for this district
 	 * this is the primary key
