@@ -18,6 +18,8 @@ require_once("autoload.php");
  * @version 1.0
  *
  **/
+class District implements \JsonSerializable {
+
 class District {
 	/**
 	 * id for this district
@@ -354,4 +356,16 @@ class District {
 		}
 		return ($district);
 	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		unset($fields["districtGeom"]);
+		return ($fields);
+	}
 }
+
