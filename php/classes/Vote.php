@@ -317,9 +317,7 @@ class Vote {
 	 **/
 	public static function getVoteByPostId(\PDO $pdo, int $votePostId): \SplFixedArray {
 		//sanitize the postDistrictId before searching
-		 {
-			throw(new \PDOException("vote Post Id is not positive"));
-		}
+
 
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE votePostId = :votePostId";
@@ -356,9 +354,7 @@ class Vote {
 	 **/
 	public static function getVoteByProfileId(\PDO $pdo, int $voteProfileId): \SplFixedArray {
 		//sanitize the voteProfileId before searching
-		 {
-			throw(new \PDOException("vote profile Id is not positive"));
-		}
+
 
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :voteProfileId";
