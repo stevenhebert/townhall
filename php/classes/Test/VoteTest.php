@@ -261,7 +261,7 @@ class VoteTest extends TownhallTest {
 /* update a valid vote */
 	public function testUpdateValidVote() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("vote");
+		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new vote and insert to into mySQL
 
 		$vote = new Vote($this->post->getPostId(),$this->profile->getProfileId(), null, $this->VALID_VOTEVALUE);
