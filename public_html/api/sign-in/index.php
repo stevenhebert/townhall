@@ -35,7 +35,8 @@ try {
 			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
 		}
 		if(empty($requestObject->profilePassword) === true) {
-			throw(new \InvalidArgumentException("You must enter a password.", 401));
+			throw(new \InvalidArgumentException("You must
+			 enter a password.", 401));
 		} else {
 			$profilePassword = $requestObject->profilePassword;
 		}
