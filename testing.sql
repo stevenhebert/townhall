@@ -10,6 +10,7 @@ delete from post;
 delete from profile;
 delete from district;
 
+/* insert statements to test data.  Run these in order. */
 INSERT INTO district(districtGeom, districtName) VALUES (ST_GeomFromText(ST_AsText(ST_GeomFromGeoJSON('{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}'))), 'District 15');
 /*password is 'abc123'*/
 INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(
