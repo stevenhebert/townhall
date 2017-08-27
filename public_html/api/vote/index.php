@@ -37,10 +37,9 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$VotePostId = filter_input(INPUT_GET, "VotePostId", FILTER_VALIDATE_FLOAT);
-	$VoteProfileId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_FLOAT);
-	$voteValue = filter_input(INPUT_GET, "voteValue", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$id= filter_input(INPUT_GET, "VotePostId", FILTER_VALIDATE_INT);
+	$VoteProfileId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_INT);
+	$VoteValue = filter_input(INPUT_GET, "voteValue", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	//
 	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
 	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
@@ -58,8 +57,14 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
+		if(empty($id) === false) {
+			$vote = Vote::getVoteByVotePostId($pdo, $id);
+			if($vote!== null) {
+				$reply->data = $vote;
+			}
+
 		if(empty($votePostId and $voteProfileId) === false) {
-			$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $votePostId, $voteProfileId);
+			$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $postId, $profileId);
 			if($vote !== null) {
 				$reply->data = $vote;
 			}
