@@ -131,52 +131,35 @@ try {
 			throw(new \InvalidArgumentException ("post cannot be empty", 405));
 		}
 
-		/** make sure post date is accurate (optional field) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if(empty($requestObject->postDate) === true) {
-			$requestObject->postDate = null;
-		}
-		 **/
+		// make sure post date is accurate
+		//if(empty($requestObject->postDate) === true) {
+		//	throw(new \IntlException("date cannot be empty", 405));
+		//}
 
 		//  make sure profileId is available
 		if(empty($requestObject->postProfileId) === true) {
 			throw(new \InvalidArgumentException ("no profileId found.", 405));
 		}
 
-		//perform the actual put or post
-		if($method === "PUT") {
+		//  make sure districtId is available
+		if(empty($requestObject->postDistrictId) === true) {
+			throw(new \InvalidArgumentException ("no districtId found.", 405));
+		}
 
-			// retrieve the tweet to update
-			$tweet = Tweet::getTweetByTweetId($pdo, $id);
-			if($tweet === null) {
-				throw(new RuntimeException("Tweet does not exist", 404));
-			}
-
-			//enforce the user is signed in and only trying to edit their own tweet
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $tweet->getTweetProfileId()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this tweet", 403));
-			}
-
-			// update all attributes
-			$tweet->setTweetDate($requestObject->tweetDate);
-			$tweet->setTweetContent($requestObject->tweetContent);
-			$tweet->update($pdo);
-
-			// update reply
-			$reply->message = "Tweet updated OK";
-
-		} else if($method === "POST") {
+		//perform the actual post
+		if($method === "POST") {
 
 			// enforce the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("you must be logged in to post tweets", 403));
+				throw(new \InvalidArgumentException("login to post", 403));
 			}
 
-			// create new tweet and insert into the database
-			$tweet = new Tweet(null, $_SESSION["profile"]->getProfileId(), $requestObject->tweetContent, null);
-			$tweet->insert($pdo);
+			// create new post and insert into the database
+			$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $requestObject->postContent, null);
+			$post->insert($pdo);
 
 			// update reply
-			$reply->message = "Tweet created OK";
+			$reply->message = "post posted";
 		}
 
 	} else if($method === "DELETE") {
@@ -184,21 +167,21 @@ try {
 		//enforce that the end user has a XSRF token.
 		verifyXsrf();
 
-		// retrieve the Tweet to be deleted
-		$tweet = Tweet::getTweetByTweetId($pdo, $id);
-		if($tweet === null) {
-			throw(new RuntimeException("Tweet does not exist", 404));
+		// retrieve the post to be deleted
+		$post = Post::getPostByPostId($pdo, $postId);
+		if($post === null) {
+			throw(new RuntimeException("post does not exist", 404));
 		}
 
-		//enforce the user is signed in and only trying to edit their own tweet
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $tweet->getTweetProfileId()) {
-			throw(new \InvalidArgumentException("You are not allowed to delete this tweet", 403));
+		//enforce the user is signed in and only trying to edit their own post
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $post->getPostProfileId()) {
+			throw(new \InvalidArgumentException("only op can deleted this post", 403));
 		}
 
 		// delete tweet
-		$tweet->delete($pdo);
+		$post->delete($pdo);
 		// update reply
-		$reply->message = "Tweet deleted OK";
+		$reply->message = "post deleted";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
