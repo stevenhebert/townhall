@@ -111,10 +111,6 @@ try {
 		if(empty($requestObject->voteContent) === true) {
 			throw(new \InvalidArgumentException ("No value for Vote.", 405));
 		}
-		// make sure vote date is accurate
-		//if(empty($requestObject->voteDate) === true) {
-		//	throw(new \IntlException("date cannot be empty", 405));
-		//}
 
 		//  make sure votePostId is available
 		if(empty($requestObject->votePostId) === true) {
@@ -125,14 +121,20 @@ try {
 		if(empty($requestObject->votePostIdAndVoteProfileId) === true) {
 			throw(new \InvalidArgumentException ("no votePostIdAndVoteProfileId found.", 405));
 		}
+
 		// make sure  voteDate is accurate (optional field)
-		if(empty($requestObject->voteDate) === true) {
-			$requestObject->voteDate = null;
+		//if(empty($requestObject->voteDate) === true) {
+			//	throw(new \IntlException("date cannot be empty", 405));
 		}
 
 		//  make sure voteValue is available
 		if(empty($requestObject->voteValue) === true) {
 			throw(new \InvalidArgumentException ("No voteValue.", 405));
+		}
+
+		//  make sure districtId is available
+		if(empty($requestObject->voteDistrictId) === true) {
+			throw(new \InvalidArgumentException ("no districtId found.", 405));
 		}
 
 		//perform the actual put or post
@@ -169,7 +171,7 @@ try {
 
 				//enforce the user is signed in and only trying to edit their own vote
 				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
-					throw(new \InvalidArgumentException("You are not allowed to edit this tweet", 403));
+					throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
 				}
 
 				// update all attributes
@@ -188,7 +190,7 @@ try {
 				}
 
 				// create new vote and insert into the database
-				$vote = new Vote(null, $requestObject->VoteProfileId, $requestObject->VoteValue, null);
+				$vote = new Vote(null, $requestObject->VotePostIdAndVoteProfileId, $requestObject->VoteValue, null);
 				$vote->insert($pdo);
 
 				// update reply
@@ -196,3 +198,39 @@ try {
 			}
 
 		}
+		else if($method === "DELETE") {
+
+			//enforce that the end user has a XSRF token.
+			verifyXsrf();
+
+			// retrieve the Vote to be deleted
+			$vote = Vote::getVoteByVotePostId($pdo, $id);
+			if($vote=== null) {
+				throw(new RuntimeException("Vote does not exist", 404));
+			}
+
+			//enforce the user is signed in and only trying to edit their own vote
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
+				throw(new \InvalidArgumentException("You are not allowed to delete this vote", 403));
+			}
+
+			// delete vote
+			$vote->delete($pdo);
+			// update reply
+			$reply->message = "Vote deleted OK";
+		}
+		// update the $reply->status $reply->message
+	} catch(\Exception | \TypeError $exception) {
+		$reply->status = $exception->getCode();
+		$reply->message = $exception->getMessage();
+	}
+
+	header("Content-type: application/json");
+	if($reply->data === null) {
+	unset($reply->data);
+}
+
+	// encode and return reply to front end caller
+	echo json_encode($reply);
+
+	// finally - JSON encodes the $reply object and sends it back to the front end.
