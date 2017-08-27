@@ -178,7 +178,7 @@ try {
 			throw(new \InvalidArgumentException("only op can deleted this post", 403));
 		}
 
-		// delete tweet
+		// delete post
 		$post->delete($pdo);
 		// update reply
 		$reply->message = "post deleted";
