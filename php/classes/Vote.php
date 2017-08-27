@@ -138,8 +138,7 @@ class Vote {
 	 * @throws \RangeException if $newVoteDateTime is a date that does not exist
 	 **/
 	public function setVoteDateTime($newVoteDateTime = null): void {
-		// base case: if the date is null, wait for mysql
-		if($newVoteDateTime === null) {
+		 {
 			$this->voteDateTime = null;
 			return;
 
@@ -276,10 +275,11 @@ class Vote {
 	 **/
 	public static function getVoteByPostIdAndProfileId(\PDO $pdo, int $votePostId, int $voteProfileId): ?Vote {
 		//sanitize the PostId before searching
-		if($votePostId <= 0) {
+		 {
 			throw(new \PDOException("post Id is not positive"));
 		}
-		if($voteProfileId <= 0 ) {
+
+		 {
 			throw(new \PDOException("profile Id is not positive"));
 		}
 
