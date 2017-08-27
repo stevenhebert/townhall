@@ -98,43 +98,101 @@ try {
 	}
 	else if($method === "PUT" || $method === "POST") {
 
-			// enforce the user has a XSRF token
-			verifyXsrf();
+		// enforce the user has a XSRF token
+		verifyXsrf();
 
-			//  Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
-			$requestContent = file_get_contents("php://input");
+		//  Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestContent = file_get_contents("php://input");
 
-			// This Line Then decodes the JSON package and stores that result in $requestObject
-			$requestObject = json_decode($requestContent);
+		// This Line Then decodes the JSON package and stores that result in $requestObject
+		$requestObject = json_decode($requestContent);
 
-			//make sure vote content is available (required field)
-			if(empty($requestObject->voteContent) === true) {
-				throw(new \InvalidArgumentException ("No value for Vote.", 405));
+		//make sure vote content is available (required field)
+		if(empty($requestObject->voteContent) === true) {
+			throw(new \InvalidArgumentException ("No value for Vote.", 405));
+		}
+		// make sure vote date is accurate
+		//if(empty($requestObject->voteDate) === true) {
+		//	throw(new \IntlException("date cannot be empty", 405));
+		//}
+
+		//  make sure votePostId is available
+		if(empty($requestObject->votePostId) === true) {
+			throw(new \InvalidArgumentException ("no votePostId found.", 405));
+		}
+
+		//  make sure votePostIdAndVoteProfileId is available
+		if(empty($requestObject->votePostIdAndVoteProfileId) === true) {
+			throw(new \InvalidArgumentException ("no votePostIdAndVoteProfileId found.", 405));
+		}
+		// make sure  voteDate is accurate (optional field)
+		if(empty($requestObject->voteDate) === true) {
+			$requestObject->voteDate = null;
+		}
+
+		//  make sure voteValue is available
+		if(empty($requestObject->voteValue) === true) {
+			throw(new \InvalidArgumentException ("No voteValue.", 405));
+		}
+
+		//perform the actual put or post
+		if($method === "PUT") {
+
+			// retrieve the vote to update
+			$vote = Vote::getVoteByVotePostId($pdo, $id);
+			if($vote === null) {
+				throw(new RuntimeException("Vote does not exist", 404));
 			}
-			// make sure vote date is accurate
-			//if(empty($requestObject->voteDate) === true) {
-			//	throw(new \IntlException("date cannot be empty", 405));
-			//}
 
-			//  make sure profileId is available
-			if(empty($requestObject->voteProfileId) === true) {
-				throw(new \InvalidArgumentException ("no profileId found.", 405));
+			//enforce the user is signed in and only trying to edit their own vote
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
+				throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
+			}
+			// make sure vote date is accurate (optional field)
+			if(empty($requestObject->voteDate) === true) {
+				$requestObject->voteDate = null;
 			}
 
-			//  make sure districtId is available
-			if(empty($requestObject->postDistrictId) === true) {
-				throw(new \InvalidArgumentException ("no districtId found.", 405));
+			//  make sure postIdAndProfileId is available
+			if(empty($requestObject->votePostIdAndVoteProfileId) === true) {
+				throw(new \InvalidArgumentException ("No votePostIdAndProfileID is available.", 405));
 			}
 
+			//perform the actual put or post
+			if($method === "PUT") {
 
-	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$voteProfileId = filter_input(INPUT_GET, "tweetProfileId", FILTER_VALIDATE_INT);
-	$tweetContent = filter_input(INPUT_GET, "tweetContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+				// retrieve the vote to update
+				$vote = Vote::getVoteByVotePostId($pdo, $id);
+				if($vote=== null) {
+					throw(new RuntimeException("vote does not exist", 404));
+				}
 
-	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
+				//enforce the user is signed in and only trying to edit their own vote
+				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
+					throw(new \InvalidArgumentException("You are not allowed to edit this tweet", 403));
+				}
 
+				// update all attributes
+				$vote->setVoteDate($requestObject->voteDate);
+				$vote->setVoteValue($requestObject->voteValue);
+				$vote->update($pdo);
 
+				// update reply
+				$reply->message = "Vote updated OK";
+
+			} else if($method === "POST") {
+
+				// enforce the user is signed in
+				if(empty($_SESSION["profile"]) === true) {
+					throw(new \InvalidArgumentException("you must be logged in to post votes", 403));
+				}
+
+				// create new vote and insert into the database
+				$vote = new Vote(null, $requestObject->VoteProfileId, $requestObject->VoteValue, null);
+				$vote->insert($pdo);
+
+				// update reply
+				$reply->message = "vote created OK";
+			}
+
+		}
