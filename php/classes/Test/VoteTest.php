@@ -370,6 +370,8 @@ class VoteTest extends TownhallTest {
 		$pdoVote = $results[0];
 		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
+		$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
+		$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
 
 	}
 
