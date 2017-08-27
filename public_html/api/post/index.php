@@ -15,12 +15,13 @@ use Edu\Cnm\Townhall\{District, Profile, Post};
  *
  * Want this API to do the following:
  *
- * GET a (all?) post(s) by postDateTime
- * GET a (all?) post(s) by postDistrictId
- * GET a (all?) post(s) by postParentId
- * GET a (all?) post(s) by postId "primary key"
- * GET a (all?) post(s) by postProfileId
- * GET all post(s) by content
+ ****** GET post(s) by postId "primary key"
+ ****** GET a (all?) post(s) by postDistrictId
+ ****** GET post(s) by postProfileId
+ * GET post(s) by postParentId
+ ****** GET post(s) by postContent
+ * GET post(s) by postDate
+ * GET all posts
  *
  * POST a new parent post
  * POST a non-parent "reply" post
@@ -42,7 +43,7 @@ $reply->data = null;
 
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ddctwitter.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 
 	// mock a logged in user by mocking the session and assigning a specific user to it.
 	// this is only for testing purposes and should not be in the live code.
@@ -52,41 +53,63 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$tweetProfileId = filter_input(INPUT_GET, "tweetProfileId", FILTER_VALIDATE_INT);
-	$tweetContent = filter_input(INPUT_GET, "tweetContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$postId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
+	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	// check if correct/needed ??????????????????????????????????????????????????????????????????????????????????????????
+	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
+	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
+	//
+	$postDistrictId = filter_input(INPUT_GET, "postDistrictId", FILTER_VALIDATE_INT);
+	$postParentId = filter_input(INPUT_GET, "postParentId", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
 
-	// handle GET request - if id is present, that tweet is returned, otherwise all tweets are returned
+	// handle the GET request - if the id is present then a* post is returned, otherwise all* posts are returned
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific tweet or all tweets and update reply
+		//get a specific post or all posts and update reply
 		if(empty($id) === false) {
-			$tweet = Tweet::getTweetByTweetId($pdo, $id);
-			if($tweet !== null) {
-				$reply->data = $tweet;
+			$post = Post::getPostByPostId($pdo, $id);
+			if($post !== null) {
+				$reply->data = $post;
 			}
-		} else if(empty($tweetProfileId) === false) {
-			$tweet = Tweet::getTweetByTweetProfileId($pdo, $tweetProfileId)->toArray();
-			if($tweet !== null) {
-				$reply->data = $tweet;
+		} else if(empty($postProfileId) === false) {
+			$posts = Post::getPostByPostProfileId($pdo, $postProfileId)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
 			}
-		} else if(empty($tweetContent) === false) {
-			$tweets = Tweet::getTweetByTweetContent($pdo, $tweetContent)->toArray();
-			if($tweets !== null) {
-				$reply->data = $tweets;
+		} else if(empty($postContent) === false) {
+			$posts = Post::getPostByPostContent($pdo, $postContent)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+//		} else if((empty($formattedSunriseDate) === true) || (empty($formattedSunsetDate) === true)) {
+//				$posts = Post::getPostByPostDate($pdo,$formattedSunriseDate, $formattedSunsetDate);
+//			if($posts !== null) {
+//				$reply->data = $posts;
+//			}
+		} else if(empty($postDistrictId) === false) {
+			$posts = Post::getPostByPostDistrictId($pdo, $postDistrictId)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+		} else if(empty($postParentId) === false) {
+			$posts = Post::getPostByPostParentId($pdo, $postParentId)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
 			}
 		} else {
-			$tweets = Tweet::getAllTweets($pdo)->toArray();
-			if($tweets !== null) {
-				$reply->data = $tweets;
+			$posts = Post::getAllPosts($pdo)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
 			}
 		}
 	} else if($method === "PUT" || $method === "POST") {
@@ -95,23 +118,28 @@ try {
 		verifyXsrf();
 
 		$requestContent = file_get_contents("php://input");
-		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent.
+		// Here we are using file_get_contents("php://input") to get the request from the front end.
+		//file_get_contents() is a PHP function that reads a file into a string.
+		//The argument for the function, here, is "php://input".
+		//This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 
-		//make sure tweet content is available (required field)
-		if(empty($requestObject->tweetContent) === true) {
-			throw(new \InvalidArgumentException ("No content for Tweet.", 405));
+		//make sure post content is available (required field)
+		if(empty($requestObject->postContent) === true) {
+			throw(new \InvalidArgumentException ("post cannot be empty", 405));
 		}
 
-		// make sure tweet date is accurate (optional field)
-		if(empty($requestObject->tweetDate) === true) {
-			$requestObject->tweetDate = null;
+		/** make sure post date is accurate (optional field) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if(empty($requestObject->postDate) === true) {
+			$requestObject->postDate = null;
 		}
+		 **/
 
 		//  make sure profileId is available
-		if(empty($requestObject->tweetProfileId) === true) {
-			throw(new \InvalidArgumentException ("No Profile ID.", 405));
+		if(empty($requestObject->postProfileId) === true) {
+			throw(new \InvalidArgumentException ("no profileId found.", 405));
 		}
 
 		//perform the actual put or post
