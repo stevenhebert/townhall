@@ -9,7 +9,7 @@ use Edu\Cnm\Townhall\ {
 /**
  * API for Profile
  *
- * @author Leonora Sanchez
+ * @author Leonora Sanchez-Rees
  * @version 1.0
  */
 // verify the session; if not active, start it
@@ -51,7 +51,7 @@ try {
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		} elseif(empty($profileName) === false) {
+		} elseif(empty($profileUserName) === false) {
 			$profile = Profile::getProfileByProfileUserName($pdo, $profileUserName);
 			if($profile !== null) {
 				$reply->data = $profile;
@@ -79,10 +79,10 @@ try {
 		if($profile === null) {
 			throw(new RuntimeException("profile does not exist", 404));
 		}
-		if(empty($requestObject->newPassword) === true) {
+		if(empty($requestObject->ProfilePassword) === true) {
 			// enforce that the XSRF token is present in the header
 			verifyXsrf();
-			// profile name
+			// profile user name
 			if(empty($requestObject->profileUserName) === true) {
 				throw(new \InvalidArgumentException("No profile name", 405));
 			}
@@ -114,10 +114,13 @@ try {
 			if(empty($requestObject->profileZip) === true) {
 				throw(new \InvalidArgumentException("No profile zip present", 405));
 			}
-			$profile->setProfileUserName($requestObject->profileName);
+
+			$profile->setProfileUserName($requestObject->profileUserName);
 			$profile->setProfileEmail($requestObject->profileEmail);
 			$profile->setProfileAddress1($requestObject->profileAddress1);
+			$profile->setProfileAddress2($requestObject->profileAddress2);
 			$profile->setProfileCity($requestObject->profileCity);
+			$profile->setProfileFirstName($requestObject->profileFirstName);
 			$profile->setProfileLastName($requestObject->profileLastName);
 			$profile->setProfileState($requestObject->profileState);
 			$profile->setProfileZip($requestObject->profileZip);
@@ -128,8 +131,7 @@ try {
 		 * update the password if requested
 		 */
 		// enforce that the current password and new password are present
-		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false
-			&& empty($requestObject->Confirm) === false) {
+		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->Confirm) === false) {
 			// make sure of new password and enforce the password exists
 			if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
 				throw(new RuntimeException("New passwords do not match", 401));
@@ -149,7 +151,7 @@ try {
 		}
 		// perform the actual update to the database and update the message
 		$profile->update($pdo);
-		$reply->message = "profile password successfully updated";
+		/*$reply->message = "profile password successfully updated";*/
 
 	} elseif($method === "DELETE") {
 		// verify the XSRF token

@@ -5,15 +5,13 @@ require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Townhall\{
-	Actvation,
-	// we only use the profile class for testing purposes
-	Profile
-};
+use Edu\Cnm\Townhall\Profile;
+
+
 
 
 /**
- * api for the Actvation class
+ * api for the Activation class
  *
  * @author {} <mbojorquez2007@gmail.com>
  **/
