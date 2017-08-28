@@ -268,4 +268,23 @@ class DistrictTest extends TownhallTest {
 		$district = District::getDistrictByLongLat($this->getPDO(), "5", "5");
 		$this->assertNull($district);
 	}
+
+	/**
+	 * test grabbing all districts
+	 **/
+	public function testGetAllDistricts() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("district");
+		// create a new Post and insert to into mySQL
+		$post = new District(null,$this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+		$post->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = District::getAllDistrict($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\District", $results);
+		// grab the result from the array and validate it
+		$pdoPost = $results[0];
+		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
+		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 }
