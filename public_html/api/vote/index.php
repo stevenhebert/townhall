@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 // inclusion of profile classe is strictly for testing purposes
-use Edu\Cnm\Townhall\{Profile, Vote};
+use Edu\Cnm\Townhall\Vote;
 
 /**
  * api for the Vote class
@@ -116,25 +116,32 @@ try {
 			}
 			//enforce the user is signed in and only trying to edit their own vote
 			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
-				throw(new \InvalidArgumentException("You are not allowed to delete this vote", 403));
+				throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
 			}
-			//delete
-			$vote->delete($pdo);
-			//update the message
-			$reply->message = "vote deleted";
+			//update
+			$vote->setVoteValue($requestObject->voteValue);
+			$voteValue->update($pdo);
+
+			// update reply
+			$reply->message = "Vote updated OK";
+
+			// if any other HTTP request is sent throw an exception
+		} else {
+			throw new \InvalidArgumentException("invalid http request", 400);
 		}
-		// if any other HTTP request is sent throw an exception
+		// if any other HTTP request is sent throw an exception		 		// if any other HTTP request is sent throw an exception
 	} else {
 		throw new \InvalidArgumentException("invalid http request", 400);
 	}
-	//catch any exceptions that is thrown and update the reply status and message
-} catch(\Exception | \TypeError $exception) {
+ 	//catch any exceptions that is thrown and update the reply status and message		 	//catch any exceptions that is thrown and update the reply status and message
+ } catch(\Exception | \TypeError $exception)  {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 }
-header("Content-type: application/json");
-if($reply->data === null) {
-	unset($reply->data);
-}
-// encode and return reply to front end caller
-echo json_encode($reply);
+
+ header("Content-type: application/json");
+ if($reply->data === null)
+	 unset($reply->data);
+
+ // encode and return reply to front end caller		 // encode and return reply to front end caller
+ echo json_encode($reply);

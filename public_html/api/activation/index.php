@@ -1,23 +1,14 @@
 <?php
-
-require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
+require_once dirname(__DIR__,3)."/php/classes/autoload.php";
+require_once dirname(__DIR__,3)."/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-
 use Edu\Cnm\Townhall\Profile;
-
-
-
-
 /**
- * api for the Activation class
- *
- * @author {} <mbojorquez2007@gmail.com>
- **/
-
-//verify the session, start if not active
-if(session_status() !== PHP_SESSION_ACTIVE) {
+ * API to check profile activation status
+ * @author Michelle
+ */
+// Check the session. If it is not active, start the session.
+if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
 }
 //prepare an empty reply
@@ -26,7 +17,7 @@ $reply->status = 200;
 $reply->data = null;
 try{
 	// grab the MySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/Townhall.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 	//check the HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input (never trust the end user
@@ -35,8 +26,8 @@ try{
 	if(strlen($activation) !== 32){
 		throw(new InvalidArgumentException("activation has an incorrect length", 405));
 	}
-	// verify that the activation token is a string value
-	if(($activation) === false) {
+	// verify that the activation token is a string value of a hexadeciaml
+	if(ctype_xdigit($activation) === false) {
 		throw (new \InvalidArgumentException("activation is empty or has invalid contents", 405));
 	}
 	// handle The GET HTTP request
@@ -54,7 +45,7 @@ try{
 				//update the profile in the database
 				$profile->update($pdo);
 				//set the reply for the end user
-				$reply->data = "Thank you for activating your account with Townhall.";
+				$reply->data = "Thank you for activating your account, you will be auto-redirected to your profile shortly.";
 			}
 		} else {
 			//throw an exception if the activation token does not exist
@@ -62,7 +53,7 @@ try{
 		}
 	} else {
 		//throw an exception if the HTTP request is not a GET
-		throw(new InvalidArgumentException("Invalid HTTP method request"));
+		throw(new InvalidArgumentException("Invalid HTTP method request", 403));
 	}
 	//update the reply objects status and message state variables if an exception or type exception was thrown;
 } catch (Exception $exception){
