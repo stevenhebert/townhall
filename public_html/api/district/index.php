@@ -41,7 +41,7 @@ try {
 		setXsrfCookie();
 		//get a specific district or all districts and update reply
 		if(empty($id) === false) {
-			$district = Distict::getDistrictByDistrictId($pdo, $id);
+			$district = District::getDistrictByDistrictId($pdo, $id);
 			if($district !== null) {
 				$reply->data = $district;
 			}
