@@ -276,7 +276,7 @@ class DistrictTest extends TownhallTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("district");
 		// create a new Post and insert to into mySQL
-		$post = new District(null,$this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+		$post = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$post->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = District::getAllDistrict($this->getPDO());
@@ -286,5 +286,7 @@ class DistrictTest extends TownhallTest {
 		// grab the result from the array and validate it
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
-		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
+		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
+		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
+	}
 }
