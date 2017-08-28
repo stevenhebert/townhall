@@ -3,7 +3,7 @@ require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-use Edu\Cnm\Townhall\{District, Profile};
+use Edu\Cnm\Townhall\{District};
 /**
  * api for the District class
  *
@@ -22,13 +22,14 @@ try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 	// mock a logged in user by forcing the session. This is only for testing purposes and should not be in the live code.
 	// profileId of profile to use for testing,
-	$person = 3998;
+//	$person = 2;
 	// grab a profile by its profileId and add it to the session
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, $person);
+//	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, $person);
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	var_dump($id);
 	$lat = filter_input(INPUT_GET, "lat", FILTER_VALIDATE_FLOAT);
 	$long = filter_input(INPUT_GET, "long", FILTER_VALIDATE_FLOAT);
 	//make sure the id is valid for methods that require it
@@ -46,7 +47,7 @@ try {
 				$reply->data = $district;
 			}
 		} else if(empty($lat and $long) === false) {
-			$district = District::getDistrictByLongLat($pdo, $lat, $long);
+			$district = District::getDistrictByLongLat($pdo, $long, $lat);
 			if($district !== null) {
 				$reply->data = $district;
 			}

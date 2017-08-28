@@ -135,8 +135,8 @@ class District implements \JsonSerializable {
 				throw(new \RangeException("more than two coordinates given"));
 			}
 			try {
-				self::validateLatitude($coordinates[0]);
-				self::validateLongitude($coordinates[1]);
+				self::validateLatitude($coordinates[1]);
+				self::validateLongitude($coordinates[0]);
 			} catch(\Exception | \RangeException | \TypeError $exception) {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -154,7 +154,7 @@ class District implements \JsonSerializable {
 	 **/
 
 	public static function validateLatitude(float $newLat): float {
-		if($newLat < -90 || $newLat > 90) {
+		if($newLat < -90|| $newLat > 90) {
 			throw(new \RangeException("lat not within valid range"));
 		} else {
 			return $newLat;
@@ -295,6 +295,7 @@ class District implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		//bind the districtId ti the place holder in the template
 		$parameters = ["districtId" => $districtId];
+
 		$statement->execute($parameters);
 		//get district from mySQL
 		try {
@@ -326,8 +327,8 @@ class District implements \JsonSerializable {
 	public static function getDistrictByLongLat(\PDO $pdo, float $longitude, float $latitude): ?district {
 		// create temporary object
 		try {
-			self::validateLatitude($longitude);
-			self::validateLongitude($latitude);
+			self::validateLatitude($latitude);
+			self::validateLongitude($longitude);
 		} catch(\Exception | \RangeException | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
