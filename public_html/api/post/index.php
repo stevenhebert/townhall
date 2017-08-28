@@ -46,19 +46,18 @@ try {
 
 	// mock a logged in user by mocking the session and assigning a specific user to it.
 	// this is only for testing purposes and should not be in the live code.
-	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 732);
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 2);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// check if correct/needed ??????????????????????????????????????????????????????????????????????????????????????????
-	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
-	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
+	$formattedSunriseDate = date("Y-m-d H:i:s.u");
+	$formattedSunsetDate = date("Y-m-d H:i:s.u");
 	//
 	$postDistrictId = filter_input(INPUT_GET, "postDistrictId", FILTER_VALIDATE_INT);
 	$postParentId = filter_input(INPUT_GET, "postParentId", FILTER_VALIDATE_INT);
@@ -150,7 +149,7 @@ try {
 
 			// enforce the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("login to post", 403));
+				throw(new \InvalidArgumentException("login to post (or account does not exist?)", 403));
 			}
 
 			// check to see if post has parent
@@ -159,7 +158,7 @@ try {
 				$post->insert($pdo);
 			}
 			// if post does not have parent then create new post and insert into the database
-			else if(empty($requestObject->postParentId) === true) {
+			else if(empty($requestObject->postParentId) === false) {
 				$post = new Post(null, $_SESSION["district"]->getDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 				$post->insert($pdo);
 			}
