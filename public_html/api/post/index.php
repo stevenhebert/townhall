@@ -131,9 +131,9 @@ try {
 		}
 
 		// make sure post date is accurate
-		if(empty($requestObject->postDate) === true) {
-			throw(new \IntlException("date cannot be empty", 405));
-		}
+		//if(empty($requestObject->postDate) === true) {
+		//	throw(new \IntlException("date cannot be empty", 405));
+		//}
 
 		//  make sure profileId is available
 		if(empty($requestObject->postProfileId) === true) {
@@ -155,12 +155,12 @@ try {
 
 			// check to see if post has parent
 			if(empty($requestObject->postParentId) === false) {
-				$post = new Post(null, $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $_SESSION["profile"]->getProfileId(), $requestObject->postContent, null);
+				$post = new Post(null, $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 				$post->insert($pdo);
 			}
 			// if post does not have parent then create new post and insert into the database
 			else if(empty($requestObject->postParentId) === true) {
-				$post = new Post(null, $_SESSION["district"]->getDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent, null);
+				$post = new Post(null, $_SESSION["district"]->getDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 				$post->insert($pdo);
 			}
 
