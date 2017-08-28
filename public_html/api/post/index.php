@@ -52,7 +52,7 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$postId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -75,7 +75,7 @@ try {
 		setXsrfCookie();
 
 		//get a specific post or all posts and update reply
-		if(empty($postId) === false) {
+		if(empty($id) === false) {
 			$post = Post::getPostByPostId($pdo, $id);
 			if($post !== null) {
 				$reply->data = $post;
@@ -174,7 +174,7 @@ try {
 		verifyXsrf();
 
 		// retrieve the post to be deleted
-		$post = Post::getPostByPostId($pdo, $postId);
+		$post = Post::getPostByPostId($pdo, $id);
 		if($post === null) {
 			throw(new RuntimeException("post does not exist", 404));
 		}

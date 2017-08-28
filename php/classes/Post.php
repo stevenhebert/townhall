@@ -634,9 +634,11 @@ class Post implements \JsonSerializable {
 	}
 
 	/*
-			 * needed to add the microsecond to the postDateTime field
-			 * @param $fields object to process postDateTime
-			 */
+	* needed to add the microsecond to the postDateTime field
+	*
+	* @param $fields object to process postDateTime
+	*
+	*/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
 		//format the data so that the front end can consume it
