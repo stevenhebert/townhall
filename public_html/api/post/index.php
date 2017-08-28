@@ -18,10 +18,10 @@ use Edu\Cnm\Townhall\{District, Profile, Post};
  ****** GET post(s) by postId "primary key"
  ****** GET a (all?) post(s) by postDistrictId
  ****** GET post(s) by postProfileId
- * GET post(s) by postParentId
+ ****** GET post(s) by postParentId
  ****** GET post(s) by postContent
  * GET post(s) by postDate
- * GET all posts
+ ****** GET all posts
  *
  * POST a new parent post
  * POST a non-parent "reply" post
@@ -53,8 +53,8 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$postId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// check if correct/needed ??????????????????????????????????????????????????????????????????????????????????????????
@@ -76,7 +76,7 @@ try {
 		setXsrfCookie();
 
 		//get a specific post or all posts and update reply
-		if(empty($id) === false) {
+		if(empty($postId) === false) {
 			$post = Post::getPostByPostId($pdo, $id);
 			if($post !== null) {
 				$reply->data = $post;
@@ -154,9 +154,17 @@ try {
 				throw(new \InvalidArgumentException("login to post", 403));
 			}
 
-			// create new post and insert into the database
-			$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $requestObject->postContent, null);
-			$post->insert($pdo);
+			// check to see if post has parent
+			if(empty($requestObject->postParentId) === false) {
+				$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $requestObject->postContent, null);
+				$post->insert($pdo);
+			}
+
+			// if post does not have parent then create new post and insert into the database
+			else(empty($requestObject->postParentId) === true) {
+				$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $requestObject->postContent, null);
+				$post->insert($pdo);
+			}
 
 			// update reply
 			$reply->message = "post posted";
