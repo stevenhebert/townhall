@@ -37,9 +37,9 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
-	$id= filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$voteProfileId = filter_input(INPUT_GET, "voteProfileId", FILTER_VALIDATE_INT);
-	$voteValue = filter_input(INPUT_GET, "voteValue", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$votePostId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_INT);
+	$voteProfileId = filter_input(INPUT_GET, "VoteTweetId", FILTER_VALIDATE_INT);
+	$voteValue = filter_input(INPUT_GET, "VoteValue", FILTER_VALIDATE_INT);
 	//
 	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
 	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
@@ -54,175 +54,87 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		if(empty($id) === false) {
-			$vote = Vote::getVoteByVotePostId($pdo, $id);
+		//gets  a vote based on its composite key
+		if ($votePostId !== null & $voteProfileId !== null) {
+			$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $votePostId, $voteProfileId);
 			if($vote!== null) {
 				$reply->data = $vote;
 			}
-
-		if(empty($votePostId and $voteProfileId) === false) {
-			$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $postId, $profileId);
+			//verify parameters exists if not throw an exception
+		} else if(empty($votePostId) === false) {
+			$vote = Vote::getVoteByVotePostId($pdo, $votePostId)->toArray();
 			if($vote !== null) {
 				$reply->data = $vote;
 			}
-
-		} else if(empty($voteValue) === false) {
-			$votes = Vote::getVotebyVoteValue($pdo, $postProfileId)->toArray();
-			if($votes !== null) {
-				$reply->data = $votes;
+			//get all the votes that belong to that vote profileId
+		} else if(empty($voteProfileId) === false) {
+			$vote = Vote::getVoteByVoteProfileId($pdo, $voteProfileId)->toArray();
+			if($vote !== null) {
+				$reply->data = $vote;
 			}
-			//		} else if((empty($formattedSunriseDate) === true) || (empty($formattedSunsetDate) === true)) {
-//				$votes = Vote::getVoteByVoteDate($pdo,$formattedSunriseDate, $formattedSunsetDate);
-//			if($votes !== null) {
-//				$reply->data = $votes;
-//			}
-			if($votes !== null) {
-				$reply->data = $votes;
+			//verify vote value
+		} else if(empty($voteValue) === false) {
+			$vote = Vote::getVoteByVoteValue($pdo, $voteValue)->toArray();
+			if($vote !== null) {
+				$reply->data = $vote;
 			}
 		} else {
-			$votes = Vote::getAllVotes($pdo)->toArray();
-			if($votes !== null) {
-				$reply->data = $votes;
-			}
+			throw new InvalidArgumentException("incorrect parameters ", 404);
 		}
-	}
-	else if($method === "PUT" || $method === "POST") {
-
-		// enforce the user has a XSRF token
-		verifyXsrf();
-
-		//  Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+	} else if($method === "POST" || $method === "PUT") {
+		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
-
-		// This Line Then decodes the JSON package and stores that result in $requestObject
 		$requestObject = json_decode($requestContent);
-
-		//make sure vote content is available (required field)
-		if(empty($requestObject->voteContent) === true) {
-			throw(new \InvalidArgumentException ("No value for Vote.", 405));
-		}
-
-		//  make sure votePostId is available
 		if(empty($requestObject->votePostId) === true) {
-			throw(new \InvalidArgumentException ("no votePostId found.", 405));
+			throw (new \InvalidArgumentException("No Post found linked to vote", 405));
 		}
-
-		//  make sure votePostIdAndVoteProfileId is available
-		if(empty($requestObject->votePostIdAndVoteProfileId) === true) {
-			throw(new \InvalidArgumentException ("no votePostIdAndVoteProfileId found.", 405));
+		if(empty($requestObject->voteProfileId) === true) {
+			throw (new \InvalidArgumentException("No profile found linked to vote", 405));
 		}
-
-		// make sure  voteDate is accurate (optional field)
-		//if(empty($requestObject->voteDate) === true) {
-			//	throw(new \IntlException("date cannot be empty", 405));
+		if(empty($requestObject->voteDate) === true) {
+			$requestObject->voteDate = null;
 		}
-
-		//  make sure voteValue is available
-		if(empty($requestObject->voteValue) === true) {
-			throw(new \InvalidArgumentException ("No voteValue.", 405));
-		}
-
-		//  make sure districtId is available
-		if(empty($requestObject->voteDistrictId) === true) {
-			throw(new \InvalidArgumentException ("no districtId found.", 405));
-		}
-
-		//perform the actual put or post
-		if($method === "PUT") {
-
-			// retrieve the vote to update
-			$vote = Vote::getVoteByVotePostId($pdo, $id);
-			if($vote === null) {
-				throw(new RuntimeException("Vote does not exist", 404));
+		if($method === "POST") {
+			// ensure the user is signed in
+			if(empty($_SESSION["profile"]) === true) {
+				throw(new \InvalidArgumentException("you must be logged in to post a vote", 403));
 			}
+			// create new vote and insert into the database
+			$vote = new Vote(null, $requestObject->voteProfileId, $requestObject->voteValue, null);
+			$vote->insert($pdo);
 
-			//enforce the user is signed in and only trying to edit their own vote
-		} elseif($method === "PUT") {
-			// enforce the user is signed in and only trying to edit their own profile
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
-				throw(new \InvalidArgumentException("you are not allowed to access this profile", 403));
-			}
-			// make sure vote date is accurate (optional field)
-			if(empty($requestObject->voteDate) === true) {
-				$requestObject->voteDate = null;
-			}
-
-			//  make sure postIdAndProfileId is available
-			if(empty($requestObject->votePostIdAndVoteProfileId) === true) {
-				throw(new \InvalidArgumentException ("No votePostIdAndProfileID is available.", 405));
-			}
-
-			//perform the actual put or post
-			if($method === "PUT") {
-
-				// retrieve the vote to update
-				$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $id);
-				if($vote=== null) {
-					throw(new RuntimeException("vote does not exist", 404));
-				}
-
-				//enforce the user is signed in and only trying to edit their own vote
-				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
-					throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
-				}
-
-				// update all attributes
-				$vote->setVoteDate($requestObject->voteDate);
-				$vote->setVoteValue($requestObject->voteValue);
-				$vote->update($pdo);
-
-				// update reply
-				$reply->message = "Vote updated OK";
-
-			} else if($method === "POST") {
-
-				// enforce the user is signed in
-				if(empty($_SESSION["profile"]) === true) {
-					throw(new \InvalidArgumentException("you must be logged in to post votes", 403));
-				}
-
-				// create new vote and insert into the database
-				$vote = new Vote(null, $requestObject->VotePostIdAndVoteProfileId, $requestObject->VoteValue, null);
-				$vote->insert($pdo);
-
-				// update reply
-				$reply->message = "vote created OK";
-			}
-
-		}
-		else if($method === "DELETE") {
-
+			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, $requestObject->voteDate, $requestObject->voteValue);
+			$vote->insert($pdo);
+			$reply->message = "vote successful";
+		} else if($method === "PUT") {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
-
-			// retrieve the Vote to be deleted
-			$vote = Vote::getVoteByVotePostId($pdo, $id);
-			if($vote=== null) {
-				throw(new RuntimeException("Vote does not exist", 404));
+			//grab the vote by its composite key
+			$vote = Vote::getVoteByVotePostIdAndVoteValue($pdo, $requestObject->votePostId, $requestObject->voteValue);
+			if($vote === null) {
+				throw (new RuntimeException("Vote does not exist"));
 			}
-
 			//enforce the user is signed in and only trying to edit their own vote
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
 				throw(new \InvalidArgumentException("You are not allowed to delete this vote", 403));
 			}
-
-			// delete vote
+			//delete
 			$vote->delete($pdo);
-			// update reply
-			$reply->message = "Vote deleted OK";
+			//update the message
+			$reply->message = "vote deleted";
 		}
-		// update the $reply->status $reply->message
-	} catch(\Exception | \TypeError $exception) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
+		// if any other HTTP request is sent throw an exception
+	} else {
+		throw new \InvalidArgumentException("invalid http request", 400);
 	}
-
-	header("Content-type: application/json");
-	if($reply->data === null) {
+	//catch any exceptions that is thrown and update the reply status and message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+header("Content-type: application/json");
+if($reply->data === null) {
 	unset($reply->data);
 }
-
-	// encode and return reply to front end caller
-	echo json_encode($reply);
-
-	// finally - JSON encodes the $reply object and sends it back to the front end.
+// encode and return reply to front end caller
+echo json_encode($reply);
