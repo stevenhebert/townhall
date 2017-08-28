@@ -90,8 +90,8 @@ try {
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
-		} else if((empty($formattedSunriseDate) === true) || (empty($formattedSunsetDate) === true)) {
-				$posts = Post::getPostByPostDate($pdo, $sunrisePostDate, $sunsetPostDate);
+		} else if((empty($formattedSunriseDate) === false) || (empty($formattedSunsetDate) === false)) {
+				$posts = Post::getPostByPostDate($pdo, $formattedSunriseDate, $formattedSunsetDate);
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
@@ -155,12 +155,12 @@ try {
 
 			// check to see if post has parent
 			if(empty($requestObject->postParentId) === false) {
-				$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $requestObject->postContent, null);
+				$post = new Post(null, $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $_SESSION["profile"]->getProfileId(), $requestObject->postContent, null);
 				$post->insert($pdo);
 			}
 			// if post does not have parent then create new post and insert into the database
 			else if(empty($requestObject->postParentId) === true) {
-				$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $requestObject->postContent, null);
+				$post = new Post(null, $_SESSION["district"]->getDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent, null);
 				$post->insert($pdo);
 			}
 
