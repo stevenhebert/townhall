@@ -91,11 +91,11 @@ try {
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
-//		} else if((empty($formattedSunriseDate) === true) || (empty($formattedSunsetDate) === true)) {
-//				$posts = Post::getPostByPostDate($pdo,$formattedSunriseDate, $formattedSunsetDate);
-//			if($posts !== null) {
-//				$reply->data = $posts;
-//			}
+		} else if((empty($formattedSunriseDate) === true) || (empty($formattedSunsetDate) === true)) {
+				$posts = Post::getPostByPostDate($pdo, $sunrisePostDate, $sunsetPostDate);
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
 		} else if(empty($postDistrictId) === false) {
 			$posts = Post::getPostByPostDistrictId($pdo, $postDistrictId)->toArray();
 			if($posts !== null) {
@@ -112,7 +112,7 @@ try {
 				$reply->data = $posts;
 			}
 		}
-	} else if($method === "PUT" || $method === "POST") {
+	} else if($method === "POST") {
 
 		//enforce that the user has an XSRF token
 		verifyXsrf();
@@ -132,9 +132,9 @@ try {
 		}
 
 		// make sure post date is accurate
-		//if(empty($requestObject->postDate) === true) {
-		//	throw(new \IntlException("date cannot be empty", 405));
-		//}
+		if(empty($requestObject->postDate) === true) {
+			throw(new \IntlException("date cannot be empty", 405));
+		}
 
 		//  make sure profileId is available
 		if(empty($requestObject->postProfileId) === true) {
@@ -159,14 +159,13 @@ try {
 				$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $requestObject->postContent, null);
 				$post->insert($pdo);
 			}
-
 			// if post does not have parent then create new post and insert into the database
-			else(empty($requestObject->postParentId) === true) {
+			else if(empty($requestObject->postParentId) === true) {
 				$post = new Post(null, $_SESSION["profile"]->getProfileId(), $_SESSION["district"]->getDistrictId(), $requestObject->postContent, null);
 				$post->insert($pdo);
 			}
 
-			// update reply
+			// post reply
 			$reply->message = "post posted";
 		}
 

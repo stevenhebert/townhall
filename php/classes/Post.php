@@ -55,6 +55,7 @@ class Post implements \JsonSerializable {
 	 * @var \DateTime $postDateTime
 	 **/
 	private $postDateTime;
+
 	/**
 	 * constructor for Post
 	 *
@@ -300,7 +301,6 @@ class Post implements \JsonSerializable {
 
 		// update the auto generated timestamp
 		$tempPost = Post::getPostByPostId($pdo, $this->postId);
-
 
 
 		$this->setPostDateTime($tempPost->getPostDateTime());
@@ -585,7 +585,6 @@ class Post implements \JsonSerializable {
 		$formattedSunsetDate = $sunsetPostDate->format("Y-m-d H:i:s.u");
 
 
-
 		$parameters = ["sunrisePostDate" => $formattedSunriseDate, "sunsetPostDate" => $formattedSunsetDate];
 		$statement->execute($parameters);
 
@@ -633,15 +632,16 @@ class Post implements \JsonSerializable {
 		}
 		return ($posts);
 	}
+
 	/*
 			 * needed to add the microsecond to the postDateTime field
 			 * @param $fields object to process postDateTime
 			 */
-	public function jsonSerialize () {
-		$fields =get_object_vars($this);
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
 		//format the data so that the front end can consume it
-		$fields["postDateTime"] = round(floatval($this->postDateTime->format("U.u")) *1000);
-		return($fields);
+		$fields["postDateTime"] = round(floatval($this->postDateTime->format("U.u")) * 1000);
+		return ($fields);
 	}
 
 }
