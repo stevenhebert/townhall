@@ -90,9 +90,9 @@ class Profile implements \JsonSerializable {
 	 *
 	 * @param int|null $newProfileId of this profile or null if a new user
 	 * @param int $newProfileDistrictId of this profile
-	 * @param string $newProfileActivationToken of the user profile
+	 * @param string|null $newProfileActivationToken of the user profile
 	 * @param string $newProfileAddress1 of the user profile
-	 * @param string $newProfileAddress2 of the user profile
+	 * @param string|null $newProfileAddress2 of the user profile
 	 * @param string $newProfileCity of the user profile
 	 * @param string $newProfileEmail of the user profile
 	 * @param string $newProfileFirstName of the user profile
@@ -108,7 +108,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct(?int $newProfileId, int $newProfileDistrictId, string $newProfileActivationToken, string $newProfileAddress1, string $newProfileAddress2, string $newProfileCity, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, ?int $newProfileRepresentative, string $newProfileSalt, string $newProfileState, string $newProfileUserName, string $newProfileZip) {
+	public function __construct(?int $newProfileId, int $newProfileDistrictId, ?string $newProfileActivationToken, string $newProfileAddress1, ?string $newProfileAddress2, string $newProfileCity, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, ?int $newProfileRepresentative, string $newProfileSalt, string $newProfileState, string $newProfileUserName, string $newProfileZip) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileDistrictId($newProfileDistrictId);
@@ -197,7 +197,7 @@ class Profile implements \JsonSerializable {
 	 *
 	 * @return string value of profileActivationToken
 	 **/
-	public function getProfileActivationToken(): string {
+	public function getProfileActivationToken(): ?string {
 		return ($this->profileActivationToken);
 	}
 
@@ -208,7 +208,12 @@ class Profile implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newProfileActivationToken is not a string or insecure
 	 * @throws \TypeError if $newProfileActivationToken is not a string
 	 **/
-	public function setProfileActivationToken(string $newProfileActivationToken): void {
+	public function setProfileActivationToken(?string $newProfileActivationToken): void {
+		if($newProfileActivationToken === null) {
+			$this->profileActivationToken = null;
+			return;
+		}
+
 		// verify the profileActivationToken is secure
 		$newProfileActivationToken = trim($newProfileActivationToken);
 		$newProfileActivationToken = filter_var($newProfileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -270,7 +275,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newProfileAddress2 is not a string or insecure
 	 * @throws \TypeError if $newProfileAddress2 is not a string
 	 **/
-	public function setProfileAddress2(string $newProfileAddress2): void {
+	public function setProfileAddress2(?string $newProfileAddress2): void {
 		//if address 2 is null immediately return it
 		if($newProfileAddress2 === null) {
 			$this->profileAddress2 = null;
