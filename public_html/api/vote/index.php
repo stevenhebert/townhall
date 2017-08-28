@@ -5,8 +5,8 @@ require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-// inclusion of profile and district classes is strictly for testing purposes
-use Edu\Cnm\Townhall\{District, Profile, Post, Vote};
+// inclusion of profile classe is strictly for testing purposes
+use Edu\Cnm\Townhall\{Profile, Vote};
 
 /**
  * api for the Vote class

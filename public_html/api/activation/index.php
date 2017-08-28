@@ -56,7 +56,7 @@ try{
 				//update the profile in the database
 				$profile->update($pdo);
 				//set the reply for the end user
-				$reply->data = "Thank you for activating your account.";
+				$reply->data = "Thank you for activating your account with Townhall.";
 			}
 		} else {
 			//throw an exception if the activation token does not exist
