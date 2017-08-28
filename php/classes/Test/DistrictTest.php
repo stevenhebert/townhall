@@ -218,15 +218,13 @@ class DistrictTest extends TownhallTest {
 		$pdoDistrict = District::getDistrictByDistrictId($this->getPDO(), $district->getDistrictId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
 		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
-		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
+		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictGeom());
 		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
 	}
 
 	/**
 	 * test invalid GET district by districtId
 	 * try to grab a district that doesn't exist
-	 *
-	 *
 	 *
 	 **/
 	public function testInvalidGetByDistrictId() {
@@ -260,8 +258,6 @@ class DistrictTest extends TownhallTest {
 	/**
 	 * test invalid GET by district by long lat
 	 *
-	 *
-	 *
 	 **/
 	public function testInvalidGetByLongLat(): void {
 		// search for a district without one existing in the table
@@ -271,22 +267,23 @@ class DistrictTest extends TownhallTest {
 
 	/**
 	 * test grabbing all districts
+	 *
 	 **/
 	public function testGetAllDistricts() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("district");
 		// create a new Post and insert to into mySQL
-		$post = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
-		$post->insert($this->getPDO());
+		$district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
+		$district->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = District::getAllDistrict($this->getPDO());
+		$results = District::getAllDistricts($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("district"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\District", $results);
 		// grab the result from the array and validate it
-		$pdoPost = $results[0];
+		$pdoDistrict = $results[0];
 		$this->assertEquals($pdoDistrict->getDistrictId(), $district->getDistrictId());
-		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictgeom());
-		$this->assertEquals($pdoDistrict->getDistrictName(), $district->getDistrictName());
+		$this->assertJsonStringEqualsJsonString($pdoDistrict->getDistrictGeom(), $district->getDistrictGeom());
+		$this->assertEquals($pdoDistrict->getDistrictName(), $this->VALID_DISTRICT_NAME);
 	}
 }

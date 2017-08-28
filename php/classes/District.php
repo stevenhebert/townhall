@@ -351,7 +351,7 @@ class District implements \JsonSerializable {
 		return ($district);
 	}
 
-	public static function getAllDistrict(\PDO $pdo): \SplFixedArray {
+	public static function getAllDistricts(\PDO $pdo): \SplFixedArray {
 		//create query template
 		$query = $query = "SELECT districtId, ST_AsGeoJson(districtGeom), districtName FROM district";
 		$statement = $pdo->prepare($query);
@@ -362,7 +362,7 @@ class District implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$district = new District($row["districtId"], $row["ST_ASGeoJson(districtGeom)"], $row["districtName"]);
+				$district = new District($row["districtId"], $row["ST_AsGeoJson(districtGeom)"], $row["districtName"]);
 				$districts[$districts->key()] = $district;
 				$districts->next();
 			} catch(\Exception $exception) {
