@@ -15,20 +15,19 @@ use Edu\Cnm\Townhall\{District, Profile, Post};
  *
  * Want this API to do the following:
  *
- ****** GET post(s) by postId "primary key"
- ****** GET a (all?) post(s) by postDistrictId
- ****** GET post(s) by postProfileId
- ****** GET post(s) by postParentId
- ****** GET post(s) by postContent
+ * GET post(s) by postId "primary key"
+ * GET post(s) by postDistrictId
+ * GET post(s) by postProfileId
+ * GET post(s) by postParentId
+ * GET post(s) by postContent
  * GET post(s) by postDate
- ****** GET all posts
+ * GET all posts
  *
  * POST a new parent post
  * POST a non-parent "reply" post
  *
- * !== PUT "discussed no updating posts"
- *
  * DELETE a post by postId
+ *
  **/
 
 //verify the session, start if not active
