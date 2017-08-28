@@ -37,17 +37,14 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
-	$id= filter_input(INPUT_GET, "VotePostId", FILTER_VALIDATE_INT);
-	$VoteProfileId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_INT);
-	$VoteValue = filter_input(INPUT_GET, "voteValue", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$id= filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$voteProfileId = filter_input(INPUT_GET, "voteProfileId", FILTER_VALIDATE_INT);
+	$voteValue = filter_input(INPUT_GET, "voteValue", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	//
 	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
 	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
 	//
-	//
-	$voteDistrictId = filter_input(INPUT_GET, "voteDistrictId", FILTER_VALIDATE_INT);
-	$voteParentId = filter_input(INPUT_GET, "voteParentId", FILTER_VALIDATE_INT);
-	//
+
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
@@ -79,13 +76,6 @@ try {
 //			if($votes !== null) {
 //				$reply->data = $votes;
 //			}
-		} else if(empty($voteDistrictId) === false) {
-			$votes = Vote::getVoteByVoteDistrictId($pdo, $voteDistrictId)->toArray();
-			if($votes !== null) {
-				$reply->data = $votes;
-			}
-		} else if(empty($voteParentId) === false) {
-			$votes = Vote::getVoteByVoteParentId($pdo, $voteParentId)->toArray();
 			if($votes !== null) {
 				$reply->data = $votes;
 			}
@@ -147,8 +137,10 @@ try {
 			}
 
 			//enforce the user is signed in and only trying to edit their own vote
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
+		} elseif($method === "PUT") {
+			// enforce the user is signed in and only trying to edit their own profile
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
+				throw(new \InvalidArgumentException("you are not allowed to access this profile", 403));
 			}
 			// make sure vote date is accurate (optional field)
 			if(empty($requestObject->voteDate) === true) {
@@ -164,13 +156,13 @@ try {
 			if($method === "PUT") {
 
 				// retrieve the vote to update
-				$vote = Vote::getVoteByVotePostId($pdo, $id);
+				$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $id);
 				if($vote=== null) {
 					throw(new RuntimeException("vote does not exist", 404));
 				}
 
 				//enforce the user is signed in and only trying to edit their own vote
-				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
+				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
 					throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
 				}
 
@@ -210,7 +202,7 @@ try {
 			}
 
 			//enforce the user is signed in and only trying to edit their own vote
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
 				throw(new \InvalidArgumentException("You are not allowed to delete this vote", 403));
 			}
 
