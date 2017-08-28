@@ -37,8 +37,8 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
-	$votePostId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_INT);
-	$voteProfileId = filter_input(INPUT_GET, "VoteTweetId", FILTER_VALIDATE_INT);
+	$votePostId = filter_input(INPUT_GET, "VotePostId", FILTER_VALIDATE_INT);
+	$voteProfileId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_INT);
 	$voteValue = filter_input(INPUT_GET, "VoteValue", FILTER_VALIDATE_INT);
 	//
 	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
@@ -56,25 +56,25 @@ try {
 
 		//gets  a vote based on its composite key
 		if ($votePostId !== null & $voteProfileId !== null) {
-			$vote = Vote::getVoteByVotePostIdAndVoteProfileId($pdo, $votePostId, $voteProfileId);
+			$vote = Vote::getVoteByPostIdAndProfileId($pdo, $votePostId, $voteProfileId);
 			if($vote!== null) {
 				$reply->data = $vote;
 			}
 			//verify parameters exists if not throw an exception
 		} else if(empty($votePostId) === false) {
-			$vote = Vote::getVoteByVotePostId($pdo, $votePostId)->toArray();
+			$vote = Vote::getVoteByPostId($pdo, $votePostId)->toArray();
 			if($vote !== null) {
 				$reply->data = $vote;
 			}
 			//get all the votes that belong to that vote profileId
 		} else if(empty($voteProfileId) === false) {
-			$vote = Vote::getVoteByVoteProfileId($pdo, $voteProfileId)->toArray();
+			$vote = Vote::getVoteByProfileId($pdo, $voteProfileId)->toArray();
 			if($vote !== null) {
 				$reply->data = $vote;
 			}
 			//verify vote value
 		} else if(empty($voteValue) === false) {
-			$vote = Vote::getVoteByVoteValue($pdo, $voteValue)->toArray();
+			$vote = Vote::getVotebyVoteValue($pdo, $voteValue)->toArray();
 			if($vote !== null) {
 				$reply->data = $vote;
 			}
@@ -110,7 +110,7 @@ try {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
 			//grab the vote by its composite key
-			$vote = Vote::getVoteByVotePostIdAndVoteValue($pdo, $requestObject->votePostId, $requestObject->voteValue);
+			$vote = Vote::getVoteByPostIdAndProfileId($requestObject->votePostId, $requestObject->voteProfileId, $requestObject->voteValue);
 			if($vote === null) {
 				throw (new RuntimeException("Vote does not exist"));
 			}
