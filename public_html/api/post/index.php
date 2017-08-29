@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 // inclusion of profile and district classes is strictly for testing purposes
-use Edu\Cnm\Townhall\{District, Profile, Post};
+use Edu\Cnm\Townhall\{Profile, Post};
 
 /**
  * RESTapi for the Post class
@@ -15,7 +15,7 @@ use Edu\Cnm\Townhall\{District, Profile, Post};
  *
  * Want this API to do the following:
  *
- * GET post(s) by postId "primary key"
+ * GET post(s) by postId ($id) "primary key"
  * GET post(s) by postDistrictId
  * GET post(s) by postProfileId
  * GET post(s) by postParentId
@@ -90,7 +90,7 @@ try {
 				$reply->data = $posts;
 			}
 		} else if((empty($formattedSunriseDate) === false) || (empty($formattedSunsetDate) === false)) {
-				$posts = Post::getPostByPostDate($pdo, $formattedSunriseDate, $formattedSunsetDate);
+			$posts = Post::getPostByPostDate($pdo, $formattedSunriseDate, $formattedSunsetDate);
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
@@ -136,12 +136,12 @@ try {
 
 		//  make sure profileId is available
 		if(empty($requestObject->postProfileId) === true) {
-			throw(new \InvalidArgumentException ("no profileId found.", 405));
+			throw(new \InvalidArgumentException ("this profile has not been assigned a profile id", 405));
 		}
 
 		//  make sure districtId is available
 		if(empty($requestObject->postDistrictId) === true) {
-			throw(new \InvalidArgumentException ("no districtId found.", 405));
+			throw(new \InvalidArgumentException ("this profile has not been assigned to a district", 405));
 		}
 
 		//perform the actual post
@@ -154,12 +154,12 @@ try {
 
 			// check to see if post has parent
 			if(empty($requestObject->postParentId) === false) {
-				$post = new Post(null, $_SESSION["district"]->getDistrictId(), $_SESSION["post"]->getPostParentId(), $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+				$post = new Post(null, $requestObject->getProfileDistrictId, $requestObject->Post::getPostByPostParentId($pdo, $postParentId), $requestObject->profileId(), $requestObject->postContent);
 				$post->insert($pdo);
 			}
 			// if post does not have parent then create new post and insert into the database
-			else if(empty($requestObject->postParentId) === false) {
-				$post = new Post(null, $_SESSION["district"]->getDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+			else if(empty($requestObject->postParentId) === true) {
+				$post = new post(null, $requestObject->postDistrictId(), null, $requestObject->profileId(), $requestObject->postContent);
 				$post->insert($pdo);
 			}
 
