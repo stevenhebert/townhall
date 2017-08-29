@@ -264,7 +264,7 @@ class Profile implements \JsonSerializable {
 	 * @param string|null $newProfileAddress2 new value of profile address 2
 	 * @return string value of profileAddress2
 	 **/
-	public function getProfileAddress2(): ?string {
+	public function getProfileAddress2(): string {
 			return ($this->profileAddress2);
 		}
 
