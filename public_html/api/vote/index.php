@@ -29,19 +29,15 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 
-	// mock a logged in user by mocking the session and assigning a specific user to it.
-	// this is only for testing purposes and should not be in the live code.
-	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 732);
-	// grab a profile by its profileId and add it to the session
+
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
-	$votePostId = filter_input(INPUT_GET, "VotePostId", FILTER_VALIDATE_INT);
-	$voteProfileId = filter_input(INPUT_GET, "VoteProfileId", FILTER_VALIDATE_INT);
-	$voteValue = filter_input(INPUT_GET, "VoteValue", FILTER_VALIDATE_INT);
+	$votePostId = filter_input(INPUT_GET, "votePostId", FILTER_VALIDATE_INT);
+	$voteProfileId = filter_input(INPUT_GET, "voteProfileId", FILTER_VALIDATE_INT);
+	$voteValue = filter_input(INPUT_GET, "voteValue", FILTER_VALIDATE_INT);
 	//
-	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
-	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
+
 
 	if($method === "GET") {
 		//set XSRF cookie
@@ -78,13 +74,11 @@ try {
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-		var_dump($requestObject->votePostId);
-		var_dump($requestObject->voteProfileId);
-		var_dump($requestObject->voteValue);
+
 		if(empty($requestObject->votePostId) === true) {
 			throw (new \InvalidArgumentException("No Post found linked to vote", 405));
 		}
-		var_dump($requestObject->voteProfileId);
+
 		if(empty($requestObject->voteProfileId) === true) {
 			throw (new \InvalidArgumentException("No profile found linked to vote", 405));
 		}
@@ -95,18 +89,22 @@ try {
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in to post a vote", 403));
 			}
+			var_dump($requestObject->votePostId);
+			var_dump($requestObject->voteProfileId);
+			var_dump($requestObject->voteValue);
 			// create new vote and insert into the database
-			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, $requestObject->voteValue, null);
-			$vote->insert($pdo);
-
 			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, null, $requestObject->voteValue);
+
+			var_dump($vote);
+
+
 			$vote->insert($pdo);
 			$reply->message = "vote successful";
 		} else if($method === "PUT") {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
 			//grab the vote by its composite key
-			$vote = Vote::getVoteByPostIdAndProfileId($requestObject->votePostId, $requestObject->voteProfileId, $requestObject->voteValue);
+			$vote = Vote::getVoteByPostIdAndProfileId($pdo, $requestObject->votePostId, $requestObject->voteProfileId);
 			if($vote === null) {
 				throw (new RuntimeException("Vote does not exist"));
 			}
@@ -116,7 +114,7 @@ try {
 			}
 			//update
 			$vote->setVoteValue($requestObject->voteValue);
-			$voteValue->update($pdo);
+			$vote->update($pdo);
 
 			// update reply
 			$reply->message = "Vote updated OK";
