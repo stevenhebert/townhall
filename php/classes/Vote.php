@@ -1,16 +1,13 @@
 <?php
-
 namespace Edu\Cnm\TownHall;
-
 require_once("autoload.php");
-
 /**
  * townhall capstone project class Vote
  * @author Michelle Allen <mbojorquez2007@gmail.com>
  * @version 1.0.0
  * */
 class Vote {
-	 use ValidateDate;
+	use ValidateDate;
 	/**
 	 * id for this Post; this and profileId is the primary key
 	 * @var int $votePostId
@@ -31,7 +28,6 @@ class Vote {
 	 * @var int $voteValue
 	 * */
 	private $voteValue;
-
 	/**
 	 *
 	 * constructor for this vote
@@ -58,7 +54,6 @@ class Vote {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-
 	/**
 	 * accessor method for votePostId
 	 *
@@ -67,7 +62,6 @@ class Vote {
 	public function getVotePostId(): int {
 		return ($this->votePostId);
 	}
-
 	/**
 	 * mutator method for votePostId
 	 *
@@ -81,27 +75,21 @@ class Vote {
 			$this->votePostId = null;
 			return;
 		}
-
 		// verify the votePostId is positive
 		if($newVotePostId <= 0) {
 			throw(new \RangeException("votePostId is not positive"));
 		}
-
-
 		// convert and store the vote post id
 		$this->votePostId = $newVotePostId;
 	}
-
 	/**
 	 * accessor method for voteProfileId
 	 *
 	 * @return int value of voteProfileId
 	 **/
-
 	public function getVoteProfileId(): int {
 		return ($this->voteProfileId);
 	}
-
 	/**
 	 * mutator method for voteProfileId
 	 *
@@ -110,16 +98,13 @@ class Vote {
 	 * @throws \TypeError if $newVoteProfileId is not an integer
 	 **/
 	public function setVoteProfileId(int $newVoteProfileId): void {
-
 		// verify the voteProfileId is positive
 		if($newVoteProfileId <= 0) {
 			throw(new \RangeException("voteProfileId is not positive"));
 		}
-
 		// convert and store the voteProfileId
 		$this->voteProfileId = $newVoteProfileId;
 	}
-
 	/**
 	 * accessor method for voteDateTime
 	 *
@@ -128,7 +113,6 @@ class Vote {
 	public function getVoteDateTime(): \DateTime {
 		return ($this->voteDateTime);
 	}
-
 	/**
 	 * mutator method for vote date/time
 	 *
@@ -138,13 +122,11 @@ class Vote {
 	 * @throws \RangeException if $newVoteDateTime is a date that does not exist
 	 **/
 	public function setVoteDateTime($newVoteDateTime = null): void {
-		 {
+		// base case: if the date is null, wait for mysql
+		if($newVoteDateTime === null) {
 			$this->voteDateTime = null;
 			return;
-
-
 		}
-
 		// store the like date using the ValidateDate trait
 		try {
 			$newVoteDateTime = self::validateDateTime($newVoteDateTime);
@@ -154,7 +136,6 @@ class Vote {
 		}
 		$this->voteDateTime = $newVoteDateTime;
 	}
-
 	/**
 	 * accessor method for voteValue
 	 *
@@ -163,7 +144,6 @@ class Vote {
 	public function getVoteValue(): int {
 		return ($this->voteValue);
 	}
-
 	/**
 	 * mutator method for voteValue
 	 *
@@ -177,19 +157,13 @@ class Vote {
 			$this->voteValue = null;
 			return;
 		}
-
 		// verify the value is -1 or 1
-
 		if($newVoteValue !== 1 && $newVoteValue !== -1) {
 			throw(new \RangeException("voteValue is not -1 or 1"));
 		}
-
-
 		// convert and store the voteValue
 		$this->voteValue = $newVoteValue;
 	}
-
-
 	/**
 	 * inserts this VoteDateTime into mySQL
 	 * @param \PDO $pdo PDO connection object
@@ -201,18 +175,12 @@ class Vote {
 		if($this->votePostId === null || $this->voteProfileId===null) {
 			throw(new \PDOException("unable to insert a vote with no profile or post "));
 		}
-
 		// create query template
 		$query = "INSERT INTO vote (votePostId, voteProfileId, voteValue) VALUES(:votePostId, :voteProfileId,  :voteValue)";
 		$statement = $pdo->prepare($query);
-
-
 		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId, "voteValue" => $this->voteValue];
 		$statement->execute($parameters);
-
-
 	}
-
 	/**
 	 * deletes this vote from mySQL
 	 *
@@ -222,21 +190,16 @@ class Vote {
 	 **/
 	public function delete(\PDO $pdo): void {
 		//enforce the votePostId is not null
-
 		if($this->votePostId === null and $this->voteProfileId === null) {
 			throw(new \PDOException("unable to delete a vote that does not exist "));
 		}
-
 // create query template
 		$query = "DELETE FROM vote WHERE votePostId = :votePostId and voteProfileId = :voteProfileId";
 		$statement = $pdo->prepare($query);
-
 //bind the member variables to the place holder in the template
-
 		$parameters = ["votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * updates this Vote in mySQL
 	 *
@@ -249,21 +212,15 @@ class Vote {
 		if($this->votePostId === null) {
 			throw(new \PDOException("unable to update a vote that does not exist"));
 		}
-
 		//create query temple
 		$query = "UPDATE vote SET voteValue = :voteValue
 					WHERE votePostId = :votePostId and voteProfileId = :voteProfileId";
 		$statement = $pdo
 			->prepare($query);
-
 //bind the member variables to the place holders in the template
-
 		$parameters = ["voteValue" => $this->voteValue, "votePostId" => $this->votePostId, "voteProfileId" => $this->voteProfileId];
-
 		$statement->execute($parameters);
 	}
-
-
 	/**gets the vote by postId and profileId, primary key
 	 *
 	 * @param \PDO $pdo connection object
@@ -275,22 +232,18 @@ class Vote {
 	 **/
 	public static function getVoteByPostIdAndProfileId(\PDO $pdo, int $votePostId, int $voteProfileId): ?Vote {
 		//sanitize the PostId before searching
-		 {
+		if($votePostId <= 0) {
 			throw(new \PDOException("post Id is not positive"));
 		}
-
-		 {
+		if($voteProfileId <= 0 ) {
 			throw(new \PDOException("profile Id is not positive"));
 		}
-
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE votePostId = :votePostId and voteProfileId = :voteProfileId";
 		$statement = $pdo->prepare($query);
-
 		//bind the post id to the place holder in the template
 		$parameters = ["votePostId" => $votePostId, "voteProfileId" => $voteProfileId];
 		$statement->execute($parameters);
-
 		//grab post from mySQL
 		try {
 			$vote = null;
@@ -301,12 +254,10 @@ class Vote {
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
-
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($vote);
 	}
-
 	/**gets the vote by votePostId
 	 *
 	 * @param \PDO $pdo connection object
@@ -317,16 +268,12 @@ class Vote {
 	 **/
 	public static function getVoteByPostId(\PDO $pdo, int $votePostId): \SplFixedArray {
 		//sanitize the postDistrictId before searching
-
-
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE votePostId = :votePostId";
 		$statement = $pdo->prepare($query);
-
 		//bind the post district id to the place holder in the template
 		$parameters = ["votePostId" => $votePostId];
 		$statement->execute($parameters);
-
 		//build an array of votes
 		$votes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -342,27 +289,21 @@ class Vote {
 		}
 		return ($votes);
 	}
-
-
 	/**gets the vote by voteProfileId
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $postProfileId to search for
 	 * @return \SplFixedArray SplFixedArray of Profile found
 	 * @throws \PDOException when mySQL related errors occur
-
 	 **/
 	public static function getVoteByProfileId(\PDO $pdo, int $voteProfileId): \SplFixedArray {
 		//sanitize the voteProfileId before searching
-
 		//create query template
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote WHERE voteProfileId = :voteProfileId";
 		$statement = $pdo->prepare($query);
-
 		//bind the post district id to the place holder in the template
 		$parameters = ["voteProfileId" => $voteProfileId];
 		$statement->execute($parameters);
-
 		//build an array of votes
 		$votes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -378,19 +319,6 @@ class Vote {
 		}
 		return ($votes);
 	}
-
-	/**
-	 * gets an array of votes based on its dates and time
-	 *
-	 * @param \PDO $pdo connect object
-	 * @param \DateTime $sunsetVoteDateTime ending date to search for
-	 * @param \DateTime $sunsetVoteDateTime ending date to search for
-	 * @return \SplFixedArray of votes found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
-	 */
-
 
 	/**
 	 * getVoteByValue
@@ -427,7 +355,6 @@ class Vote {
 		}
 		return ($votes);
 	}
-
 	/**
 	 * gets all votes
 	 *
@@ -441,7 +368,6 @@ class Vote {
 		$query = "SELECT votePostId, voteProfileId, voteDateTime, voteValue FROM vote";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
-
 		//build an array of votes
 		$votes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO:: FETCH_ASSOC);
@@ -457,7 +383,6 @@ class Vote {
 		}
 		return ($votes);
 	}
-
 	/**
 	 * formats the state variables for JSON serialization
 	 *
