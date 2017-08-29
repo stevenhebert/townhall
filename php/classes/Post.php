@@ -476,7 +476,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getPostByPostProfileId(\PDO $pdo, int $postProfileId): \SplFixedArray {
-		//sanitize the postDistrictId before searching
+		//sanitize the postProfileId before searching
 		if($postProfileId <= 0) {
 			throw(new \PDOException("post Profile Id is not positive"));
 		}
@@ -485,7 +485,7 @@ class Post implements \JsonSerializable {
 		$query = "SELECT postId, postDistrictId, postParentId, postProfileId, postContent, postDateTime FROM post WHERE postProfileId = :postProfileId";
 		$statement = $pdo->prepare($query);
 
-		//bind the post district id to the place holder in the template
+		//bind the post profile id to the place holder in the template
 		$parameters = ["postProfileId" => $postProfileId];
 		$statement->execute($parameters);
 
