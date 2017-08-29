@@ -3,7 +3,7 @@ require_once dirname(__DIR__, 3 ) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-use Edu\Cnm\Townhall\Profile;
+use Edu\Cnm\Townhall\{Profile, District};
 /**
  * api for signing up to ABQ Townhall
  *
@@ -17,6 +17,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
@@ -74,11 +75,13 @@ try {
 		if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
 			throw(new \InvalidArgumentException("passwords do not match"));
 		}
+		$district = District::getDistrictByLongLat($pdo, $requestObject->long, $requestObject->lat);
+		$districtId = $district->getDistrictId();
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
 		$profileActivationToken = bin2hex(random_bytes(16));
 		//create the profile object and prepare to insert into the database
-		$profile = new Profile(null, 2, $profileActivationToken, $requestObject->profileAddress1, $requestObject->profileAddress2, $requestObject->profileCity, $requestObject->profileEmail, $requestObject->profileFirstName, $hash, $requestObject->profileLastName,null, $salt,$requestObject->profileState,  $requestObject->profileUserName, $requestObject->profileZip);
+		$profile = new Profile(null, $districtId, $profileActivationToken, $requestObject->profileAddress1, $requestObject->profileAddress2, $requestObject->profileCity, $requestObject->profileEmail, $requestObject->profileFirstName, $hash, $requestObject->profileLastName,null, $salt,$requestObject->profileState,  $requestObject->profileUserName, $requestObject->profileZip);
 		//insert the profile into the database
 		$profile->insert($pdo);
 		//compose the email message to send with th activation token
@@ -100,7 +103,7 @@ EOF;
 		$swiftMessage = new Swift_Message();
 		// attach the sender to the message
 		// this takes the form of an associative array where the email is the key to a real name
-		$swiftMessage->setFrom(["hensojr@gmail.com" => "Ryan Henson"]);
+		$swiftMessage->setFrom(["jhenson9@cnm.edu" => "Ryan Henson"]);
 		/**
 		 * attach recipients to the message
 		 * notice this is an array that can include or omit the recipient's name
