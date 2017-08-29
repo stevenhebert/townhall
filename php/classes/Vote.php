@@ -1,12 +1,12 @@
 <?php
-namespace Edu\Cnm\TownHall;
+namespace Edu\Cnm\Townhall;
 require_once("autoload.php");
 /**
  * townhall capstone project class Vote
  * @author Michelle Allen <mbojorquez2007@gmail.com>
  * @version 1.0.0
  * */
-class Vote {
+class Vote  implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for this Post; this and profileId is the primary key
@@ -394,4 +394,5 @@ class Vote {
 		$fields["voteDateTime"] = round(floatval($this->voteDateTime->format("U.u")) * 1000);
 		return ($fields);
 	}
+
 }
