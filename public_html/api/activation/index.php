@@ -23,6 +23,7 @@ try{
 	//sanitize input (never trust the end user
 	$activation = filter_input(INPUT_GET, "activation", FILTER_SANITIZE_STRING);
 	// make sure the activation token is the correct size
+
 	if(strlen($activation) !== 32){
 		throw(new InvalidArgumentException("activation has an incorrect length", 405));
 	}
@@ -35,7 +36,10 @@ try{
 		// set XSRF Cookie
 		setXsrfCookie();
 		//find profile associated with the activation token
-		$profile = Profile::getProfileByProfileActivationToken($pdo, $activation);
+		$profile = Profile::getProfileByActivationToken($pdo, $activation);
+
+
+
 		//verify the profile is not null
 		if($profile !== null){
 			//make sure the activation token matches
