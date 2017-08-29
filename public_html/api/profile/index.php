@@ -11,6 +11,8 @@ use Edu\Cnm\Townhall\ {
  *
  * @author Leonora Sanchez-Rees
  * @version 1.0
+ * profile only allows get and put.  User cannot delete profile.
+ * Post is done in the sign-up API.
  */
 // verify the session; if not active, start it
 if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -132,6 +134,7 @@ try {
 		 */
 		// enforce that the current password and new password are present
 		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->Confirm) === false) {
+			var_dump($requestObject);
 			// make sure of new password and enforce the password exists
 			if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
 				throw(new RuntimeException("New passwords do not match", 401));
@@ -148,28 +151,12 @@ try {
 			$newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
 			$profile->setProfileHash($newPasswordHash);
 			$profile->setProfileSalt($newPasswordSalt);
+			$reply->message = "profile password successfully updated";
 		}
 		// perform the actual update to the database and update the message
 		$profile->update($pdo);
-		/*$reply->message = "profile password successfully updated";*/
 
-	} elseif($method === "DELETE") {
-		// verify the XSRF token
-		verifyXsrf();
-		$profile = Profile::getProfileByProfileId($pdo, $id);
-		if($profile === null) {
-			throw(new RuntimeException("Profile does not exist"));
-		}
-		// enforce the user is signed in and trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileId()) {
-			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
-		}
-		// delete the profile from the database
-		$profile->delete($pdo);
-		$reply->message = "Profile deleted";
-	} else {
-		throw(new InvalidArgumentException("Invalid HTTP request", 400));
-	}
+	} //don't allow delete
 	// catch any exceptions that were thrown and update the status and message state variable fields
 } catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
