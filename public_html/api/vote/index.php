@@ -42,13 +42,7 @@ try {
 	//
 	$formattedSunriseDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
 	$formattedSunsetDate = date_format(INPUT_GET, "Y-m-d H:i:s.u");
-	//
 
-	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
-	// handle GET request - if id is present, that vote is returned, otherwise all votes are returned
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
@@ -84,25 +78,28 @@ try {
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
+		var_dump($requestObject->votePostId);
+		var_dump($requestObject->voteProfileId);
+		var_dump($requestObject->voteValue);
 		if(empty($requestObject->votePostId) === true) {
 			throw (new \InvalidArgumentException("No Post found linked to vote", 405));
 		}
+		var_dump($requestObject->voteProfileId);
 		if(empty($requestObject->voteProfileId) === true) {
 			throw (new \InvalidArgumentException("No profile found linked to vote", 405));
 		}
-		if(empty($requestObject->voteDate) === true) {
-			$requestObject->voteDate = null;
-		}
+
+
 		if($method === "POST") {
 			// ensure the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in to post a vote", 403));
 			}
 			// create new vote and insert into the database
-			$vote = new Vote(null, $requestObject->voteProfileId, $requestObject->voteValue, null);
+			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, $requestObject->voteValue, null);
 			$vote->insert($pdo);
 
-			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, $requestObject->voteDate, $requestObject->voteValue);
+			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, null, $requestObject->voteValue);
 			$vote->insert($pdo);
 			$reply->message = "vote successful";
 		} else if($method === "PUT") {
