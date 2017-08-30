@@ -131,35 +131,22 @@ try {
 			throw(new \InvalidArgumentException ("post cannot be empty", 405));
 		}
 
-		// make sure post date is accurate
-		//if(empty($requestObject->postDate) === true) {
-		//	throw(new \IntlException("date cannot be empty", 405));
-		//}
 
-		//  make sure profileId is available
-		if(empty($_SESSION["profile"]->getProfileId()) === true) {
-			throw(new \InvalidArgumentException ("this profile has not been assigned a profile id", 405));
-		}
-
-		//  make sure districtId is available
-		if(empty($_SESSION["profile"]->getProfileDistrictId()) === true) {
-			throw(new \InvalidArgumentException ("this profile has not been assigned to a district", 405));
-		}
+		// TODO: if requestObject->postParentId === null set $postParentId to null
 
 		// enforce the user is signed in
 		if(empty($_SESSION["profile"]) === true) {
 			throw(new \InvalidArgumentException("login to post (or account does not exist?)", 403));
 		}
 
+		// TODO: make sure that $_SESSION["profile"]->getDistrictId === $requestObject->districtId
+
 		// create the post and create the insert statement
 		$post = new Post(null, $_SESSION["profile"]->getProfileDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 		$post->insert($pdo);
 
 		//assign the new post a parentId for parents postId === parentId
-		if(empty($postParentId) === true) {
-			$post = Post::getPostByPostId($pdo, $id);
-			$post->setPostParentId($id->postParentId);
-		}
+
 
 		// post post/reply
 		$reply->message = "post posted";
