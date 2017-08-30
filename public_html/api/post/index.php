@@ -136,21 +136,22 @@ try {
 
 		// enforce the user is signed in
 		if(empty($_SESSION["profile"]) === true) {
-			throw(new \InvalidArgumentException("login to post (or account does not exist?)", 403));
+			throw(new \InvalidArgumentException ("login to post (or account does not exist?)", 403));
 		}
 
-		// TODO: make sure that $_SESSION["profile"]->getDistrictId === $requestObject->districtId
+		// TODid: make sure that $_SESSION["profile"]->getDistrictId === $requestObject->districtId
+		// Verify this by statically assigning ($requestObject->districtId) and confirming this matches ($_SESSION["profile"]->getDistrictId)
+		// Test this by assigning incorrect district in header request
+		if($_SESSION["profile"]->getProfileDistrictId() !== $requestObject->postDistrictId) {
+			throw(new \InvalidArguementException ("only residents of this district are allowed to post in this district", 405));
+		}
 
 		// create the post and create the insert statement
 		$post = new Post(null, $_SESSION["profile"]->getProfileDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 		$post->insert($pdo);
 
-		//assign the new post a parentId for parents postId === parentId
-
-
 		// post post/reply
-		$reply->message = "post posted";
-
+		$reply->message = "your post was successful";
 	} else if($method === "DELETE") {
 
 		//enforce that the end user has a XSRF token.
@@ -166,6 +167,8 @@ try {
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $post->getPostProfileId()) {
 			throw(new \InvalidArgumentException("only op can deleted this post", 403));
 		}
+
+		// TODO: Ask about deleting posts; will there be issues deleting (parent) posts with chillins?
 
 		// delete post
 		$post->delete($pdo);
