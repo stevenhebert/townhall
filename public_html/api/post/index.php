@@ -151,26 +151,19 @@ try {
 			throw(new \InvalidArgumentException("login to post (or account does not exist?)", 403));
 		}
 
-		// check to see if post has parent
-		//first, post has no parent i.e., is a new post
-		if(empty($requestObject->postParentId) === true) {
-			$post = new Post(null, $_SESSION["profile"]->getProfileDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
-			$post->insert($pdo);
-		//assign new posts a parentId, for parents postId === parentId
-			if(empty($postParentId) === true) {
-				$post = Post::getPostByPostId($pdo, $id);
-				$post->setPostParentId($id->postParentId);
-			}
+		// create the post and create the insert statement
+		$post = new Post(null, $_SESSION["profile"]->getProfileDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+		$post->insert($pdo);
 
-		} // if post does not have parent then create new post and insert into the database
-		else if(empty($requestObject->postParentId) === false) {
-			//else if($requestObject->postParentId) !== ($requestObject->postId) === true) {
-			$post = new post(null, $_SESSION["profile"]->getProfileDistrictId(), $requestObject->postParentId, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
-			$post->insert($pdo);
+		//assign the new post a parentId for parents postId === parentId
+		if(empty($postParentId) === true) {
+			$post = Post::getPostByPostId($pdo, $id);
+			$post->setPostParentId($id->postParentId);
 		}
 
 		// post post/reply
 		$reply->message = "post posted";
+	}
 
 	} else if($method === "DELETE") {
 
