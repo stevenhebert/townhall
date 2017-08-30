@@ -48,13 +48,13 @@ try {
 
 	// mock a logged in user by mocking the session and assigning a specific user to it.
 	// this is only for testing purposes and should not be in the live code.
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 316);
+	// $_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 316);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "postId", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// check if correct/needed ??????????????????????????????????????????????????????????????????????????????????????????
@@ -163,7 +163,6 @@ try {
 
 		// post post/reply
 		$reply->message = "post posted";
-	}
 
 	} else if($method === "DELETE") {
 
