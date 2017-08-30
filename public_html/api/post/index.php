@@ -143,11 +143,11 @@ try {
 		// Verify this by statically assigning ($requestObject->districtId) and confirming this matches ($_SESSION["profile"]->getDistrictId)
 		// Test this by assigning incorrect district in header request
 		if($_SESSION["profile"]->getProfileDistrictId() !== $requestObject->postDistrictId) {
-			throw(new \InvalidArguementException ("only residents of this district are allowed to post in this district", 405));
+			throw(new \InvalidArgumentException("only residents of this district are allowed to post in this district", 405));
 		}
 
 		// create the post and create the insert statement
-		$post = new Post(null, $_SESSION["profile"]->getProfileDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+		$post = new Post(null, $requestObject->postDistrictID, null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 		$post->insert($pdo);
 
 		// post post/reply
