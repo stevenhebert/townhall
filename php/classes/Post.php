@@ -112,7 +112,7 @@ class Post implements \JsonSerializable {
 		}
 
 		//verify that the post id is positive
-		if($newPostId <= 0) {
+		if($newPostId < 0) {
 			throw(new \RangeException("post id is not positive"));
 		}
 
@@ -363,6 +363,8 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getPostByPostId(\PDO $pdo, int $postId): ?Post {
+		var_dump($postId);
+
 		//sanitize the PostId before searching
 		if($postId <= 0) {
 			throw(new \PDOException("post Id is not positive"));

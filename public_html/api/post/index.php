@@ -6,7 +6,9 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 // inclusion of profile and district classes is strictly for testing purposes
-use Edu\Cnm\Townhall\{Profile, Post};
+use Edu\Cnm\Townhall\{
+	Profile, Post
+};
 
 /**
  * RESTapi for the Post class
@@ -46,13 +48,13 @@ try {
 
 	// mock a logged in user by mocking the session and assigning a specific user to it.
 	// this is only for testing purposes and should not be in the live code.
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 2);
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 316);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "postId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// check if correct/needed ??????????????????????????????????????????????????????????????????????????????????????????
@@ -135,37 +137,40 @@ try {
 		//}
 
 		//  make sure profileId is available
-		if(empty($requestObject->postProfileId) === true) {
+		if(empty($_SESSION["profile"]->getProfileId()) === true) {
 			throw(new \InvalidArgumentException ("this profile has not been assigned a profile id", 405));
 		}
 
 		//  make sure districtId is available
-		if(empty($requestObject->postDistrictId) === true) {
+		if(empty($_SESSION["profile"]->getProfileDistrictId()) === true) {
 			throw(new \InvalidArgumentException ("this profile has not been assigned to a district", 405));
 		}
 
-		//perform the actual post
-		if($method === "POST") {
-
-			// enforce the user is signed in
-			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("login to post (or account does not exist?)", 403));
-			}
-
-			// check to see if post has parent
-			if(empty($requestObject->postParentId) === false) {
-				$post = new Post(null, $requestObject->getProfileDistrictId, $requestObject->Post::getPostByPostParentId($pdo, $postParentId), $requestObject->profileId(), $requestObject->postContent);
-				$post->insert($pdo);
-			}
-			// if post does not have parent then create new post and insert into the database
-			else if(empty($requestObject->postParentId) === true) {
-				$post = new post(null, $requestObject->postDistrictId(), null, $requestObject->profileId(), $requestObject->postContent);
-				$post->insert($pdo);
-			}
-
-			// post reply
-			$reply->message = "post posted";
+		// enforce the user is signed in
+		if(empty($_SESSION["profile"]) === true) {
+			throw(new \InvalidArgumentException("login to post (or account does not exist?)", 403));
 		}
+
+		// check to see if post has parent
+		//first, post has no parent i.e., is a new post
+		if(empty($requestObject->postParentId) === true) {
+			$post = new Post(null, $_SESSION["profile"]->getProfileDistrictId(), null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+			$post->insert($pdo);
+		//assign new posts a parentId, for parents postId === parentId
+			if(empty($postParentId) === true) {
+				$post = Post::getPostByPostId($pdo, $id);
+				$post->setPostParentId($id->postParentId);
+			}
+
+		} // if post does not have parent then create new post and insert into the database
+		else if(empty($requestObject->postParentId) === false) {
+			//else if($requestObject->postParentId) !== ($requestObject->postId) === true) {
+			$post = new post(null, $_SESSION["profile"]->getProfileDistrictId(), $requestObject->postParentId, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+			$post->insert($pdo);
+		}
+
+		// post post/reply
+		$reply->message = "post posted";
 
 	} else if($method === "DELETE") {
 
