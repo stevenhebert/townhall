@@ -37,36 +37,29 @@
     <p></p>
     <form>
         <div class="form-group">
-            <label for="inputdefault">First name*</label>
-            <input class="form-control" id="inputdefault" type="text">
-        </div>
-        <div class="form-group">
-            <label for="inputlg">Last name*</label>
-            <input class="form-control input-lg" id="inputlg" type="text">
-        </div>
-        <div class="form-group">
-            <label for="inputsm">input-sm</label>
+            <label for="inputsm">First name*</label>
             <input class="form-control input-sm" id="inputsm" type="text">
         </div>
         <div class="form-group">
-            <label for="sel1">Default select list</label>
-            <select class="form-control" id="sel1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+            <label for="inputsm">Last name*</label>
+            <input class="form-control input-sm" id="inputsm" type="text">
+        </div>
+        <div class="form-group">
+            <label for="inputsm">Address 1*</label>
+            <input class="form-control input-sm" id="inputsm" type="text">
+        </div>
+        <div class="form-group">
+            <label for="inputsm">Address 2</label>
+            <input class="form-control input-sm" id="inputsm" type="text">
+        </div>
+        <div class="form-group">
+            <label for="inputsm">City</label>
+            <select class="form-control input-sm" id="sel2">
+                <option>Albuquerque</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="sel2">input-lg</label>
-            <select class="form-control input-lg" id="sel2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="sel3">input-sm</label>
+            <label for="sel3">zip</label>
             <select class="form-control input-sm" id="sel3">
                 <option>1</option>
                 <option>2</option>
