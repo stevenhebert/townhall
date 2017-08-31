@@ -32,14 +32,7 @@ try {
 	// sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileUserName = filter_input(INPUT_GET, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//address, city firstname lastname state zip
-	$profileAddress1 = filter_input(INPUT_GET, "profileAddress1", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileCity = filter_input(INPUT_GET, "profileCity", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileFirstName = filter_input(INPUT_GET, "profileFirstName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileLastName = filter_input(INPUT_GET, "profileLastName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileState = filter_input(INPUT_GET, "profileState", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileZip = filter_input(INPUT_GET, "profileZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 
 	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING);
 	// make sure the id is valid for methods that require it
@@ -55,16 +48,7 @@ try {
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		} elseif(empty($profileUserName) === false) {
-			$profile = Profile::getProfileByProfileUserName($pdo, $profileUserName);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} elseif(empty($profileEmail) === false) {
-			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
+
 		}
 
 

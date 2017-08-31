@@ -58,7 +58,7 @@ use Edu\Cnm\Townhall\{Profile};
  		$_SESSION["profile"] = $profile;
  		$reply->message = "Sign in was successful.";
  	} else {
-				throw(new \InvalidArgumentException("Invalid HTTP method request."));
+				throw(new \InvalidArgumentException("Invalid HTTP method request.", 418));
  	}
  	// if an exception is thrown update the
  } catch(Exception $exception) {
