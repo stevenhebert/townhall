@@ -142,6 +142,8 @@ try {
 		// TODid: make sure that $_SESSION["profile"]->getDistrictId === $requestObject->districtId
 		// Verify this by statically assigning ($requestObject->districtId) and confirming this matches ($_SESSION["profile"]->getDistrictId)
 		// Test this by assigning incorrect district in header request
+		var_dump($requestObject->postDistrictId);
+		var_dump($_SESSION["profile"]);
 		if($_SESSION["profile"]->getProfileDistrictId() !== $requestObject->postDistrictId) {
 			throw(new \InvalidArgumentException("only residents of this district are allowed to post in this district", 405));
 		}

@@ -136,7 +136,7 @@ try {
 		 */
 		// enforce that the current password and new password are present
 		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->Confirm) === false) {
-			var_dump($requestObject);
+
 			// make sure of new password and enforce the password exists
 			if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
 				throw(new RuntimeException("New passwords do not match", 401));
