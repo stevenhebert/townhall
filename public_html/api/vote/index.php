@@ -89,13 +89,6 @@ try {
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in to post a vote", 403));
 			}
-			var_dump($requestObject->votePostId);
-			var_dump($requestObject->voteProfileId);
-			var_dump($requestObject->voteValue);
-			// create new vote and insert into the database
-			$vote = new Vote($requestObject->votePostId, $requestObject->voteProfileId, null, $requestObject->voteValue);
-
-			var_dump($vote);
 
 
 			$vote->insert($pdo);
@@ -107,10 +100,6 @@ try {
 			$vote = Vote::getVoteByPostIdAndProfileId($pdo, $requestObject->votePostId, $requestObject->voteProfileId);
 			if($vote === null) {
 				throw (new RuntimeException("Vote does not exist"));
-			}
-			//enforce the user is signed in and only trying to edit their own vote
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $vote->getVoteProfileId()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this vote", 403));
 			}
 			//update
 			$vote->setVoteValue($requestObject->voteValue);
