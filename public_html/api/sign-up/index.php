@@ -59,6 +59,14 @@ try {
 		if(empty($requestObject->profileEmail) === true) {
 			throw(new \InvalidArgumentException ("No profile email present", 405));
 		}
+		//profile lat is a required field
+		if(empty($requestObject->lat) === true) {
+			throw(new \InvalidArgumentException ("No profile lat", 405));
+		}
+		//profile long is a required field
+		if(empty($requestObject->long) === true) {
+			throw(new \InvalidArgumentException ("No profile long", 405));
+		}
 		//verify that profile password is present
 		if(empty($requestObject->profilePassword) === true) {
 			throw(new \InvalidArgumentException ("Must input valid password", 405));
@@ -76,7 +84,13 @@ try {
 			throw(new \InvalidArgumentException("passwords do not match"));
 		}
 		$district = District::getDistrictByLongLat($pdo, $requestObject->long, $requestObject->lat);
-		$districtId = $district->getDistrictId();
+		//make sure district is not null
+		if($district == Null) {
+			$districtId = 10;
+		}
+		else {
+			$districtId = $district->getDistrictId();
+		}
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
 		$profileActivationToken = bin2hex(random_bytes(16));
