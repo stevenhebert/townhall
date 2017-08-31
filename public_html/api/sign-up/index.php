@@ -163,7 +163,7 @@ EOF;
 		// update reply
 		$reply->message = "Thank you for creating a profile with ABQ Townhall";
 	} else {
-		throw (new InvalidArgumentException("invalid http request"));
+		throw (new InvalidArgumentException("invalid http request", 400));
 	}
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
