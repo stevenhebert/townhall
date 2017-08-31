@@ -22,7 +22,7 @@ use Edu\Cnm\Townhall\{
  * GET post(s) by postParentId
  * GET post(s) by postContent
  * GET post(s) by postDate
- * GET all posts
+ * GET all posts 
  * POST a new parent post
  * POST a non-parent "reply" post
  *
@@ -49,10 +49,13 @@ try {
 	$id = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	// check if correct/needed ??????????????????????????????????????????????????????????????????????????????????????????
-	$formattedSunriseDate = date("Y-m-d H:i:s.u");
-	$formattedSunsetDate = date("Y-m-d H:i:s.u");
-	//
+
+	$postDate = filter_input(INPUT_GET, "postDate");
+	$sunriseDate = filter_input(INPUT_GET, "postDate");
+	//$formattedSunriseDate = date_format($sunriseDate,"Y-m-d H:i:s.u");
+	$sunsetDate = filter_input(INPUT_GET, "postDate");
+	//$formattedSunriseDate = date_format($sunriseDate,"Y-m-d H:i:s.u");
+
 	$postDistrictId = filter_input(INPUT_GET, "postDistrictId", FILTER_VALIDATE_INT);
 	$postParentId = filter_input(INPUT_GET, "postParentId", FILTER_VALIDATE_INT);
 
@@ -83,8 +86,8 @@ try {
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
-		} else if((empty($formattedSunriseDate) === false) || (empty($formattedSunsetDate) === false)) {
-			$posts = Post::getPostByPostDate($pdo, $formattedSunriseDate, $formattedSunsetDate);
+		} else if((empty($sunriseDate) === false) || (empty($sunsetDate) === false)) {
+			$posts = Post::getPostByPostDate($pdo, $sunriseDate, $sunsetDate);
 			if($posts !== null) {
 				$reply->data = $posts;
 			}
