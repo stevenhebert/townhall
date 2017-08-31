@@ -16,7 +16,6 @@ use Edu\Cnm\Townhall\{
  * @author Steven Hebert <hebertsteven@me.com>
  *
  * Want this API to do the following:
- *
  * GET post(s) by postId ($id) "primary key"
  * GET post(s) by postDistrictId
  * GET post(s) by postProfileId
@@ -24,11 +23,8 @@ use Edu\Cnm\Townhall\{
  * GET post(s) by postContent
  * GET post(s) by postDate
  * GET all posts
- *
  * POST a new parent post
  * POST a non-parent "reply" post
- *
- * DELETE a post by postId
  *
  **/
 
@@ -45,10 +41,6 @@ $reply->data = null;
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
-
-	// mock a logged in user by mocking the session and assigning a specific user to it.
-	// this is only for testing purposes and should not be in the live code.
-	// $_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 316);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -131,54 +123,26 @@ try {
 			throw(new \InvalidArgumentException ("post cannot be empty", 405));
 		}
 
-
-		// TODO: if requestObject->postParentId === null set $postParentId to null
-
 		// enforce the user is signed in
 		if(empty($_SESSION["profile"]) === true) {
 			throw(new \InvalidArgumentException ("login to post (or account does not exist?)", 403));
 		}
 
-		// TODid: make sure that $_SESSION["profile"]->getDistrictId === $requestObject->districtId
-		// Verify this by statically assigning ($requestObject->districtId) and confirming this matches ($_SESSION["profile"]->getDistrictId)
-		// Test this by assigning incorrect district in header request
-		var_dump($requestObject->postDistrictId);
-		var_dump($_SESSION["profile"]);
+		// make sure that district id from profile matches the session district id
 		if($_SESSION["profile"]->getProfileDistrictId() !== $requestObject->postDistrictId) {
 			throw(new \InvalidArgumentException("only residents of this district are allowed to post in this district", 405));
 		}
 
 		// create the post and create the insert statement
-		$post = new Post(null, $requestObject->postDistrictID, null, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+		$post = new Post(null, $requestObject->postDistricttId, $requestObject->postParentId, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 		$post->insert($pdo);
 
 		// post post/reply
 		$reply->message = "your post was successful";
-	} else if($method === "DELETE") {
-
-		//enforce that the end user has a XSRF token.
-		verifyXsrf();
-
-		// retrieve the post to be deleted
-		$post = Post::getPostByPostId($pdo, $id);
-		if($post === null) {
-			throw(new RuntimeException("post does not exist", 404));
-		}
-
-		//enforce the user is signed in and only trying to edit their own post
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $post->getPostProfileId()) {
-			throw(new \InvalidArgumentException("only op can deleted this post", 403));
-		}
-
-		// TODO: Ask about deleting posts; will there be issues deleting (parent) posts with chillins?
-
-		// delete post
-		$post->delete($pdo);
-		// update reply
-		$reply->message = "post deleted";
 	} else {
-		throw (new InvalidArgumentException("Invalid HTTP method request"));
+		throw (new InvalidArgumentException("Invalid HTTP method request",418));
 	}
+
 // update the $reply->status $reply->message
 } catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
