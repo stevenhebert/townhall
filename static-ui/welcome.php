@@ -52,6 +52,7 @@
 				<script src='https://www.google.com/recaptcha/api.js'></script>
 
 
+
 				<title>ABQ Town Hall</title>
 			</head>
 	</head>
@@ -60,7 +61,7 @@
 
 		<h1>Welcome to Albuquerque Virtual Town Hall</h1>
 		<div class="row">
-			<div class="col-6-sm offset4">
+			<div class="col-6-sm">
 				<form class="form-container">
 				<h4>Login</h4>
 				<label>Email</label>

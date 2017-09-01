@@ -1,14 +1,7 @@
-* {
-	margin: 0;
-	padding: 0;
-}
 .container {
 	margin: 0 auto;
 	background-image: url("../images/abq_1200.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 801px;
-}
-label {
-	display: block;
 }
