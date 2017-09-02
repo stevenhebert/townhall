@@ -53,20 +53,14 @@
 
 
 
-        <title>Sign-up</title>
+        <title>Register</title>
     </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6"</div>
-        <div class="col-md-6"></div>
-    </div>
-
 <h1>Sign up</h1>
 <form>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="First-Name" type="text" class="form-control" name="First-Name" placeholder="First-Name"
+        <input id="First-Name" type="text" class="form-control" name="First-Name" placeholder="First-Name">
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
