@@ -53,7 +53,7 @@
 
 
 
-        <title>ABQ Town Hall</title>
+        <title>Sign-up</title>
     </head>
 <body>
 <div class="container">
@@ -66,11 +66,11 @@
 <form>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="First Name" type="text" class="form-control" name="First Name" placeholder="First Name">
+        <input id="First-Name" type="text" class="form-control" name="First-Name" placeholder="First-Name"
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="Last Name" type="text" class="form-control" name="Last Name" placeholder="Last Name">
+        <input id="Last-Name" type="text" class="form-control" name="Last-Name" placeholder="Last-Name">
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
@@ -90,7 +90,7 @@
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="Zip Code" type="text" class="form-control" name="Zip Code" placeholder="Zip Code">
+        <input id="Zip-Code" type="text" class="form-control" name="Zip-Code" placeholder="Zip-Code">
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
@@ -102,7 +102,7 @@
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="Re Enter Password" type="text" class="form-control" name="Re Enter Password" placeholder="Re Enter Password">
+        <input id="Re-Enter-Password" type="text" class="form-control" name="Re-Enter-Password" placeholder="Re-Enter-Password">
     </div>
     <div class="container">
         <button type="button" class="btn btn-info btn-lg">Submit</button>
