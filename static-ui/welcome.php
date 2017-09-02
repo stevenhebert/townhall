@@ -63,7 +63,7 @@
 
 		<h1>Welcome to Albuquerque Virtual Town Hall</h1>
 		<div class="row">
-			<div class="col-sm-6 text-center">
+			<div class="row">
 				<form class="form-container">
 				<h4>Login</h4>
 					<form>
@@ -86,4 +86,4 @@
 		</div><!--row-->
 		</div><!--container-->
 	</body>
-</html>
+</htm
