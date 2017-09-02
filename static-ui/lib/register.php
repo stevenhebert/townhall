@@ -76,18 +76,6 @@
         <span class="input-group-addon"></span>
         <input id="password" type="password" class="form-control" name="password" placeholder="Password">
     </div>
-
-</form>
-<h1>Sign in</h1>
-<form>
-    <div class="input-group">
-        <span class="input-group-addon"></span>
-        <input id="User Name" type="text" class="form-control" name="User Name" placeholder="User Name">
-    </div>
-    <div class="input-group">
-        <span class="input-group-addon"></span>
-        <input id="Password" type="text" class="form-control" name="Password" placeholder="Password">
-    </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
         <input id="Re Enter Password" type="text" class="form-control" name="Re Enter Password" placeholder="Re Enter Password">
