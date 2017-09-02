@@ -7,8 +7,6 @@
 	padding: 5rem;
 }
 
-*/Sticky footer styles
--------------------------------------------------- */
 html {
 	position: relative;
 	min-height: 100%;
@@ -47,3 +45,6 @@ code {
 	font-size: 80%;
 }
 
+.btn {
+	margin: 2rem;
+}

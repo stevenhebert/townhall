@@ -56,6 +56,9 @@
 				<title>Welcome to ABQ Town Hall</title>
 			</head>
 	<body>
+
+		</header>
+
 		<div class="container">
 
 		<h1>Welcome to Albuquerque Virtual Town Hall</h1>
@@ -63,10 +66,15 @@
 			<div class="col-sm-6 text-center">
 				<form class="form-container">
 				<h4>Login</h4>
-				<p>Email</p>
-					<p>text box here</p>
-				<p>password</p>
-					<p>text box here</p>
+					<form>
+						<div class="input-group">
+							<span class="input-group-addon"></span>
+							<input id="email" type="text" class="form-control" name="email" placeholder="email">
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon"></span>
+							<input id="password" type="text" class="form-control" name="password" placeholder="password">
+						</div>
 				<button class="btn btn-success">Login</button>
 				</form>
 
