@@ -55,10 +55,10 @@
 
 		<title>ABQ Town Hall Posts</title>
 	</head>
-	</head>
+
 <body class="sfooter">
 	<div class="sfooter-content">
-
+		<main class="bgimg">
 		<!-- insert header and navbar -->
 		<header>
 			<nav class="navbar navbar-default">
@@ -72,7 +72,7 @@
 							<span class="icon-bar"></span>
 						</button>
 						<a class="navbar-brand" href="posts.php">
-							<img alt="Brand" src="images/ABQTH.png">
+							<img alt="Brand" src="images/abq-townhall.png">
 						</a>
 					</div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
@@ -88,7 +88,7 @@
 			</nav>
 
 
-		<main class="bg">
+
 			<div class="container">
 				<div class="row">
 
