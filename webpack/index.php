@@ -14,6 +14,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		<title>ABQ Townhall</title>
 	</head>
 	<body>
-		<angular4-example>Loading&hellip;</angular4-example>
+		<abq-townhall>Loading&hellip;</abq-townhall>
 	</body>
 </html>

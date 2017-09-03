@@ -1,8 +1,8 @@
 import {Component} from "@angular/core";
 
 @Component({
-	selector: "angular4-example",
-	templateUrl: "./templates/angular4-example-app.php"
+	selector: "abq-townhall",
+	templateUrl: "./templates/home.php"
 })
 
 export class AppComponent {}
