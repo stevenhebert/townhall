@@ -1,16 +1,8 @@
-// Angular 4
-import "@angular/platform-browser";
-import "@angular/platform-browser-dynamic";
-import "@angular/core";
-import "@angular/common";
-import "@angular/http";
-import "@angular/router";
+import {Component} from "@angular/core";
 
-// RxJS
-import "rxjs";
+@Component({
+	selector: "angular4-example",
+	templateUrl: "./templates/angular4-example-app.php"
+})
 
-// Other vendors for example Lodash or Bootstrap
-// You can import js, ts, css, sass, ...
-import "jquery";
-import "bootstrap-loader";
-import "font-awesome-webpack2";
+export class AppComponent {}
