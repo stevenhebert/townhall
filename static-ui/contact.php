@@ -101,11 +101,6 @@
     </main>
 </div>
 
-<footer>
-    <div class="container">
-        <a href="https://bootcamp-coders.cnm.edu/class-materials/jquery-validated-captcha-form/" target="_blank">Documentation</a> | <a href="https://github.com/mbojorquez2007/townhall" target="_blank">GitHub</a>
-    </div>
-</footer>
 </body>
 </html>
 
