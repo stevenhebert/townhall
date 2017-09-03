@@ -41,7 +41,7 @@
 					</div>
 
 					<div class="col-md-8">
-						<h1>Blabbermouth Kitty Diary</h1>
+						<h1>ABQ Townhall</h1>
 
 						<!-- Begin Post Item -->
 						<div *ngFor="let post of posts" class="panel panel-default">
