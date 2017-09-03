@@ -67,7 +67,6 @@ class District implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-		//	$this->districtId = $newDistrictId;
 	}
 
 	/**
