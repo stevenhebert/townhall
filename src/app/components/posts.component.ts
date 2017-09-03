@@ -13,7 +13,7 @@ export class PostsComponent implements OnInit {
 
 	newPost : Post = new Post(null, null, null, null);
 	posts : Post[] = [];
-	status : Status = null;
+	//status : Status = null;
 
 	constructor(protected postService: PostService) {}
 
