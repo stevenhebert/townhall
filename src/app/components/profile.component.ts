@@ -28,4 +28,8 @@ export class ProfileComponent implements OnInit {
 			.switchMap((params: Params) => this.profileService.getProfile(+params["id"]))
 			.subscribe(reply => this.profile = reply);
 	}
+
+
+
+
 }
