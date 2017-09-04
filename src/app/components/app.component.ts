@@ -8,7 +8,7 @@ import {SessionService} from "../services/session.service";
 
 export class AppComponent implements OnInit {
 
-	constructor(protected sessionService) {}
+	constructor(protected sessionService: SessionService) {}
 
 	ngOnInit() : void {
 		this.sessionService.setSession();
