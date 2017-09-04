@@ -1,12 +1,12 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs";
-import {PostService} from "../services/post-service";
+import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/posts.php"
+	templateUrl: "./templates/post.php"
 })
 
 export class PostsComponent implements OnInit {

@@ -1,19 +1,20 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {BaseService} from "./base.service";
+import {BaseService} from "../services/base.service";
 import {Status} from "../classes/status";
+import {Profile} from "../classes/profile";
 
 @Injectable()
-export class SignOutService extends BaseService {
+export class SignUpService extends BaseService {
 	constructor(protected http: Http) {
 		super(http);
 	}
 
-	private signOutUrl = "api/sign-out/";
+	private signUpUrl = "api/register/";
 
-	getSignOut() : Observable<Status> {
-		return(this.http.get(this.signOutUrl)
+	postSignUp(profile:Profile) : Observable<Status> {
+		return(this.http.post(this.signUpUrl, profile)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}

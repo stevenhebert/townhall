@@ -6,7 +6,7 @@ import {HomeComponent} from "./components/home.component";
 import {NavbarComponent} from "./components/navbar.components"
 import {PostComponent} from "./components/post.component";
 import {ProfileComponent} from "./components/profile.component";
-import {RegisterComponent} from "./components/register.component";
+import {SignUpComponent} from "./components/signup.component";
 
 
 
@@ -20,7 +20,7 @@ export const routes: Routes = [
 	{path: "navbar", component: NavbarComponent},
 	{path: "post", component: PostComponent},
 	{path: "profile", component: ProfileComponent},
-	{path: "register", component: RegisterComponent},
+	{path: "signup", component: SignUpComponent},
 
 ];
 

@@ -11,7 +11,7 @@ export class PostService extends BaseService {
 		super(http);
 	}
 
-	private postUrl = "apis/post/";
+	private postUrl = "api/post/";
 
 	getAllPosts() : Observable<Post[]> {
 		return(this.http.get(this.postUrl)
