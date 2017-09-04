@@ -11,9 +11,9 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<base href="<?php echo dirname($_SERVER["PHP_SELF"]) . "/"; ?>" />
 
-		<title>ABQ Townhall</title>
+		<title>ABQ Town Hall</title>
 	</head>
 	<body>
-		<abq-townhall>Loading&hellip;</abq-townhall>
+		<abq-town-hall>Loading&hellip;</abq-town-hall>
 	</body>
 </html>
