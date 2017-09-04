@@ -4,7 +4,7 @@ import {HomeComponent} from "./components/home-component";
 export const allAppComponents = [HomeComponent];
 
 export const routes: Routes = [
-	{path: "", component: HomeComponent}
+	{path: "abq-town-hall", component: HomeComponent}
 ];
 
 export const appRoutingProviders: any[] = [];
