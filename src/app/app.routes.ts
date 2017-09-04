@@ -6,14 +6,21 @@ import {HomeComponent} from "./components/home.component";
 import {NavbarComponent} from "./components/navbar.components"
 import {PostComponent} from "./components/post.component";
 import {ProfileComponent} from "./components/profile.component";
+import {RegisterComponent} from "./components/register.component";
+
 
 
 export const allAppComponents = [HomeComponent];
 
 export const routes: Routes = [
+
+	{path "about", component: AboutComponent},
+	{path "footer", component: FooterComponent},
 	{path: "", component: HomeComponent},
+	{path "navbar", component: NavbarComponent},
 	{path: "post", component: PostComponent},
 	{path: "profile", component: ProfileComponent},
+	{path: "register", component: RegisterComponent},
 
 ];
 
