@@ -1,28 +1,28 @@
 {
-  "name": "angular4-example",
+  "name": "townhall-webpack-devserver",
   "version": "1.0.0",
   "license": "Apache-2.0",
-  "author": {
-    "name": "Dylan McDonald",
-    "email": "dylan@deepdivedylan.com",
-    "url": "https://bootcamp-coders.cnm.edu/screencasts/getting-started-with-angular2/"
-  },
-  "contributors": [
+  "authors": [
     {
-      "name": "George Kephart",
-      "email": "gkephart@cnm.edu"
+      "name": "Leonora Sanchez-Rees"
     },
     {
-      "name": "Mason Crane",
-      "email": "mcrane2@cnm.edu"
+      "name": "Michelle Allen"
+    },
+    {
+      "name": "Ryan Henson"
+    },
+    {
+      "name": "Steven Hebert"
     }
   ],
   "scripts": {
-    "build": "rimraf public_html/dist && tsc && webpack --config webpack/webpack.live.js --progress --profile --bail"
+    "build": "rimraf public_html/dist && webpack --config webpack/webpack.live.js --progress --profile --bail",
+    "start": "rimraf public_html/dist && webpack-dev-server --config webpack/webpack.dev.js --inline --progress --port 7272"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/deepdivedylan/angular4-example"
+    "url": "https://github.com/stevenhebert/townhall"
   },
   "dependencies": {
     "@angular/common": "~4.1.1",
@@ -63,9 +63,10 @@
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.17.0",
-    "typescript": "^2.3.2",
+    "typescript": "^2.5.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.5.1",
+    "webpack-dev-server": "2.4.5",
     "webpack-merge": "^4.1.0"
   }
 }
