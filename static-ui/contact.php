@@ -97,8 +97,28 @@
 
             </div><!-- /.col-sm-6 -->
         </div><!-- /.row -->
-    </main>
-</div>
+
+            <!---sticky footer--->
+            <nav class="navbar navbar-inverse navbar-fixed-bottom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Townhall</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Welcome</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Contact us</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span></span>license:https://creativecommons.org/licenses/by-nc-sa/2.0/legalcode</a></li>
+                        <li><a href="#"><span></span>copyright:by ruimc77</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+        </div>
+
+        </div>
 </main>
 </body>
 </html>
