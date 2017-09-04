@@ -6,7 +6,7 @@ import {Post} from "../classes/post";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/posts.php"
+	templateUrl: "./templates/posts.html"
 })
 
 export class PostsComponent implements OnInit {

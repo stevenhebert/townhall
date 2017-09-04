@@ -1,5 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./components/home.component";
+import {PostsComponent} from "./components/posts.component"
 
 export const allAppComponents = [HomeComponent];
 
