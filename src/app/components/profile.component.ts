@@ -1,7 +1,7 @@
 import{Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {ProfileService} from "../service/profile-service";
-import {Profile} from "../class/profile-class";
+import {Profile} from "../class/profile";
 import {Status} from "../class/status";
 import "rxjs/add/operator/switchMap";
 
