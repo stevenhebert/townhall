@@ -3,7 +3,7 @@ import {SessionService} from "../services/session.service";
 
 @Component({
 	selector: "abq-town-hall",
-	templateUrl: "./templates/abq-town-hall.php"
+	templateUrl: "./templates/abq-town-hall.html"
 })
 
 export class AppComponent implements OnInit {
