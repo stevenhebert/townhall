@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 
 @Component({
-	selector: "abq-townhall",
+	selector: "abq-town-hall",
 	templateUrl: "./templates/home.php"
 })
 
