@@ -1,0 +1,17 @@
+import {Component, OnInit} from "@angular/core";
+import {SessionService} from "../services/session.service";
+
+@Component({
+	selector: "abq-town-hall",
+	templateUrl: "./templates/abq-town-hall.php"
+})
+
+export class AppComponent implements OnInit {
+
+	constructor(protected sessionService) {}
+
+	ngOnInit() : void {
+		this.sessionService.setSession();
+	}
+
+}
