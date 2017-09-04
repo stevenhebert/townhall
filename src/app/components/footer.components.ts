@@ -3,7 +3,8 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs";
 
 @Component({
-	templateUrl: "./templates/home.php"
+	selector: "footer",
+	templateUrl: "./templates/footer.php"
 })
 
-export class HomeComponent {}
+export class FooterComponent {}
