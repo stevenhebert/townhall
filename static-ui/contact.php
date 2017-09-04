@@ -33,16 +33,15 @@
 
     <title>Contact Us</title>
 </head>
-<body class="sfooter">
-<div class="sfooter-content">
+<body>
+    <main class="bgimg">
 
-    <header>
         <div class="container">
+    <header>
             <h1>Contact Us</h1>
-        </div>
     </header>
 
-    <main class="container">
+
         <div class="row">
             <div class="col-sm-6">
 
@@ -100,7 +99,7 @@
         </div><!-- /.row -->
     </main>
 </div>
-
+</main>
 </body>
 </html>
 
