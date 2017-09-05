@@ -13,3 +13,4 @@
 /public_html/index.php
 /npm-debug.log
 package-lock.json
+**/php/mail-config.php
