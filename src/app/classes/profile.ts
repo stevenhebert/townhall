@@ -13,7 +13,7 @@ export class Profile{
 		public profileSalt: string,
 		public profileState: string,
 		public profileUserName: string,
-		public profileZip: number
+		public profileZip: string
 ){
 	}
 }

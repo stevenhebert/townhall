@@ -9,7 +9,7 @@ import {Status} from "../classes/status";
 	templateUrl: "./templates/post.php"
 })
 
-export class PostsComponent implements OnInit {
+export class PostComponent implements OnInit {
 
 	newPost : Post = new Post(null, null, null, null);
 	posts : Post[] = [];

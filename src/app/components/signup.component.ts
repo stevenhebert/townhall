@@ -6,7 +6,7 @@ import {Status} from "../classes/status";
 import {Profile} from "../classes/profile";
 
 @Injectable()
-export class SignUpService extends BaseService {
+export class SignUpComponent extends BaseService {
 	constructor(protected http: Http) {
 		super(http);
 	}

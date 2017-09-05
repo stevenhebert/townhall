@@ -1,8 +1,8 @@
 import{Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
-import {ProfileService} from "../service/profile-service";
-import {Profile} from "../class/profile";
-import {Status} from "../class/status";
+import {ProfileService} from "../services/profile.service";
+import {Profile} from "../classes/profile";
+import {Status} from "../classes/status";
 import "rxjs/add/operator/switchMap";
 
 
@@ -13,7 +13,7 @@ import "rxjs/add/operator/switchMap";
 
 export class ProfileComponent implements OnInit {
 	status: Status = null;
-	profile: Profile = new Profile(0, 0, "", "", 0, "", "", "", "");
+	profile: Profile = new Profile(null, null, "", "", "", "", "", "", "", "", "", "", "", "");
 
 	constructor(private profileService: ProfileService, private route: ActivatedRoute) {
 	}
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
 
 	getProfile(): void {
 		this.route.params
-			.switchMap((params: Params) => this.profileService.getProfile(+params["id"]))
+			.switchMap((params: Params) => this.profileService.getProfileByProfileId(+params["id"]))
 			.subscribe(reply => this.profile = reply);
 	}
 

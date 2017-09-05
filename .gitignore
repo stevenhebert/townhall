@@ -5,7 +5,10 @@
 /vendor
 /src/**/*.js
 /src/**/*.js.map
+/vendor
 /public_html/dist
 /public_html/index.html
 /npm-debug.log
-/webpack/target.js
+package-lock.json
+/webapck/target.js
+
