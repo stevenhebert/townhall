@@ -7,17 +7,18 @@ import {Status} from "../classes/status";
 
 @Injectable()
 export class ActivationService extends BaseService {
-    constructor(protected http: Http){
-        super(http);
-    }
+	constructor(protected http: Http) {
+		super(http);
+	}
 
-    private activationUrl = "api/activation/";
-    /* activate account through emailed link
-     * based on session */
+	private activationUrl = "api/activation/";
 
-    getActivation(activation: string): Observable<Status>{
-        return(this.http.get(this.activationUrl+"?profileActivation="+activation)
-            .map(this.extractData)
-            .catch(this.handleError));
-    }
+	// activate account by email
+	// uses session
+
+	profileActivationToken(activation: string): Observable<Status> {
+		return (this.http.get(this.activationUrl + "?profileActivationToken" + activation)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 }

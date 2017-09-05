@@ -7,13 +7,13 @@ import "rxjs/add/operator/switchMap";
 
 
 @Component({
-	templateUrl: "./templates/profile-template.html",
+	templateUrl: "./templates/profile-template.php",
 	selector: "profile-view"
 })
 
 export class ProfileComponent implements OnInit {
 	status: Status = null;
-	profile: Profile = new Profile(null, null, null, null, "", "", "", "", "", "", null, null, "", "");
+	profile: Profile = new Profile(null, null, "", "", "", "", "", "", "", "", "", "", "", "");
 
 	constructor(private profileService: ProfileService, private route: ActivatedRoute) {
 	}
@@ -33,19 +33,3 @@ export class ProfileComponent implements OnInit {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
