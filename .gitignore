@@ -5,12 +5,7 @@
 /vendor
 /src/**/*.js
 /src/**/*.js.map
-/typings
-/app/**/*.js
-/app/**/*.js.map
-/vendor
 /public_html/dist
-/public_html/index.php
+/public_html/index.html
 /npm-debug.log
-package-lock.json
-**/php/mail-config.php
+/webpack/target.js
