@@ -5,19 +5,7 @@
 /vendor
 /src/**/*.js
 /src/**/*.js.map
-<<<<<<< HEAD
-=======
-/typings
-/app/**/*.js
-/app/**/*.js.map
-/vendor
->>>>>>> added mailer.php
 /public_html/dist
-/public_html/index.php
+/public_html/index.html
 /npm-debug.log
-<<<<<<< HEAD
 /webpack/target.js
-=======
-package-lock.json
-**/php/mail-config.php
->>>>>>> added mailer.php
