@@ -1,39 +1,32 @@
-import {Http, Response} from "@angular/http";
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Status} from "../classes/status";
+import {BaseService} from "./base.service";
+import {Distric} from "../classes/district";
 
-export abstract class BaseService {
-	constructor(protected http: Http) {}
-
-	protected extractData(response: Response) : any {
-		if(response.status < 200 || response.status >= 300) {
-			throw(new Error("Bad response status: " + response.status))
-		}
-
-		let json = response.json();
-		if(json.status !== 200) {
-			throw(new Error("Bad API status: " + json.status));
-		}
-		return(json.data);
+@Injectable()
+export class DistrictService extends BaseService {
+	constructor(protected http: Http) {
+		super(http);
 	}
 
-	protected extractMessage(response: Response) : Status {
-		if(response.status < 200 || response.status >= 300) {
-			throw(new Error("Bad response status: " + response.status))
-		}
+	private postUrl = "api/post/";
 
-		let json = response.json();
-		let jsonStatus = "alert-success";
-		if(json.status !== 200) {
-			jsonStatus = "alert-danger";
-		}
-		let status = new Status(json.status, json.message, jsonStatus);
-		return(status);
+	getAllDistricts() : Observable<District[]> {
+		return(this.http.get(this.postUrl)
+			.map(this.extractData)
+			.catch(this.handleError));
 	}
 
-	protected handleError(error:any) {
-		let message = error.message;
-		console.log(message);
-		return(Observable.throw(message));
+	getPostByDistrictId(districtId : number) : Observable<District> {
+		return(this.http.get(this.postUrl + districtId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
+	getPostByLatLong(Lat Long : number) : Observable<District> {
+		return(this.http.get(this.postUrl + districtId)
+			.map(this.extractData)
+			.catch(this.handleError));
 	}
 }

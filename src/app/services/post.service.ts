@@ -48,6 +48,11 @@ export class PostService extends BaseService {
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
+	getPostByPostParentId(postParentId : number) : Observable<Post> {
+		return(this.http.get(this.postUrl + postParentId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
 	createPost(post : Post) : Observable<Status> {
 		return(this.http.post(this.postUrl, post)
