@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
-import {Distric} from "../classes/district";
+import {District} from "../classes/district";
 
 @Injectable()
 export class DistrictService extends BaseService {
@@ -18,14 +18,14 @@ export class DistrictService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getPostByDistrictId(districtId : number) : Observable<District> {
+	getDistrictByDistrictId(districtId : number) : Observable<District> {
 		return(this.http.get(this.postUrl + districtId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getPostByLatLong(Lat Long : number) : Observable<District> {
-		return(this.http.get(this.postUrl + districtId)
+	getDistrictByLatLong(latLong : string) : Observable<District> {
+		return(this.http.get(this.postUrl + latLong)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
