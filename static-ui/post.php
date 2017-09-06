@@ -61,7 +61,7 @@
 			<main class="bgimg">
 				<!-- insert header and navbar -->
 				<header>
-					<nav class="navbar navbar-default">
+					<nav class="navbar navbar-default" id="top-of-page">
 						<div class="container-fluid">
 							<!-- Brand and toggle get grouped for better mobile display -->
 							<div class="navbar-header">
@@ -126,10 +126,21 @@
 							</div>
 						</div>
 					</div>
-			</main>
+					</main>
+
 		</div><!--/.sfooter-content-->
 
 		<!-- insert footer -->
+		<footer class="text-center">
+			<a class="up-arrow" href="#top-of-page" data-toggle="tooltip" title="TO TOP">
+				<span class="glyphicon glyphicon-chevron-up"></span>
+			</a><br><br>
+			<p>&copy; 2017 by Albuquerque Townhall.  Photo &copy;ruimc77.  Used under <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/legalcode" data-toggle="tooltip" title="https://creativecommons.org/licenses/by-nc-sa/2.0/legalcode">Creative Commons License</a></p>
+		</footer>
+
+
+
+
 
 	</body>
 </html>

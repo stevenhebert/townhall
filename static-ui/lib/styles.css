@@ -3,7 +3,8 @@
 	background-image: url("../images/abq_1200.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
-	height: 850px;
+	width: 100%;
+	height: 900px;
 	padding: 5rem;
 }
 .navbar-brand {
@@ -26,24 +27,27 @@ header {
 	color: #ffffff;
 }
 
+footer {
+	background-color: #153240;
+	color: #f5f5f5;
+	padding: 1% 5%;
+}
 
+footer a {
+	color: #f5f5f5;
+}
+
+footer a:hover {
+	color: #777;
+	text-decoration: none;
+}
 
 html {
 	position: relative;
 	min-height: 100%;
 }
-body {
-	/* Margin bottom by footer height */
-	margin-bottom: 60px;
-}
-.footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	/* Set the fixed height of the footer here */
-	height: 60px;
-	background-color: #f5f5f5;
-}
+
+
 
 
 /* Custom page CSS
@@ -57,10 +61,7 @@ body > .container {
 	margin: 20px 0;
 }
 
-.footer > .container {
-	padding-right: 15px;
-	padding-left: 15px;
-}
+
 
 code {
 	font-size: 80%;
