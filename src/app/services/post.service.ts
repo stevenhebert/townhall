@@ -26,30 +26,30 @@ export class PostService extends BaseService {
 	}
 
 	getPostByDistrictId(districtId : number) : Observable<Post> {
-		return(this.http.get(this.postUrl + districtId)
+		return(this.http.get(this.postUrl + '?postDistrictId='+ districtId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
 	getPostByProfileId(profileId : number) : Observable<Post> {
-		return(this.http.get(this.postUrl + profileId)
+		return(this.http.get(this.postUrl + '?postProfileId='+ profileId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
 	getPostByPostContent(postContent : string) : Observable<Post> {
-		return(this.http.get(this.postUrl + postContent)
+		return(this.http.get(this.postUrl + '?postContent=' + postContent)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	getPostByDate(postDate : string) : Observable<Post> {
-		return(this.http.get(this.postUrl + postDate)
+	getPostByDate(postDate : Date) : Observable<Post> {
+		return(this.http.get(this.postUrl + '?postDate=' + +postDate)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 	getPostByPostParentId(postParentId : number) : Observable<Post> {
-		return(this.http.get(this.postUrl + postParentId)
+		return(this.http.get(this.postUrl + 'postParentId=' + postParentId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
