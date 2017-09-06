@@ -31,6 +31,24 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 
+	getPostByProfileId(profileId : number) : Observable<Post> {
+		return(this.http.get(this.postUrl + profileId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
+	getPostByPostContent(postContent : string) : Observable<Post> {
+		return(this.http.get(this.postUrl + postContent)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
+	getPostByDate(postDate : string) : Observable<Post> {
+		return(this.http.get(this.postUrl + postDate)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
 	createPost(post : Post) : Observable<Status> {
 		return(this.http.post(this.postUrl, post)
 			.map(this.extractMessage)
