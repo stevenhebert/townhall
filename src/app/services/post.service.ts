@@ -25,6 +25,12 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 
+	getPostByDistrictId(districtId : number) : Observable<Post> {
+		return(this.http.get(this.postUrl + districtId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
 	createPost(post : Post) : Observable<Status> {
 		return(this.http.post(this.postUrl, post)
 			.map(this.extractMessage)
