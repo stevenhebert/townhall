@@ -63,11 +63,11 @@
 <form>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="First-Name" type="text" class="form-control" name="First-Name" placeholder="First-Name">
+        <input id="First-Name" type="text" class="form-control" name="First-Name" placeholder="First Name">
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="Last-Name" type="text" class="form-control" name="Last-Name" placeholder="Last-Name">
+        <input id="Last-Name" type="text" class="form-control" name="Last-Name" placeholder="Last Name">
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
@@ -87,12 +87,17 @@
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
-        <input id="Zip-Code" type="text" class="form-control" name="Zip-Code" placeholder="Zip-Code">
+        <input id="Zip-Code" type="text" class="form-control" name="Zip-Code" placeholder="Zip Code">
     </div>
     <div class="input-group">
         <span class="input-group-addon"></span>
         <input id="Email" type="text" class="form-control" name="Email" placeholder="Email">
     </div>
+	<label>Please choose a user name and password.  Your user name is what will display when you make a post to Town Hall</label>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input id="user-name" type="text" class="form-control" name="user-name" placeholder="User Name">
+	</div>
     <div class="input-group">
         <span class="input-group-addon"></span>
         <input id="password" type="password" class="form-control" name="password" placeholder="Password">
