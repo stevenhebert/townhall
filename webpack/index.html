@@ -1,3 +1,8 @@
+<?php
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -9,6 +14,7 @@
 		<title>ABQ Town Hall</title>
 	</head>
 	<body>
+		<!-- This custom tag much match your Angular @Component selector name in app/app.component.ts -->
 		<abq-town-hall>Loading&hellip;</abq-town-hall>
 	</body>
 </html>
