@@ -13,7 +13,7 @@ import "rxjs/add/operator/switchMap";
 
 export class ProfileComponent implements OnInit {
 	status: Status = null;
-	profile: Profile = new Profile(null, null, "", "", "", "", "", "", "", "", "", "", "", "");
+	profile: Profile = new Profile(null, null, null, null, "", "", "", "", "", "", null, null, "", "");
 
 	constructor(private profileService: ProfileService, private route: ActivatedRoute) {
 	}
