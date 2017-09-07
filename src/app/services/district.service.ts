@@ -24,8 +24,8 @@ export class DistrictService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getDistrictByLatLong(Lat : number, Long : number) : Observable<District> {
-		return(this.http.get(this.postUrl + lat & Long)
+	getDistrictByLatLong(lat : number, long : number) : Observable<District> {
+		return(this.http.get(this.postUrl + ('?lat=' + lat && + '?long=' + long))
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
