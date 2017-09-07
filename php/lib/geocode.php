@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * function to get Lat and Long by address
+ *
+ * @param string $address profile address
+ * @throws \InvalidArgumentException if $address is not a string or insecure
+ *
+ **/
 function getLatLongByAddress ($address) : \stdClass {
 
 	if(empty($address) === true) {
