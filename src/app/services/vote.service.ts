@@ -6,7 +6,7 @@ import {Vote} from "../classes/vote";
 import {Status} from "../classes/status";
 
 @Injectable()
-export class PostService extends BaseService {
+export class VoteService extends BaseService {
 	constructor(protected http: Http) {
 		super(http);
 	}
