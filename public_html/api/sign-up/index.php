@@ -59,14 +59,6 @@ try {
 		if(empty($requestObject->profileEmail) === true) {
 			throw(new \InvalidArgumentException ("No profile email present", 405));
 		}
-		//profile lat is a required field
-		if(empty($requestObject->lat) === true) {
-			throw(new \InvalidArgumentException ("No profile lat", 405));
-		}
-		//profile long is a required field
-		if(empty($requestObject->long) === true) {
-			throw(new \InvalidArgumentException ("No profile long", 405));
-		}
 		//verify that profile password is present
 		if(empty($requestObject->profilePassword) === true) {
 			throw(new \InvalidArgumentException ("Must input valid password", 405));
@@ -83,7 +75,8 @@ try {
 		if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
 			throw(new \InvalidArgumentException("passwords do not match"));
 		}
-		$district = District::getDistrictByLongLat($pdo, $requestObject->long, $requestObject->lat);
+		$latLongObject = getLatLongByAddress($requestObject->profileAddress1);
+		$district = District::getDistrictByLongLat($pdo, $latLongObject->long, $latLongObject->lat);
 		//make sure district is not null
 		if($district == Null) {
 			$districtId = 10;
