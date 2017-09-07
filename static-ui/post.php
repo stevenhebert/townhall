@@ -42,8 +42,7 @@
 
 		<!-- jQuery Form, Additional Methods, Validate -->
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqu
-		ery-validate/1.17.0/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
 
 		<!-- Your JavaScript Form Validator -->
@@ -73,14 +72,14 @@
 									<span class="icon-bar"></span>
 								</button>
 								<a class="navbar-brand" href="posts.php">
-									<img alt="Brand" src="../src/app/images/abq-townhall.png">
+									<img alt="Brand" src="images/abq-townhall.png">
 								</a>
 							</div>
 							<!-- Collect the nav links, forms, and other content for toggling -->
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="nav navbar-nav navbar-right">
 									<li class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts <span class="caret"></span></a>
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Districts <span class="caret"></span></a>
 										<ul class="dropdown-menu">
 											<li><a href="#">District 1</a></li>
 											<li><a href="#">District 2</a></li>
@@ -93,6 +92,7 @@
 											<li><a href="#">District 9</a></li>
 										</ul>
 									</li>
+									<li><a href="">Posts</a></li>
 									<li><a href="">About Us</a></li>
 									<li><a href="">Contact Us</a></li>
 
@@ -108,7 +108,7 @@
 						<div class="row">
 
 							<div class="col-md-4">
-								<h2 class="text-center">Create New Post</h2>
+								<h1>Create New Post</h1>
 
 								<!-- Create New Post Form -->
 								<form id="contact-form">
@@ -123,14 +123,14 @@
 										</div>
 									</div>
 
-									<div class ="center-block text-center"><button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
-										<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button></div>
+									<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+									<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
 								</form>
 
 							</div>
 
 							<div class="col-md-8">
-								<h2 class="text-center"> All Posts in District Number </h2>
+								<h1>Posts in District Number </h1>
 
 								<!-- Begin Post Item -->
 								<div class="panel panel-default">
