@@ -78,6 +78,21 @@
 							<!-- Collect the nav links, forms, and other content for toggling -->
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Districts <span class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li><a href="#">District 1</a></li>
+											<li><a href="#">District 2</a></li>
+											<li><a href="#">District 3</a></li>
+											<li><a href="#">District 4</a></li>
+											<li><a href="#">District 5</a></li>
+											<li><a href="#">District 6</a></li>
+											<li><a href="#">District 7</a></li>
+											<li><a href="#">District 8</a></li>
+											<li><a href="#">District 9</a></li>
+										</ul>
+									</li>
+									<li><a href="">District</a></li>
 									<li><a href="">Posts</a></li>
 									<li><a href="">About Us</a></li>
 									<li><a href="">Contact Us</a></li>
@@ -86,6 +101,7 @@
 							</div><!-- /.navbar-collapse -->
 						</div><!-- /.container-fluid -->
 					</nav>
+				</header>
 
 
 
