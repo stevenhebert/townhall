@@ -49,7 +49,7 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 	getPostByPostParentId(postParentId : number) : Observable<Post> {
-		return(this.http.get(this.postUrl + 'postParentId=' + postParentId)
+		return(this.http.get(this.postUrl + '?postParentId=' + postParentId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
