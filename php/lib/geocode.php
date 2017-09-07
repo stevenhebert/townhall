@@ -8,8 +8,11 @@ function getLatLongByAddress ($address) : \stdClass {
 	$address = filter_var($address, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	$url = 'https://maps.googleapis.com/maps/api/geocode/json';
-	$api = '';
+	$config = readConfig("/etc/apache2/capstone-mysql/townhall.ini");
+	$api = $config["google"];
+
 	$json = file_get_contents($url . '?address=' . urlencode($address) . '&key=' . $api);
+	var_dump($json);
 	$jsonObject = json_decode($json);
 	$lat = $jsonObject->results[0]->geometry->location->lat;
 	$long = $jsonObject->results[0]->geometry->location->lng;
