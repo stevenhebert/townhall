@@ -383,6 +383,24 @@ class Vote  implements \JsonSerializable {
 		}
 		return ($votes);
 	}
+
+	function getSumOfVoteValuesByPostId ($address) : \stdClass {
+		$query = "SELECT sum(voteValue) FROM vote group by voteValue having votePostId = :votePostId";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		$address = filter_var($address, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$url = 'https://maps.googleapis.com/maps/api/geocode/json';
+		$api = '';
+		$json = file_get_contents($url . '?address=' . urlencode($address) . '&key=' . $api);
+		$jsonObject = json_decode($json);
+		$lat = $jsonObject->results[0]->geometry->location->lat;
+		$long = $jsonObject->results[0]->geometry->location->lng;
+		$reply = new stdClass();
+		$reply->lat = $lat;
+		$reply->long = $long;
+		return $reply;
+	}
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *

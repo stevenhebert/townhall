@@ -54,6 +54,7 @@ CREATE TABLE post (
 );
 
 -- table vote
+
 CREATE TABLE vote (
 	votePostId    INT UNSIGNED                NOT NULL,
 	voteProfileId INT UNSIGNED                NOT NULL,
@@ -63,6 +64,6 @@ CREATE TABLE vote (
 	INDEX (voteProfileId),
 	FOREIGN KEY (votePostId) REFERENCES post (postId),
 	FOREIGN KEY (voteProfileId) REFERENCES profile (profileId),
-	PRIMARY KEY (votePostId)
+	PRIMARY KEY (votePostId, voteProfileId)
 );
 
