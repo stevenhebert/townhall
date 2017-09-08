@@ -93,11 +93,10 @@ try {
 				$reply->data = $posts;
 			}
 		} else if(empty($postDistrictId) === false) {
-			$posts = Post::getPostByPostDistrictId($pdo, $postDistrictId)->toArray();
+			$posts = Post::getPostByPostDistrictId($pdo, $postDistrictId);
 			if($posts !== null) {
-
-
-				$reply->data = $posts;
+				$postProfiles = getPostProfileName($posts);
+				$reply->data = $postProfiles;
 			}
 		} else if(empty($postParentId) === false) {
 			$posts = Post::getPostByPostParentId($pdo, $postParentId)->toArray();

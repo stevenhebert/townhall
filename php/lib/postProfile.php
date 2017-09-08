@@ -36,9 +36,5 @@ function getPostProfileName (\SplFixedArray $posts) : array {
 
 		$postProfiles[] =$postProfile;
 	}
-
-
-
-
 	return $postProfiles;
 }
