@@ -20,7 +20,7 @@
 						<label for="profileFirstName" class="col-sm-2 control-label">First Name</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileFirstName" name="profileFirstName" class="form-control" required
-									 [(ngModel)]=signUp.profileFirstName" #signUpFirstName="ngModel">>
+									 [(ngModel)]=signUp.profileFirstName" #signUpFirstName="ngModel">
 						</div>
 					</div>
 
@@ -37,7 +37,7 @@
 					<div class="form-group">
 						<label for="profileAddress1" class="col-sm-2 control-label">Address 1</label>
 						<div class="col-sm-10">
-							<input type="test" id="profileAddress1" name="profileAdress1" class="form-control input-sm" required
+							<input type="text" id="profileAddress1" name="profileAdress1" class="form-control input-sm" required
 									 [(ngModel)]="signUp.profileAddress1" #signUpAddress1="ngModel">
 						</div>
 					</div>
