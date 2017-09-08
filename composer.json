@@ -2,9 +2,7 @@
   "require": {
     "phpdocumentor/phpdocumentor": "@stable",
     "phpunit/dbunit": "@stable",
-    "phpunit/phpunit": "@stable",
-    "swiftmailer/swiftmailer": "@stable"
-    "google/recaptcha": "@stable"
+    "phpunit/phpunit": "@stable"
   },
 
   "scripts":{

@@ -489,7 +489,11 @@ class VoteTest extends TownhallTest {
 
 		$results = Vote::getSumOfVoteValuesByPostId($this->getPDO(), $this->post->getPostId());
 		$results2 = Vote::getSumOfVoteValuesByPostId($this->getPDO(), $this->post2->getPostId());
+		$this->assertEquals($results->votePostId, $this->post->getPostId());
+		$this->assertEquals($results2->votePostId, $this->post2->getPostId());
 		//test with var dump?
+		var_dump($results);
+		var_dump($results2);
 
 
 
