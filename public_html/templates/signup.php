@@ -13,7 +13,7 @@
 			<div class="modal-body">
 
 				<!-- actual form -->
-				<form class="form-horizontal" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
+				<form class="form-horizontal" #signupForm="ngForm" name="signupForm" (ngSubmit)="postSignUp();">
 
 					<!-- abq town hall first name -->
 					<div class="form-group">
