@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Status} from "../classes/status";
 import {Profile} from "../classes/profile";
+import {Observable} from "rxjs/Observable";
+import {SignUp} from "../classes/signup";
 
 @Injectable()
 export class SignUpService extends BaseService {
@@ -13,8 +14,8 @@ export class SignUpService extends BaseService {
 
 	private signUpUrl = "api/sign-up/";
 
-	postSignUp(profile:Profile) : Observable<Status> {
-		return(this.http.post(this.signUpUrl, profile)
+	createProfile(signUp: SignUp) : Observable<Status> {
+		return(this.http.post(this.signUpUrl, signUp)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
