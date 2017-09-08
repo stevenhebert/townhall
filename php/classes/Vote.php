@@ -384,21 +384,28 @@ class Vote  implements \JsonSerializable {
 		return ($votes);
 	}
 
-	function getSumOfVoteValuesByPostId ($address) : \stdClass {
-		$query = "SELECT sum(voteValue) FROM vote group by voteValue having votePostId = :votePostId";
+	function getSumOfVoteValuesByPostId (\PDO $pdo, int $votePostId) : \stdClass {
+		$query = "select votePostId, (select count(voteValue) from vote where votePostId = :votePostId and voteValue = 1) as upVote, (select count(voteValue) from vote where votePostId = :votePostId and voteValue = -1) as downVote from vote where votePostId = :votePostId group by votePostId;";
 		$statement = $pdo->prepare($query);
-		$statement->execute();
-		$address = filter_var($address, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		$url = 'https://maps.googleapis.com/maps/api/geocode/json';
-		$api = '';
-		$json = file_get_contents($url . '?address=' . urlencode($address) . '&key=' . $api);
-		$jsonObject = json_decode($json);
-		$lat = $jsonObject->results[0]->geometry->location->lat;
-		$long = $jsonObject->results[0]->geometry->location->lng;
-		$reply = new stdClass();
-		$reply->lat = $lat;
-		$reply->long = $long;
-		return $reply;
+		// bind the vote value to the place holder in the template
+		$parameters = ["votePostId" => $votePostId];
+		$statement->execute($parameters);
+
+		try {
+			$reply = new \stdClass();
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$reply->votePostId = $row["votePostId"];
+				$reply->upVote = $row["upVote"];
+				$reply->downVote = $row["downVote"];
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($reply);
+
 	}
 
 	/**
