@@ -9,7 +9,6 @@ import {ProfileComponent} from "./components/profile.component";
 import {SignUpComponent} from "./components/signup.component";
 
 
-
 export const allAppComponents = [HomeComponent];
 
 export const routes: Routes = [
