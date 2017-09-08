@@ -11,11 +11,11 @@ import {Status} from "../classes/status";
 
 export class VoteComponent implements OnInit {
 
-	newVote : vote = new Vote(null, null, null, null);
+	newVote : Vote = new Vote(null, null, null, null);
 	votes : Vote[] = [];
 	status : Status = null;
 
-	constructor(protected voteService: voteService) {}
+	constructor(protected voteService: VoteService) {}
 
 	ngOnInit() : void {
 		this.getAllVotes();
