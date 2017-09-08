@@ -11,7 +11,7 @@ export class SignUpComponent extends BaseService {
 		super(http);
 	}
 
-	private signUpUrl = "api/register/";
+	private signUpUrl = "api/sign-up/";
 
 	postSignUp(profile:Profile) : Observable<Status> {
 		return(this.http.post(this.signUpUrl, profile)

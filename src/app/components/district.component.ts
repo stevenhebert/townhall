@@ -9,6 +9,4 @@ import {Status} from "../classes/status";
 	templateUrl: "./templates/district.php"
 })
 
-export class DistrictComponent implements OnInit {
-
-	constructor(protected postService: PostService) {};
+export class DistrictComponent {}
