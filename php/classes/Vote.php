@@ -384,7 +384,7 @@ class Vote  implements \JsonSerializable {
 		return ($votes);
 	}
 
-	function getSumOfVoteValuesByPostId (\PDO $pdo, int $votePostId) : \stdClass {
+	public static function getSumOfVoteValuesByPostId (\PDO $pdo, int $votePostId) : \stdClass {
 		$query = "select votePostId, (select count(voteValue) from vote where votePostId = :votePostId and voteValue = 1) as upVote, (select count(voteValue) from vote where votePostId = :votePostId and voteValue = -1) as downVote from vote where votePostId = :votePostId group by votePostId;";
 		$statement = $pdo->prepare($query);
 		// bind the vote value to the place holder in the template

@@ -41,6 +41,11 @@ class VoteTest extends TownhallTest {
 	 **/
 	protected $profile = null;
 	/**
+	 * 2nd Profile ; this is for foreign key relations
+	 * @var Profile profile2
+	 **/
+	protected $profile2 = null;
+	/**
 	 * valid profile id to use to create the profile object to own the test
 	 * @var int $VALID_PROFILE_ID
 	 */
@@ -81,6 +86,11 @@ class VoteTest extends TownhallTest {
 	 */
 	protected $VALID_PROFILE_HASH;
 	/**
+	 * valid profile hash to create the profile object to own the test
+	 * @var string $VALID_HASH2
+	 * */
+	protected $VALID_PROFILE_HASH2;
+	/**
 	 * valid last name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_LASTNAME
 	 */
@@ -90,6 +100,11 @@ class VoteTest extends TownhallTest {
 	 * @var string $VALID_SALT
 	 */
 	protected $VALID_PROFILE_SALT;
+	/**
+	 * valid salt to use to create the profile object to own the test
+	 * @var string $VALID_SALT2
+	 */
+	protected $VALID_PROFILE_SALT2;
 	/**
 	 * valid state to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_STATE
@@ -200,16 +215,25 @@ class VoteTest extends TownhallTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
+		$password2 = "ilovelucy";
+		$this->VALID_PROFILE_SALT2 = bin2hex(random_bytes(32));
+		$this->VALID_PROFILE_HASH2 = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
+
 		// create and insert a District for the test Post
 		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$this->district->insert($this->getPDO());
 
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
-		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "test1@email.com", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", null, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
+		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "Albuquerque", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", null, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
 		//what is the district Id?  Need to get this
 		$this->profile->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
+		//create second profile
+		$this->profile2 = new Profile(null, $this->district->getDistrictId(), "456", "124 Main St", "+12125551212", "Albuquerque", "test2@email.com", "Lucy", $this->VALID_PROFILE_HASH2, "Lu", null, $this->VALID_PROFILE_SALT2, "NM", "lucygirl", "12345");
+		//what is the district Id?  Need to get this
+		$this->profile2->insert($this->getPDO());
+
 
 		/*create some valid posts to vote on */
 
@@ -439,4 +463,38 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
 
 	}
+
+	/*
+	 * test get sum of vote value
+	 *  *
+	 */
+	/*++++++++*/
+	public function testGetValidSumOfVoteValues(): void {
+		// create new Votes and insert into mySQL
+
+		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null, 1);
+		$vote->insert($this->getPDO());
+
+		$vote2 = new Vote($this->post->getPostId(), $this->profile2->getProfileId(), null, -1);
+		$vote2->insert($this->getPDO());
+
+		$vote3 = new Vote($this->post2->getPostId(), $this->profile->getProfileId(), null, 1);
+		$vote3->insert($this->getPDO());
+
+		$vote4 = new Vote($this->post2->getPostId(), $this->profile2->getProfileId(), null, 1);
+		$vote4->insert($this->getPDO());
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("vote");
+		//votes are in place, so we need to test the values
+
+		$results = Vote::getSumOfVoteValuesByPostId($this->getPDO(), $this->post->getPostId());
+		$results2 = Vote::getSumOfVoteValuesByPostId($this->getPDO(), $this->post2->getPostId());
+		//test with var dump?
+
+
+
+
+	}
+
+
 }
