@@ -363,7 +363,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getPostByPostId(\PDO $pdo, int $postId): ?Post {
-		var_dump($postId);
+
 
 		//sanitize the PostId before searching
 		if($postId <= 0) {
