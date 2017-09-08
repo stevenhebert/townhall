@@ -44,12 +44,12 @@ try {
 		setXsrfCookie();
 
 		//gets  a vote based on its composite key
-		if ($votePostId !== null & $voteProfileId !== null) {
+		if ($votePostId !== null && $voteProfileId !== null) {
 			$vote = Vote::getVoteByPostIdAndProfileId($pdo, $votePostId, $voteProfileId);
 			if($vote!== null) {
 				$reply->data = $vote;
 			}
-			//verify parameters exists if not throw an exception
+			//verify parameters exist, if not throw an exception
 		} else if(empty($votePostId) === false) {
 			$vote = Vote::getVoteByPostId($pdo, $votePostId)->toArray();
 			if($vote !== null) {
