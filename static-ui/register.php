@@ -53,16 +53,17 @@
 
 
 
-		<title>ABQ Town Hall Posts</title>
+		<title>ABQ Town Hall</title>
 	</head>
 
 
 	<body>
 		<main class="bgimg">
 <div class="container">
-<h1>Sign up</h1>
+
     <div class="row">
         <div class="col-sm-3 col-md-6">
+			  <h1 class="text-center">Sign up</h1>
 <form>
     <div class="input-group">
         <span class="input-group-addon"></span>
@@ -96,7 +97,7 @@
         <span class="input-group-addon"></span>
         <input id="Email" type="text" class="form-control" name="Email" placeholder="Email">
     </div>
-	<label class="white">Please choose a user name and password.  Your user name is what will display when you make a post to Town Hall</label>
+	<h4 class="white">Please choose a user name and password.  Your user name is what will display when you make a post to Town Hall.</h4>
 	<div class="input-group">
 		<span class="input-group-addon"></span>
 		<input id="user-name" type="text" class="form-control" name="user-name" placeholder="User Name">
@@ -109,7 +110,7 @@
         <span class="input-group-addon"></span>
         <input id="Re-Enter-Password" type="text" class="form-control" name="Re-Enter-Password" placeholder="Re-Enter-Password">
     </div>
-    <div class="input-group">
+    <div class="input-group center-block text-center">
         <button type="button" class="btn btn-info btn-lg">Submit</button>
     </div>
 </form>

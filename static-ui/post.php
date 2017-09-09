@@ -42,7 +42,8 @@
 
 		<!-- jQuery Form, Additional Methods, Validate -->
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqu
+		ery-validate/1.17.0/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
 
 		<!-- Your JavaScript Form Validator -->
@@ -107,7 +108,7 @@
 						<div class="row">
 
 							<div class="col-md-4">
-								<h1>Create New Post</h1>
+								<h2 class="text-center">Create New Post</h2>
 
 								<!-- Create New Post Form -->
 								<form id="contact-form">
@@ -122,14 +123,14 @@
 										</div>
 									</div>
 
-									<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
-									<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+									<div class ="center-block text-center"><button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+										<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button></div>
 								</form>
 
 							</div>
 
 							<div class="col-md-8">
-								<h1> All Posts in District Number </h1>
+								<h2 class="text-center"> All Posts in District Number </h2>
 
 								<!-- Begin Post Item -->
 								<div class="panel panel-default">

@@ -71,5 +71,27 @@ code {
 	margin: 2rem;
 }
 .white {
+	color: #153240;
+
+	padding: 2.5rem;
+	background-color: rgba(255,255,255,0.7);
+}
+
+/* media queries to change the color of the text based on size, so it will show up on both mobile devices and desktops.*/
+/* no color at a larger size */
+/*@media (min-width: 768px) {
+	.upper-left {
+		background-color: transparent;
+	}
+}*/
+/* transparent blue when it's stacked */
+/*@media (max-width: 767px) {
+	.upper-left {
+		background-color: rgba(72, 115, 168, 0.5);
+	}
+}*/
+h2 {
 	color: white;
 }
+
+/*center submit button on register page */
