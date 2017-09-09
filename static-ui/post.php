@@ -14,7 +14,7 @@
 		<!-- Font Awesome -->
 		<link type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 		<!-- custom css link -->
-		<link rel="stylesheet" type="text/css" href="lib/styles.css">
+		<link rel="stylesheet" type="text/css" href="../public_html/lib/styles.css">
 
 
 
@@ -73,7 +73,7 @@
 									<span class="icon-bar"></span>
 								</button>
 								<a class="navbar-brand" href="posts.php">
-									<img alt="Brand" src="images/abq-townhall.png">
+									<img alt="Brand" src="../public_html/images/abq-townhall.png">
 								</a>
 							</div>
 							<!-- Collect the nav links, forms, and other content for toggling -->

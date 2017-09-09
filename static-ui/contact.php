@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="lib/styles.css" type="text/css">
+    <link rel="stylesheet" href="../public_html/lib/styles.css" type="text/css">
 
     <!-- jQuery (required for Bootstap's JS plugins) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
