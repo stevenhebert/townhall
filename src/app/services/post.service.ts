@@ -66,5 +66,4 @@ export class PostService extends BaseService {
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
-
 }
