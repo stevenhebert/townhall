@@ -19,7 +19,7 @@ export class ActivationComponent implements OnInit{
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {
-					alert("Thank you for activating your account. You can now login.")
+                    alert(" WELCOME! Thank you for activating your account, you will be auto-redirected to your profile shortly.")
 				}
 			});
 
