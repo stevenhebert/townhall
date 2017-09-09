@@ -140,7 +140,7 @@ try {
 		}
 
 		// create the post and create the insert statement
-		$post = new Post(null, $requestObject->postDistricttId, $requestObject->postParentId, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
+		$post = new Post(null, $requestObject->postDistrictId, $requestObject->postParentId, $_SESSION["profile"]->getProfileId(), $requestObject->postContent);
 		$post->insert($pdo);
 
 		// post post/reply
