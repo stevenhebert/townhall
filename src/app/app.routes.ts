@@ -25,6 +25,6 @@ export const routes: Routes = [
 
 ];
 
-export const appRoutingProviders: any[] = [SessionService];
+export const appRoutingProviders: any[] = [SessionService, ];
 
 export const routing = RouterModule.forRoot(routes);

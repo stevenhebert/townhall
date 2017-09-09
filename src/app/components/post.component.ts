@@ -12,7 +12,7 @@ import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
 
 @Component({
-	templateUrl: "./templates/post.php"
+	templateUrl: "./templates/post.html"
 })
 
 export class PostComponent implements OnInit {
