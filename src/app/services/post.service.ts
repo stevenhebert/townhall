@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Post} from "../classes/post";
 import {Status} from "../classes/status";
+import {ObjectUnsubscribedError} from "rxjs/Rx";
 
 @Injectable()
 export class PostService extends BaseService {
@@ -13,9 +14,15 @@ export class PostService extends BaseService {
 
 	private postUrl = "api/post/";
 
-	getAllPosts() : Observable<Post[]> {
-		return(this.http.get(this.postUrl)
-			.map(this.extractData)
+	deletePost(id: number) : Observable<Status> {
+		return(this.http.delete(this.postUrl + id)
+			.map(this.extractMessage)
+			.catch(this.handleError));
+	}
+
+	createPost(post: Post) : Observable<Status> {
+		return(this.http.post(this.postUrl, post)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 
@@ -25,14 +32,8 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getPostByDistrictId(districtId : number) : Observable<Post> {
-		return(this.http.get(this.postUrl + '?postDistrictId='+ districtId)
-			.map(this.extractData)
-			.catch(this.handleError));
-	}
-
-	getPostByProfileId(profileId : number) : Observable<Post> {
-		return(this.http.get(this.postUrl + '?postProfileId='+ profileId)
+	getPostByPostProfileId(postProfileId : number) : Observable<Post> {
+		return(this.http.get(this.postUrl + '?postProfileId='+ postProfileId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
@@ -48,15 +49,22 @@ export class PostService extends BaseService {
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
+	getPostByPostDistrictId(postDistrictId : number) : Observable<Post> {
+		return(this.http.get(this.postUrl + '?postDistrictId='+ postDistrictId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
 	getPostByPostParentId(postParentId : number) : Observable<Post> {
 		return(this.http.get(this.postUrl + '?postParentId=' + postParentId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
 
-	createPost(post : Post) : Observable<Status> {
-		return(this.http.post(this.postUrl, post)
-			.map(this.extractMessage)
+	getAllPosts() : Observable<Post[]> {
+		return(this.http.get(this.postUrl)
+			.map(this.extractData)
 			.catch(this.handleError));
 	}
+
 }

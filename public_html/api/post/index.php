@@ -90,7 +90,8 @@ try {
 		} else if((empty($sunriseDate) === false) || (empty($sunsetDate) === false)) {
 			$posts = Post::getPostByPostDate($pdo, $sunriseDate, $sunsetDate);
 			if($posts !== null) {
-				$reply->data = $posts;
+				$postProfiles = getPostDateTime($posts);
+				$reply->data = $postProfiles;
 			}
 		} else if(empty($postDistrictId) === false) {
 			$posts = Post::getPostByPostDistrictId($pdo, $postDistrictId);

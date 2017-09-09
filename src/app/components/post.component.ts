@@ -1,9 +1,15 @@
+/*
+this component is for posting and viewing ABQ Town Hall posts.
+ */
+
+// import modules associated with post
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import {Router} from "@angular/router";
+import {Status} from "../classes/status";
+
 import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
-import {Status} from "../classes/status";
 
 @Component({
 	templateUrl: "./templates/post.php"
