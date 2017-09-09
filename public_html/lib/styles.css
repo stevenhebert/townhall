@@ -2,50 +2,56 @@
 	margin: 0 auto;
 	background-image: url("../images/abq_1200.jpg");
 	background-size: contain;
-	background-repeat: no-repeat;
+	background-repeat:no-repeat;
 	width: 100%;
 	height: 900px;
 	padding: 5rem;
 }
-.navbar-brand {
-	margin-top: -15px;
 
+.btn {
+	margin: 2rem;
 }
 
-header {
-	background-color: transparent;
-	color: white;
-}
-.navbar {
 
-	background: transparent;
-	border: none;
+/*.navbar-brand {*/
+	/*!*margin-top: -15px;*!*/
 
-}
+/*}*/
 
-.navbar .nav > li > a {
-	color: #ffffff;
-}
+/*header {*/
+	/*background-color: transparent;*/
+	/*color: white;*/
+/*}*/
+/*.navbar {*/
 
-footer {
-	background-color: #153240;
-	color: #f5f5f5;
-	padding: 1% 5%;
-}
+	/*background: transparent;*/
+	/*border: none;*/
 
-footer a {
-	color: #f5f5f5;
-}
+/*}*/
 
-footer a:hover {
-	color: #777;
-	text-decoration: none;
-}
+/*.navbar .nav > li > a {*/
+	/*color: #ffffff;*/
+/*}*/
 
-html {
-	position: relative;
-	min-height: 100%;
-}
+/*footer {*/
+	/*background-color: #153240;*/
+	/*color: #f5f5f5;*/
+	/*padding: 1% 5%;*/
+/*}*/
+
+/*footer a {*/
+	/*color: #f5f5f5;*/
+/*}*/
+
+/*footer a:hover {*/
+	/*color: #777;*/
+	/*text-decoration: none;*/
+/*}*/
+
+/*html {*/
+	/*position: relative;*/
+	/*min-height: 100%;*/
+/*}*/
 
 
 
@@ -54,28 +60,26 @@ html {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-body > .container {
-	padding: 60px 15px 0;
-}
-.container .text-muted {
-	margin: 20px 0;
-}
+/*body > .container {*/
+	/*padding: 60px 15px 0;*/
+/*}*/
+/*.container .text-muted {*/
+	/*margin: 20px 0;*/
+/*}*/
 
 
 
-code {
-	font-size: 80%;
-}
+/*code {*/
+	/*font-size: 80%;*/
+/*}*/
 
-.btn {
-	margin: 2rem;
-}
-.white {
-	color: #153240;
 
-	padding: 2.5rem;
-	background-color: rgba(255,255,255,0.7);
-}
+/*.white {*/
+	/*color: #153240;*/
+
+	/*padding: 2.5rem;*/
+	/*background-color: rgba(255,255,255,0.7);*/
+/*}*/
 
 /* media queries to change the color of the text based on size, so it will show up on both mobile devices and desktops.*/
 /* no color at a larger size */
@@ -89,9 +93,9 @@ code {
 	.upper-left {
 		background-color: rgba(72, 115, 168, 0.5);
 	}
-}*/
-h2 {
-	color: white;
-}
+/*}*!*/
+/*h2 {*/
+	/*color: white;*/
+/*}*/
 
 /*center submit button on register page */

@@ -2,7 +2,7 @@
 import {Component} from "@angular/core";
 
 @Component({
-	selector: "data-design-app",
+	selector: "abq-town-hall",
 	templateUrl: "./templates/abq-town-hall.html"
 })
 

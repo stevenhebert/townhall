@@ -17,7 +17,7 @@ import {Post} from "../classes/post";
 
 export class PostComponent implements OnInit {
 
-	newPost : Post = new Post(null, null, null, null);
+	newPost : Post = new Post(null, null, null, null, null, null, null);
 	posts : Post[] = [];
 	status : Status = null;
 
