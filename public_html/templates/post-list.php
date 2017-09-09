@@ -42,10 +42,9 @@
 		<table class="table table-bordered table-responsive table-striped table-word-wrap">
 			<tr><th>Vote ID</th><th>Misquote</th><th>Attribution</th><th>Submitter</th><th>Edit</th></tr>
 			<tr *ngFor="let vote of votes">
-				<td>{{ misquote.misquoteId }}</td>
-				<td>{{ misquote.misquote }}</td>
-				<td>{{ misquote.attribution }}</td>
-				<td>{{ misquote.submitter }}</td>
+				<td>{{ vote.votePostId}}</td>
+				<td>{{ vote.upVote }}</td>
+				<td>{{ vote.downVote }}</td>
 				<td><a class="btn btn-warning" (click)="switchMisquote(misquote);"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 			</tr>
 		</table>
