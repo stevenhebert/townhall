@@ -10,3 +10,4 @@
 /npm-debug.log
 /webpack/target.js
 **/php/mail-config.php
+/vendor/
