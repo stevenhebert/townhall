@@ -5,25 +5,7 @@
 		<h1>Welcome to ABQ Virtual Town Hall</h1>
 		<div class="row">
 			<div class="col-sm-6">
-				<form class="form-container">
-					<h4>Login</h4>
-					<form #signInForm="ngForm" id="signInForm" name="signInForm" (submit)="signIn();">
-						<div class="input-group">
-							<span class="input-group-addon"></span>
-							<input id="profileEmail" type="email" class="form-control" name="profileEmail" placeholder="email" required
-									 [(ngModel)]="signIn.profileEmail" #profileEmail="ngModel">
-						</div>
-						<div class="input-group">
-							<span class="input-group-addon"></span>
-							<input id="profilePassword" type="password" class="form-control" name="profilePassword" placeholder="password" required
-									 [(ngModel)]="signIn.profilePassword" #profilePassword="ngModel">
-						</div>
-						<div class="row">
-							<button type="submit" id="submit" class="btn btn-success" [disabled]="signInForm.invalid">Login</button>
-							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#signup-modal">Sign Up</button>
-						</div>
-					</form>
-				</form>
+<signin></signin>
 			</div><!--column-->
 		</div><!--row-->
 	</div><!--container-->
