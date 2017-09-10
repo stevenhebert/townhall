@@ -8,7 +8,7 @@ declare var $: any;
 
 @Component({
 	templateUrl: "./templates/home.html",
-	selector: "signIn"
+	selector: "sign-in"
 })
 
 export class SignInComponent {
