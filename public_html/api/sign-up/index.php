@@ -79,6 +79,7 @@ try {
 		}
 		$latLongObject = getLatLongByAddress($requestObject->profileAddress1);
 		$district = District::getDistrictByLongLat($pdo, $latLongObject->long, $latLongObject->lat);
+
 		//make sure district is not null
 		if($district == Null) {
 			$districtId = 10;
@@ -86,6 +87,7 @@ try {
 		else {
 			$districtId = $district->getDistrictId();
 		}
+		var_dump($districtId);
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
 		$profileActivationToken = bin2hex(random_bytes(16));
