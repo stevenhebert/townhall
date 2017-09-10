@@ -1,34 +1,41 @@
-import{Component} from "@angular/core";
-import {Router} from "@angular/router";
-import {Status} from "../classes/status";
-import {SignInService} from "../services/signin.service";
-import {SignIn} from "../classes/signin";
+//this is the modal that pops up when "sign-in" is clicked
 
+import{Component, } from "@angular/core";
+
+import {Router} from "@angular/router";
+
+import {Status} from "../classes/status";
+import {SignOutService} from "../services/signout.service";
+import {SignInService} from "../services/signin.service";
 declare var $: any;
 
 @Component({
-	templateUrl: "./templates/signin.html",
-	selector: "sign-in"
+	templateUrl: "./templates/signout-template.html",
+	selector: "signOut"
 })
 
-export class SignInComponent {
+export class SignOutComponent {
 
-
-	signin: SignIn = new SignIn(null, null);
 	status: Status = null;
 
-	constructor(private SignInService: SignInService, private router: Router){
+	constructor(private SignOutService: SignOutService, private SignInService: SignInService, private  router: Router){}
+
+	isSignedIn = false;
+
+	ngOnChanges (): void{
+		this.isSignedIn = this.SignInService.isSignedIn;
+
 	}
 
-	signIn(): void {
-		this.SignInService.postSignIn(this.signin).subscribe(status=>{
-			this.status = status;
-			if(status.status === 200){
+	signIn() : void {
+		this.SignOutService.getSignOut()
+			.subscribe(status => {
+				this.status = status;
 
-				this.router.navigate(["profile"]);
-			} else {
-				console.log("failed login");
-			}
-		});
+				if(status.status === 200) {
+					this.router.navigate([""]);
+					this.SignInService.isSignedIn = false;
+				}
+			});
 	}
 }
