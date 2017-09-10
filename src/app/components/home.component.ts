@@ -6,4 +6,6 @@ import {Observable} from "rxjs";
 	templateUrl: "./templates/home.html"
 })
 
+
+
 export class HomeComponent {}
