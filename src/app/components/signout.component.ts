@@ -11,7 +11,7 @@ declare var $: any;
 
 @Component({
 	templateUrl: "./templates/signout-template.html",
-	selector: "sign-out"
+	selector: "sign-wout"
 })
 
 export class SignOutComponent {
