@@ -3,13 +3,12 @@
  */
 
 //import needed modules for the sign-up component
-import {Component, ViewChild,} from "@angular/core";
-import {Observable} from "rxjs/observable"
+import{Component, ViewChild, OnInit, EventEmitter, Output} from "@angular/core";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs/Observable"
+import {SignUp} from "../classes/signup";
 import {Status} from "../classes/status";
 import {SignUpService} from "../services/signup.service";
-import {SignUp} from "../classes/signup";
-import {setTimeout} from "timers";
 
 //declare $ for good old jquery
 declare let $: any;
@@ -20,19 +19,22 @@ declare let $: any;
 	templateUrl: "./templates/signup.html",
 	selector: "sign-up"
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
 
 	//
-	@ViewChild("signUpForm") signUpForm: any;
-	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null);
+	@ViewChild("signupForm") signupForm: any;
+	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
 
 
 	constructor(private signUpService: SignUpService, private router: Router) {
 	}
 
+	ngOnInit(): void {
+	}
+
 	createSignUp(): void {
-		this.signUpService.createProfile(this.signUp)
+		this.signUpService.postProfile(this.signUp)
 
 			.subscribe(status => {
 				console.log(this.signUp);
