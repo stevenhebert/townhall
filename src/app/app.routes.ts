@@ -1,5 +1,4 @@
 import {RouterModule, Routes} from "@angular/router";
-
 import {AboutComponent} from "./components/about.components"
 import {FooterComponent} from "./components/footer.components"
 import {HomeComponent} from "./components/home.component";
@@ -14,19 +13,28 @@ import {ActivationService} from "./services/activation.service";
 // import {DistrictService} from "./services/district.service";
 import {PostService} from "./services/post.service";
 // import {ProfileService} from "./services/profile.service";
-// import {SignInService} from "./services/signin.service";
+import {SignInService} from "./services/signin.service";
+import {SignInComponent} from "./components/signin.component";
 // import {SignOutService} from "./services/signout.service";
-// import {SignUpService} from "./services/signup.service";
+import {SignUpService} from "./services/signup.service";
 // import {VoteService} from "./services/vote.service";
 
-
-export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent, PostComponent, FooterComponent, AboutComponent];
+// TODO: add components to this array when ready to test
+export const allAppComponents = [
+	HomeComponent,
+	SignUpComponent,
+	MainNavComponent,
+	PostComponent,
+	FooterComponent,
+	AboutComponent,
+	SignInComponent];
 
 export const routes: Routes = [
 
 	{path: "about", component: AboutComponent},
-	// {path: "footer", component: FooterComponent},
+	{path: "footer", component: FooterComponent},
 	{path: "", component: HomeComponent},
+	{path: "signin", component: SignInComponent},
 	// {path: "navbar", component: NavbarComponent},
 	{path: "post", component: PostComponent},
 	// {path: "profile", component: ProfileComponent},
@@ -34,7 +42,12 @@ export const routes: Routes = [
 
 ];
 
-// TODO: add all services to this array
-export const appRoutingProviders: any[] = [ActivationService, PostService, SessionService];
+// TODO: add services to this array when ready to test
+export const appRoutingProviders: any[] = [
+	ActivationService,
+	PostService,
+	SessionService,
+	SignInService,
+	SignUpService];
 
 export const routing = RouterModule.forRoot(routes);

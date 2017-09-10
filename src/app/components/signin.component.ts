@@ -1,4 +1,4 @@
-import{Component, } from "@angular/core";
+import{Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignInService} from "../services/signin.service";
@@ -20,11 +20,11 @@ export class SignInComponent {
 	}
 
 	signIn(): void {
-		this.signInService.postSignIn(this.signin).subscribe(status=>{
+		this.signInService.createSignIn(this.signin).subscribe(status=>{
 			this.status=status;
 			if(status.status === 200){
 
-				this.router.navigate(["post-list"]);
+				this.router.navigate(["profile"]);
 			} else {
 				console.log("failed login");
 			}
