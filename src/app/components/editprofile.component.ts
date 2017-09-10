@@ -6,9 +6,9 @@
 import{Component, ViewChild, OnInit, EventEmitter, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable"
-import {SignUp} from "../classes/signup";
+import {EditProfile} from "../classes/editprofile";
 import {Status} from "../classes/status";
-import {SignUpService} from "../services/signup.service";
+import {EditProfileService} from "../services/editprofile.service";
 
 //declare $ for good old jquery
 declare let $: any;
@@ -16,33 +16,33 @@ declare let $: any;
 // set the template url and the selector for the ng powered html tag
 
 @Component({
-	templateUrl: "./templates/signup.html",
-	selector: "sign-up"
+	templateUrl: "./templates/editprofile.html",
+	selector: "editprofile"
 })
-export class SignUpComponent implements OnInit {
+export class EditProfileComponent implements OnInit {
 
-	@ViewChild("signupForm") signupForm: any;
-	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "", "");
+	@ViewChild("editprofileForm") editprofileForm: any;
+	editProfile: EditProfile = new EditProfile("", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
 
 
-	constructor(private signUpService: SignUpService, private router: Router) {
+	constructor(private editProfileService: EditProfileService, private router: Router) {
 	}
 
 	ngOnInit(): void {
 	}
 
-	createSignUp(): void {
-		this.signUpService.postProfile(this.signUp)
+	putEditProfile(): void {
+		this.editProfileService.putProfile(this.editProfile)
 
 			.subscribe(status => {
-				console.log(this.signUp);
+				console.log(this.editProfile);
 
 				console.log(this.status);
 				if(status.status === 200) {
 					alert(status.message);
 					setTimeout(function() {
-						$("#signUp-modal").modal('hide');
+						$("#editProfile-modal").modal('hide');
 					}, 500);
 					this.router.navigate([""]);
 				}

@@ -1,4 +1,4 @@
-<div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">
+<div id="profile-modal" class="modal fade" tabindex="-1" role="dialog">
 
 	<div class="modal-dialog modal-lg" role="document">
 
@@ -7,20 +7,20 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Create a New ABQ Town Hall Account</h4>
+				<h4 class="modal-title">Edit your ABQ Town Hall Account</h4>
 			</div>
 
 			<div class="modal-body">
 
 				<!-- actual form -->
-				<form class="form-horizontal" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
+				<form class="form-horizontal" #editprofileForm="ngForm" name="editprofileForm" (ngSubmit)="putEditProfile();">
 
 					<!-- abq town hall first name -->
 					<div class="form-group">
 						<label for="profileFirstName" class="col-sm-2 control-label">First Name</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileFirstName" name="profileFirstName" class="form-control" required
-									 [(ngModel)]="signUp.profileFirstName" #profileFirstName="ngModel">
+									 [(ngModel)]="editProfile.profileFirstName" #profileFirstName="ngModel">
 						</div>
 					</div>
 
@@ -29,7 +29,7 @@
 						<label for="profileLastName" class="col-sm-2 control-label">Last Name </label>
 						<div class="col-sm-10">
 							<input type="text" id="profileLastName" name="profileLastName" class="form-control input-sm" required
-									 [(ngModel)]="signUp.profileLastName" #profileLastName="ngModel">
+									 [(ngModel)]="editProfile.profileLastName" #profileLastName="ngModel">
 						</div>
 					</div>
 
@@ -38,7 +38,7 @@
 						<label for="profileAddress1" class="col-sm-2 control-label">Address 1</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileAddress1" name="profileAdress1" class="form-control input-sm" required
-									 [(ngModel)]="signUp.profileAddress1" #profileAddress1="ngModel">
+									 [(ngModel)]="editProfile.profileAddress1" #profileAddress1="ngModel">
 						</div>
 					</div>
 
@@ -47,7 +47,7 @@
 						<label for="profileAddress2" class="col-sm-2 control-label">Address 2</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileAddress2" name="profileAddress2" class="form-control input-sm" required
-									 [(ngModel)]="signUp.profileAddress2" #profileAddress2="ngModel">
+									 [(ngModel)]="editProfile.profileAddress2" #profileAddress2="ngModel">
 						</div>
 					</div>
 
@@ -56,7 +56,7 @@
 						<label for="profileCity" class="col-sm-2 control-label">City</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileCity" name="profileCity" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileCity" #profileCity="ngModel">
+									 required [(ngModel)]="editProfile.profileCity" #profileCity="ngModel">
 						</div>
 					</div>
 
@@ -65,7 +65,7 @@
 						<label for="profileState" class="col-sm-2 control-label">State</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileState" name="profileState" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileState" #profileState="ngModel">
+									 required [(ngModel)]="editProfile.profileState" #profileState="ngModel">
 						</div>
 					</div>
 
@@ -74,7 +74,7 @@
 						<label for="profileZip" class="col-sm-2 control-label">Zip Code</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileZip" name="profileZip" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileZip" #profileZip="ngModel">
+									 required [(ngModel)]="editProfile.profileZip" #profileZip="ngModel">
 						</div>
 					</div>
 
@@ -83,16 +83,7 @@
 						<label for="profileEmail" class="col-sm-2 control-label">E-Mail</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileEmail" name="profileEmail" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileEmail" #profileEmail="ngModel">
-						</div>
-					</div>
-
-					<!--abq town hall username -->
-					<div class="form-group">
-						<label for="profileUserName" class="col-sm-2 control-label">Requested Username</label>
-						<div class="col-sm-10">a
-							<input type="text" id="profileUserName" name="profileUserName" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileUserName" #profileUserName="ngModel">
+									 required [(ngModel)]="editProfile.profileEmail" #profileEmail="ngModel">
 						</div>
 					</div>
 
@@ -101,7 +92,7 @@
 						<label for="profilePassword" class="col-sm-2 control-label">Requested Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePassword" name="profilePassword" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profilePassword" #profilePassword="ngModel">
+									 required [(ngModel)]="editProfile.profilePassword" #profilePassword="ngModel">
 						</div>
 					</div>
 
@@ -110,12 +101,12 @@
 						<label for="profilePasswordConfirm" class="col-sm-2 control-label">Confirm Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
+									 required [(ngModel)]="editProfile.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
 						</div>
 					</div>
 
 					<!-- Submit button -->
-					<button type="submit" id="submit" name="signup" class="btn btn-info">Submit</button>
+					<button type="submit" id="submit" name="editprofile" class="btn btn-info">Submit</button>
 				</form>
 			</div>
 
