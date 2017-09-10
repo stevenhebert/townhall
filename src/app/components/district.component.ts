@@ -6,7 +6,7 @@ import {District} from "../classes/district";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/district.php"
+	templateUrl: "./templates/district.html"
 })
 
 export class DistrictComponent {}

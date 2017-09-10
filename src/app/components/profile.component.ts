@@ -7,7 +7,7 @@ import "rxjs/add/operator/switchMap";
 
 
 @Component({
-	templateUrl: "./templates/profile-template.php",
+	templateUrl: "./templates/profile-template.html",
 	selector: "profile-view"
 })
 

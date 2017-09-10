@@ -19,19 +19,19 @@ module.exports = {
 		rules: [
 			{
 				test: /\.(html|php)$/,
-				loader: "html-loader"
+				use: "html-loader"
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-				loader: "url-loader?limit=100000"
+				use: "url-loader?limit=100000"
 			},
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract({ fallback: "style-loader", loader: "css-loader?minimize=true" })
+				use: ExtractTextPlugin.extract({ fallback: "style-loader", use: "css-loader?minimize=true" })
 			},
 			{
 				test: /\.ts$/,
-				loaders: ["awesome-typescript-loader"]
+				use: ["awesome-typescript-loader"]
 			}
 		]
 	},

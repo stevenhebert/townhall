@@ -6,7 +6,7 @@ import {Vote} from "../classes/vote";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/post-list.php"
+	templateUrl: "./templates/post-list.html"
 })
 
 export class VoteComponent implements OnInit {

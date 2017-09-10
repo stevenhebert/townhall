@@ -10,7 +10,7 @@ import {SignInService} from "../services/signin.service";
 declare var $: any;
 
 @Component({
-	templateUrl: "./templates/signout-template.php",
+	templateUrl: "./templates/signout-template.html",
 	selector: "signOut"
 })
 

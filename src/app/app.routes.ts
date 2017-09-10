@@ -5,13 +5,14 @@ import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./components/home.component";
 import {MainNavComponent} from "./components/mainnav.components";
 // import {NavbarComponent} from "./components/navbar.components"
-// import {PostComponent} from "./components/post.component";
+import {PostComponent} from "./components/post.component";
 // import {ProfileComponent} from "./components/profile.component";
 import {SignUpComponent} from "./components/signup.component";
 import {SessionService} from "./services/session.service";
+import {PostComponent} from "./components/post.component";
 
 
-export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent];
+export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent, PostComponent];
 
 export const routes: Routes = [
 
@@ -19,12 +20,13 @@ export const routes: Routes = [
 	// {path: "footer", component: FooterComponent},
 	{path: "", component: HomeComponent},
 	// {path: "navbar", component: NavbarComponent},
-	// {path: "post", component: PostComponent},
+	{path: "post", component: PostComponent},
 	// {path: "profile", component: ProfileComponent},
 	// {path: "signup", component: SignUpComponent},
 
 ];
 
+// TODO: add all services to this array
 export const appRoutingProviders: any[] = [SessionService, ];
 
 export const routing = RouterModule.forRoot(routes);
