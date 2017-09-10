@@ -29,7 +29,7 @@ function getPostProfileName (\SplFixedArray $posts) : array {
 			'postId' => $post->getPostId(),
 			'postDistrict' => $post->getPostDistrictId(),
 			'postParentId' => $post->getPostParentId(),
-			'postProfileName' => $profile->getProfileId(),
+			'postProfileUserName' => $profile->getProfileUserName(),
 			'postContent' => $post->getPostContent(),
 			'postDateTime' => $post->getPostDateTime()
 		];
