@@ -1,7 +1,7 @@
 import {RouterModule, Routes} from "@angular/router";
 
-// import {AboutComponent} from "./components/about.components"
-// import {FooterComponent} from "./components/footer.components"
+import {AboutComponent} from "./components/about.components"
+import {FooterComponent} from "./components/footer.components"
 import {HomeComponent} from "./components/home.component";
 import {MainNavComponent} from "./components/mainnav.components";
 // import {NavbarComponent} from "./components/navbar.components"
@@ -20,17 +20,17 @@ import {PostService} from "./services/post.service";
 // import {VoteService} from "./services/vote.service";
 
 
-export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent, PostComponent];
+export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent, PostComponent, FooterComponent, AboutComponent];
 
 export const routes: Routes = [
 
-	// {path: "about", component: AboutComponent},
+	{path: "about", component: AboutComponent},
 	// {path: "footer", component: FooterComponent},
 	{path: "", component: HomeComponent},
 	// {path: "navbar", component: NavbarComponent},
 	{path: "post", component: PostComponent},
 	// {path: "profile", component: ProfileComponent},
-	// {path: "signup", component: SignUpComponent},
+	{path: "signup", component: SignUpComponent},
 
 ];
 

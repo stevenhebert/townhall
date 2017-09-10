@@ -1,10 +1,22 @@
+nav {
+	font-size: medium;
+	margin-bottom: 4rem;
+}
+
 body, html{
 	background: url("app/images/albuquerque.jpg");
 	background-repeat: no-repeat;
 	background-size: contain;
 }
+.home {
+	padding-top: 6rem;
+}
 .btn {
 	margin: 2rem;
+}
+
+footer {
+	text-align: center;
 }
 
 

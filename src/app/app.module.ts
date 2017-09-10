@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
+import {AboutComponent} from "./components/about.components";
 // import {PostService} from "./services/post.service";
 // import {ProfileService}from "./services/profile.service";
 // import {SignInService} from "./services/signin.service";
