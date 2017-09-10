@@ -22,7 +22,7 @@
 					</form>
 				</form>
 				<div class="row">
-						<button type="button" class="btn btn-success">Login</button>
+						<button type="button" id="submit" class="btn btn-success" [disabled]="signInForm.invalid">Login</button>
 						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#signup-modal">Sign Up</button>
 				</div>
 			</div><!--column-->
