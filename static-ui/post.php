@@ -14,7 +14,7 @@
 		<!-- Font Awesome -->
 		<link type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 		<!-- custom css link -->
-		<link rel="stylesheet" type="text/css" href="../public_html/lib/styles.css">
+		<link rel="stylesheet" type="text/css" href="lib/styles.css">
 
 
 
