@@ -5,7 +5,7 @@ import{Component, } from "@angular/core";
 import {Router} from "@angular/router";
 
 import {Status} from "../classes/status";
-import {SignOutService} from "../services/signout.service";
+import {SignIn} from "../classes/signin";
 import {SignInService} from "../services/signin.service";
 declare var $: any;
 
@@ -23,7 +23,7 @@ export class SignInComponent {
 	}
 
 	signIn(): void {
-		this.signInService.createSignIn(this.signin).subscribe(status=>{
+		this.signInService.postSignIn(this.signin).subscribe(status=>{
 			this.status=status;
 			if(status.status === 200){
 
