@@ -10,7 +10,7 @@ import {SignInService} from "../services/signin.service";
 declare var $: any;
 
 @Component({
-	templateUrl: "./templates/signin.html",
+	templateUrl: "./templates/home.html",
 	selector: "signin"
 })
 
@@ -27,11 +27,10 @@ export class SignInComponent {
 			this.status=status;
 			if(status.status === 200){
 
-				this.router.navigate(["profile"]);
+				this.router.navigate(["post-list"]);
 			} else {
 				console.log("failed login");
 			}
 		});
 	}
-
 }

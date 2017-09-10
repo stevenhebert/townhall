@@ -7,14 +7,16 @@
 			<div class="col-sm-6">
 				<form class="form-container">
 					<h4>Login</h4>
-					<form>
+					<form #signInForm="ngForm" id="signInForm" name="signInForm" (submit)="signIn();">
 						<div class="input-group">
 							<span class="input-group-addon"></span>
-							<input id="email" type="text" class="form-control" name="email" placeholder="email">
+							<input id="profileFirstName" type="text" class="form-control" name="profileFirstName" placeholder="email" required
+									 [(ngModel)]="signIn.profileEmail" #signIn="ngModel">
 						</div>
 						<div class="input-group">
 							<span class="input-group-addon"></span>
-							<input id="password" type="text" class="form-control" name="password" placeholder="password">
+							<input id="profilePassword" type="text" class="form-control" name="password" placeholder="password" required
+									 [(ngModel)]="signIn.profilePassword" #signIn="ngModel">
 						</div>
 					</form>
 				</form>
