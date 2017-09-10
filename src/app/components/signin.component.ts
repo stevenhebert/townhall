@@ -1,17 +1,14 @@
-//this is the modal that pops up when "sign-in" is clicked
-
 import{Component, } from "@angular/core";
-
 import {Router} from "@angular/router";
-
 import {Status} from "../classes/status";
-import {SignIn} from "../classes/signin";
 import {SignInService} from "../services/signin.service";
+import {SignIn} from "../classes/signin";
+
 declare var $: any;
 
 @Component({
 	templateUrl: "./templates/home.html",
-	selector: "signin"
+	selector: "signIn"
 })
 
 export class SignInComponent {
