@@ -16,12 +16,12 @@ export class SignInComponent {
 	signin: SignIn = new SignIn(null, null);
 	status: Status = null;
 
-	constructor(private signInService: SignInService, private router: Router){
+	constructor(private SignInService: SignInService, private router: Router){
 	}
 
 	signIn(): void {
-		this.signInService.createSignIn(this.signin).subscribe(status=>{
-			this.status=status;
+		this.SignInService.postSignIn(this.signin).subscribe(status=>{
+			this.status = status;
 			if(status.status === 200){
 
 				this.router.navigate(["profile"]);

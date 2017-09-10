@@ -10,13 +10,13 @@
 					<form #signInForm="ngForm" id="signInForm" name="signInForm" (submit)="signIn();">
 						<div class="input-group">
 							<span class="input-group-addon"></span>
-							<input id="profileFirstName" type="text" class="form-control" name="profileFirstName" placeholder="email" required
-									 [(ngModel)]="signIn.profileEmail" #signIn="ngModel">
+							<input id="profileEmail" type="email" class="form-control" name="profileEmail" placeholder="email" required
+									 [(ngModel)]="signIn.profileEmail" #profileEmail="ngModel">
 						</div>
 						<div class="input-group">
 							<span class="input-group-addon"></span>
-							<input id="profilePassword" type="text" class="form-control" name="password" placeholder="password" required
-									 [(ngModel)]="signIn.profilePassword" #signIn="ngModel">
+							<input id="profilePassword" type="password" class="form-control" name="profilePassword" placeholder="password" required
+									 [(ngModel)]="signIn.profilePassword" #profilePassword="ngModel">
 						</div>
 						<div class="row">
 							<button type="submit" id="submit" class="btn btn-success" [disabled]="signInForm.invalid">Login</button>
