@@ -18,6 +18,7 @@ import {SignInComponent} from "./components/signin.component";
 // import {SignOutService} from "./services/signout.service";
 import {SignUpService} from "./services/signup.service";
 // import {VoteService} from "./services/vote.service";
+import {CookieService} from "ng2-cookies";
 
 // TODO: add components to this array when ready to test
 export const allAppComponents = [
@@ -44,6 +45,7 @@ export const routes: Routes = [
 
 // TODO: add services to this array when ready to test
 export const appRoutingProviders: any[] = [
+	CookieService,
 	ActivationService,
 	PostService,
 	SessionService,
