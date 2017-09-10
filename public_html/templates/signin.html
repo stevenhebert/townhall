@@ -1,1 +1,49 @@
-<router-outlet></router-outlet>
+<div id="signin-modal" class="modal fade" tabindex="-1" role="dialog">
+
+	<div class="modal-dialog modal-lg" role="document">
+
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+					aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Sign in to your ABQ Town Hall Account</h4>
+			</div>
+
+			<div class="modal-body">
+
+				<!-- actual form -->
+				<form class="form-horizontal" #signInForm="ngForm" name="signInForm" (ngSubmit)="createSignIn();">
+
+					<!--abq town hall username -->
+					<div class="form-group">
+						<label for="profileUserName" class="col-sm-2 control-label">Requested Username</label>
+						<div class="col-sm-10">
+							<input type="text" id="profileUserName" name="profileUserName" class="form-control input-sm"
+									 required [(ngModel)]="signIn.profileUserName" #signInUserName="ngModel">
+						</div>
+					</div>
+
+					<!--abq town hall password -->
+					<div class="form-group">
+						<label for="profilePassword" class="col-sm-2 control-label">Requested Password</label>
+						<div class="col-sm-10">
+							<input type="password" id="profilePassword" name="profilePassword" class="form-control input-sm"
+									 required [(ngModel)]="signIn.profilePassword" #signInPassword="ngModel">
+						</div>
+					</div>
+
+					<!-- Submit button -->
+					<button type="submit" id="submit" name="signIn" class="btn btn-info">Submit</button>
+				</form>
+			</div>
+
+			<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
+				<button type="button" class="close" aria-label="Close" (click)="status = null;"><span
+					aria-hidden="true">&times;</span></button>
+				{{ status.message }}
+
+			</div>
+		</div>
+	</div>
+</div>

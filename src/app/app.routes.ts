@@ -5,11 +5,19 @@ import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./components/home.component";
 import {MainNavComponent} from "./components/mainnav.components";
 // import {NavbarComponent} from "./components/navbar.components"
-import {PostComponent} from "./components/post.component";
 // import {ProfileComponent} from "./components/profile.component";
 import {SignUpComponent} from "./components/signup.component";
 import {SessionService} from "./services/session.service";
 import {PostComponent} from "./components/post.component";
+import {ActivationService} from "./services/activation.service";
+// import {BaseService} from "./services/base.service";
+// import {DistrictService} from "./services/district.service";
+import {PostService} from "./services/post.service";
+// import {ProfileService} from "./services/profile.service";
+// import {SignInService} from "./services/signin.service";
+// import {SignOutService} from "./services/signout.service";
+// import {SignUpService} from "./services/signup.service";
+// import {VoteService} from "./services/vote.service";
 
 
 export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent, PostComponent];
@@ -27,6 +35,6 @@ export const routes: Routes = [
 ];
 
 // TODO: add all services to this array
-export const appRoutingProviders: any[] = [SessionService, ];
+export const appRoutingProviders: any[] = [ActivationService, PostService, SessionService];
 
 export const routing = RouterModule.forRoot(routes);

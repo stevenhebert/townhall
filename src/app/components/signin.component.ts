@@ -10,32 +10,28 @@ import {SignInService} from "../services/signin.service";
 declare var $: any;
 
 @Component({
-	templateUrl: "./templates/signout-template.html",
-	selector: "signOut"
+	templateUrl: "./templates/signin.html",
+	selector: "signin"
 })
 
-export class SignOutComponent {
+export class SignInComponent {
 
+	signin: SignIn = new SignIn(null, null);
 	status: Status = null;
 
-	constructor(private SignOutService: SignOutService, private SignInService: SignInService, private  router: Router){}
-
-	isSignedIn = false;
-
-	ngOnChanges (): void{
-		this.isSignedIn = this.SignInService.isSignedIn;
-
+	constructor(private signInService: SignInService, private router: Router){
 	}
 
-	signIn() : void {
-		this.SignOutService.getSignOut()
-			.subscribe(status => {
-				this.status = status;
+	signIn(): void {
+		this.signInService.createSignIn(this.signin).subscribe(status=>{
+			this.status=status;
+			if(status.status === 200){
 
-				if(status.status === 200) {
-					this.router.navigate([""]);
-					this.SignInService.isSignedIn = false;
-				}
-			});
+				this.router.navigate(["profile"]);
+			} else {
+				console.log("failed login");
+			}
+		});
 	}
+
 }
