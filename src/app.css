@@ -8,7 +8,7 @@ body, html{
 	background-repeat: no-repeat;
 	background-size: contain;
 }
-.home {
+main {
 	padding-top: 6rem;
 }
 .btn {
