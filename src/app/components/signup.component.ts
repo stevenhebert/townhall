@@ -21,7 +21,6 @@ declare let $: any;
 })
 export class SignUpComponent implements OnInit {
 
-	//
 	@ViewChild("signupForm") signupForm: any;
 	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
