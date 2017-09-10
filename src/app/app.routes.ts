@@ -14,13 +14,14 @@ import {ActivationService} from "./services/activation.service";
 // import {DistrictService} from "./services/district.service";
 import {PostService} from "./services/post.service";
 // import {ProfileService} from "./services/profile.service";
-// import {SignInService} from "./services/signin.service";
+import {SignInService} from "./services/signin.service";
+import {SignInComponent} from "./components/signin.component";
 // import {SignOutService} from "./services/signout.service";
 // import {SignUpService} from "./services/signup.service";
 // import {VoteService} from "./services/vote.service";
 
 
-export const allAppComponents = [HomeComponent, SignUpComponent, MainNavComponent, PostComponent];
+export const allAppComponents = [HomeComponent, SignInComponent, SignUpComponent, MainNavComponent, PostComponent];
 
 export const routes: Routes = [
 
@@ -35,6 +36,6 @@ export const routes: Routes = [
 ];
 
 // TODO: add all services to this array
-export const appRoutingProviders: any[] = [ActivationService, PostService, SessionService];
+export const appRoutingProviders: any[] = [ActivationService, PostService, SessionService, SignInService];
 
 export const routing = RouterModule.forRoot(routes);
