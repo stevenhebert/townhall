@@ -22,6 +22,7 @@ const moduleDeclarations = [AppComponent];
 		appRoutingProviders,
 		SignUpService,
 		SignInService,
+		SessionService
 	]
 })
 export class AppModule {
