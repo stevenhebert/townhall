@@ -11,6 +11,7 @@ import {PostService} from "./services/post.service";
 import {SignInService} from "./services/signin.service";
 import {SignInComponent} from "./components/signin.component";
 import {SignUpService} from "./services/signup.service";
+import {CookieService} from "ng2-cookies";
 // import {VoteService} from "./services/vote.service";
 // import {NavbarComponent} from "./components/navbar.component"
 // import {ProfileComponent} from "./components/profile.component";
@@ -48,6 +49,9 @@ export const appRoutingProviders: any[] = [
 	PostService,
 	SessionService,
 	SignInService,
-	SignUpService];
+	SignUpService,
+	CookieService
+];
+
 
 export const routing = RouterModule.forRoot(routes);
