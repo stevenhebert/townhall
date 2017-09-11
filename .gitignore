@@ -10,5 +10,5 @@
 /public_html/index.html
 /npm-debug.log
 package-lock.json
-/webapck/target.js
+/webpack/target.js
 

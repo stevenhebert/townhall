@@ -1,21 +1,46 @@
-import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
-import {BaseService} from "../services/base.service";
-import {Status} from "../classes/status";
-import {Profile} from "../classes/profile";
+/*
+ this component is for signing up to use the site.
+ */
 
-@Injectable()
-export class SignUpComponent extends BaseService {
-	constructor(protected http: Http) {
-		super(http);
+//import needed modules for the sign-up component
+import {Component, ViewChild,} from "@angular/core";
+import {Observable} from "rxjs/Observable"
+import {Router} from "@angular/router";
+import {Status} from "../classes/status";
+import {SignUpService} from "../services/signup.service";
+import {SignUp} from "../classes/signup";
+import {setTimeout} from "timers";
+
+//declare $ for good old jquery
+declare let $: any;
+
+@Component({
+	templateUrl: "./templates/signup.html",
+	selector: "sign-up"
+})
+export class SignUpComponent {
+
+	//
+	@ViewChild("signUpForm") signUpForm: any;
+	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "", "");
+	status: Status = null;
+
+	constructor(private signUpService: SignUpService, private router: Router) {
 	}
 
-	private signUpUrl = "api/register/";
+	createSignUp(): void {
+		this.signUpService.createSignUp(this.signUp)
 
-	postSignUp(profile:Profile) : Observable<Status> {
-		return(this.http.post(this.signUpUrl, profile)
-			.map(this.extractMessage)
-			.catch(this.handleError));
+			.subscribe(status => {
+				console.log(this.signUp);
+				console.log(this.status);
+				if(status.status === 200) {
+					alert(status.message);
+					setTimeout(function() {
+						$("#myModal").modal('hide');
+					}, 500);
+					this.router.navigate(["home"]);
+				}
+			});
 	}
 }
