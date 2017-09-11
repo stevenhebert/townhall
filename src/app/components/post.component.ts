@@ -13,7 +13,7 @@ import {Post} from "../classes/post";
 
 
 @Component({
-	templateUrl: "./templates/post.html"
+	templateUrl: "./templates/post.html",
 })
 
 export class PostComponent implements OnInit {

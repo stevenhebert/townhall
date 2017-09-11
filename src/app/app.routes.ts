@@ -34,14 +34,17 @@ export const routes: Routes = [
 
 	{path: "about", component: AboutComponent},
 	{path:  "tempPost", component: PostComponent},
-	{path:	"activation/:activation", component: ActivationComponent},
+	{path:	"activation", component: ActivationComponent,
+		children: [
+			{path: ":activation", component: ActivationComponent}
+		]
+	},
 	{path: "", component: HomeComponent}
 
 ];
 
 // TODO: add services to this array when ready to test
 export const appRoutingProviders: any[] = [
-	{provide: APP_BASE_HREF, useValue: "/" + (window.location.pathname.split("/")[1] || "")},
 	ActivationService,
 	SessionService,
 	SignInService,

@@ -1,8 +1,3 @@
-/*
- this component is for signing up to use abq town hall.
- */
-
-//import needed modules for the sign-up component
 import{Component, ViewChild, OnInit, EventEmitter, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable"
@@ -10,10 +5,7 @@ import {EditProfile} from "../classes/editprofile";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
 
-//declare $ for good old jquery
 declare let $: any;
-
-// set the template url and the selector for the ng powered html tag
 
 @Component({
 	templateUrl: "./templates/editprofile.html",
