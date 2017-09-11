@@ -12,6 +12,8 @@ import {ActivationService} from "./services/activation.service";
 import {SignInService} from "./services/signin.service";
 import {SignUpService} from "./services/signup.service";
 import {CookieService} from "ng2-cookies";
+import {PostComponent} from "./components/post.component";
+import {PostService} from "./services/post.service";
 
 // TODO: add components to this array when ready to test
 export const allAppComponents = [
@@ -20,14 +22,17 @@ export const allAppComponents = [
 	MainNavComponent,
 	FooterComponent,
 	AboutComponent,
-	SignInComponent
+	SignInComponent,
+	PostComponent
 ];
 
 
 export const routes: Routes = [
 
-	{path: "", component: HomeComponent},
 	{path: "about", component: AboutComponent},
+	{path:  "tempPost", component: PostComponent},
+	{path: "", component: HomeComponent},
+
 ];
 
 // TODO: add services to this array when ready to test
@@ -36,7 +41,8 @@ export const appRoutingProviders: any[] = [
 	SessionService,
 	SignInService,
 	SignUpService,
-	CookieService
+	CookieService,
+	PostService
 ];
 
 export const routing = RouterModule.forRoot(routes);

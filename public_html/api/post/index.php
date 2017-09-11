@@ -2,7 +2,7 @@
 
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/lib/postProfile.php";
+require_once dirname(__DIR__, 3) . "/php/lib/postProfileId.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
@@ -122,6 +122,7 @@ try {
 		//The argument for the function, here, is "php://input".
 		//This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
+		var_dump($requestObject);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 
 		//make sure post content is available (required field)

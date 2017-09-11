@@ -1,5 +1,5 @@
 <?php
-require_once ("../classes/autoload.php");
+
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\Townhall\{Profile, Post, JsonObjectStorage};

@@ -11,20 +11,21 @@ import {Status} from "../classes/status";
 import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
 
+
 @Component({
 	templateUrl: "./templates/post.html"
 })
 
 export class PostComponent implements OnInit {
 
-	newPost : Post = new Post(null, null, null, null, null, null, null);
+	newPost : Post = new Post(null, null, null, null, null, null);
 	posts : Post[] = [];
 	status : Status = null;
 
 	constructor(protected postService: PostService) {}
 
 	ngOnInit() : void {
-		this.getAllPosts();
+		/*this.getAllPosts();*/
 	}
 
 	getAllPosts() : void {
