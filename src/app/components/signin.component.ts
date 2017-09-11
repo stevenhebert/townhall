@@ -13,19 +13,18 @@ declare var $: any;
 
 export class SignInComponent {
 
-
-	signIn: SignIn = new SignIn(null, null);
+	signin: SignIn = new SignIn(null, null);
 	status: Status = null;
 
-	constructor(private SignInService: SignInService, private router: Router){
+	constructor(private signInService: SignInService, private router: Router){
 	}
 
-	signin(): void {
-		this.SignInService.postSignIn(this.signIn).subscribe(status=>{
+	signIn(): void {
+		this.signInService.postSignIn(this.signin).subscribe(status=>{
 			this.status = status;
 			if(status.status === 200){
 
-				this.router.navigate(["profile"]);
+				this.router.navigate(["about"]);
 			} else {
 				console.log("failed login");
 			}

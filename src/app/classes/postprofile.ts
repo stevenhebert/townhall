@@ -6,8 +6,6 @@ export class PostProfile {
 					public postDate: Date,
 					public postDistrictId: number,
 					public postParentId: number,
-
-
 	){
 	}
 }
