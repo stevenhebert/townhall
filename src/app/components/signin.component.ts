@@ -13,7 +13,7 @@ declare var $: any;
 
 export class SignInComponent {
 
-	signin: SignIn = new SignIn(null, null);
+	signin: SignIn = new SignIn("fuck off", "dammit");
 	status: Status = null;
 
 	constructor(private signInService: SignInService, private router: Router){
