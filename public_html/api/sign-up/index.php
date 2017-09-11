@@ -87,7 +87,6 @@ try {
 		else {
 			$districtId = $district->getDistrictId();
 		}
-		var_dump($districtId);
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
 		$profileActivationToken = bin2hex(random_bytes(16));

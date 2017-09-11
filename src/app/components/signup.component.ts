@@ -4,7 +4,6 @@
 
 //import needed modules for the sign-up component
 import {Component, ViewChild,} from "@angular/core";
-import {Observable} from "rxjs/Observable"
 import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignUpService} from "../services/signup.service";
@@ -20,7 +19,6 @@ declare let $: any;
 })
 export class SignUpComponent {
 
-	//
 	@ViewChild("signUpForm") signUpForm: any;
 	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
@@ -37,9 +35,9 @@ export class SignUpComponent {
 				if(status.status === 200) {
 					alert(status.message);
 					setTimeout(function() {
-						$("#myModal").modal('hide');
+						$("#signup-modal").modal('hide');
 					}, 500);
-					this.router.navigate(["home"]);
+					this.router.navigate([""]);
 				}
 			});
 	}
