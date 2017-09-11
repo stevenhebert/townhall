@@ -6,92 +6,52 @@
 		</div>
 		<app-footer></app-footer>
 	</div>
-		<!--&lt;!&ndash; insert header and navbar &ndash;&gt;-->
-		<!--<main-nav></main-nav>-->
-			<!--<nav class="navbar navbar-default" id="top-of-page">-->
-				<!--<div class="container-fluid">-->
-					<!--&lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;-->
-					<!--<div class="navbar-header">-->
-						<!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
-							<!--<span class="sr-only">Toggle navigation</span>-->
-							<!--<span class="icon-bar"></span>-->
-							<!--<span class="icon-bar"></span>-->
-							<!--<span class="icon-bar"></span>-->
-						<!--</button>-->
-						<!--<a class="navbar-brand" href="posts.php">-->
-							<!--<img alt="Brand" src="../src/app/images/abq-townhall.png">-->
-						<!--</a>-->
-					<!--</div>-->
-					<!--&lt;!&ndash; Collect the nav links, forms, and other content for toggling &ndash;&gt;-->
-					<!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
-						<!--<ul class="nav navbar-nav navbar-right">-->
-							<!--<li class="dropdown">-->
-								<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Posts <span class="caret"></span></a>-->
-								<!--<ul class="dropdown-menu">-->
-									<!--<li><a href="#">District 1</a></li>-->
-									<!--<li><a href="#">District 2</a></li>-->
-									<!--<li><a href="#">District 3</a></li>-->
-									<!--<li><a href="#">District 4</a></li>-->
-									<!--<li><a href="#">District 5</a></li>-->
-									<!--<li><a href="#">District 6</a></li>-->
-									<!--<li><a href="#">District 7</a></li>-->
-									<!--<li><a href="#">District 8</a></li>-->
-									<!--<li><a href="#">District 9</a></li>-->
-								<!--</ul>-->
-							<!--</li>-->
-							<!--<li><a href="">About Us</a></li>-->
-							<!--<li><a href="">Contact Us</a></li>-->
+	<div class="container">
+		<div class="row">
 
-						<!--</ul>-->
-					<!--</div>&lt;!&ndash; /.navbar-collapse &ndash;&gt;-->
-				<!--</div>&lt;!&ndash; /.container-fluid &ndash;&gt;-->
-			<!--</nav>-->
-		<!--</header>-->
+			<div class="col-md-4">
+				<h1>Create New Post</h1>
+
+				<!-- Create New Post Form -->
+				<form #postForm="ngForm" id="postForm" (submit)="createPost();">
+
+					<div class="form-group">
+						<label class="sr-only" for="postContent">Content <span class="text-danger">*</span></label>
+						<div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</div>
+							<textarea class="form-control" name="postContent" id="postContent" cols="30" rows="10" placeholder="1024 characters max." [(ngModel)]="newPost.postContent" #postContent="ngModel" ></textarea>
+						</div>
+					</div>
+
+					<button [disabled]="postForm.invalid" class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+					<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+				</form>
+				<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
+					<button type="button" class="close" aria-label="Close" (click)="status = null;"><span aria-hidden="true">&times;</span></button>
+					{{ status.message }}
+				</div>
 
 
+			</div>
 
-		<!--<div class="container">-->
-			<!--<div class="row">-->
+			<div class="col-md-8">
+				<h1>Posts in District Number </h1>
 
-				<!--<div class="col-md-4">-->
-					<!--<h2 class="text-center">Create New Post</h2>-->
+				<!-- Begin Post Item -->
+				<div class="panel panel-default">
+					<div class="panel-body">
+						{{ post.postContent }}
 
-					<!--&lt;!&ndash; Create New Post Form &ndash;&gt;-->
-					<!--<form id="contact-form">-->
-
-						<!--<div class="form-group">-->
-							<!--<label class="sr-only" for="postContent">Content <span class="text-danger">*</span></label>-->
-							<!--<div class="input-group">-->
-								<!--<div class="input-group-addon">-->
-									<!--<i class="fa fa-pencil" aria-hidden="true"></i>-->
-								<!--</div>-->
-								<!--<textarea class="form-control" name="postContent" id="postContent" cols="30" rows="10" placeholder="1024 characters max."></textarea>-->
-							<!--</div>-->
-						<!--</div>-->
-
-						<!--<div class ="center-block text-center"><button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>-->
-							<!--<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button></div>-->
-					<!--</form>-->
-
-				<!--</div>-->
-
-				<!--<div class="col-md-8">-->
-					<!--<h2 class="text-center"> All Posts in District Number </h2>-->
-
-					<!--&lt;!&ndash; Begin Post Item &ndash;&gt;-->
-					<!--<div class="panel panel-default">-->
-						<!--<div class="panel-body">-->
-							<!--This is the post content-->
-						<!--</div>-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div>-->
-		<!--<footer></footer>-->
-	<!--</main>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-<!--</div>-->
+
 	</div>
 	<app-footer></app-footer>
 	</div>
