@@ -15,7 +15,7 @@ export class SignInService extends BaseService {
 	public isSignedIn = false;
 
 	postSignIn(signIn: SignIn): Observable<Status> {
-		return(this.http.post(this.signInUrl, signIn)
+		return (this.http.post(this.signInUrl, signIn)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
