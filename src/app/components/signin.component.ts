@@ -24,7 +24,7 @@ export class SignInComponent {
 			this.status = status;
 			if(status.status === 200){
 
-				this.router.navigate(["about"]);
+				this.router.navigate([""]);
 			} else {
 				console.log("failed login");
 			}

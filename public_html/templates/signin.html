@@ -4,12 +4,12 @@
 		<div class="input-group">
 			<span class="input-group-addon"></span>
 			<input id="profileEmail" type="email" class="form-control" name="profileEmail" placeholder="email" required
-					 [(ngModel)]="signIn.profileEmail" #profileEmail="ngModel">
+					 [(ngModel)]="signin.profileEmail" #profileEmail="ngModel">
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon"></span>
 			<input id="profilePassword" type="password" class="form-control" name="profilePassword" placeholder="password" required
-					 [(ngModel)]="signIn.profilePassword" #profilePassword="ngModel">
+					 [(ngModel)]="signin.profilePassword" #profilePassword="ngModel">
 		</div>
 		<div class="row">
 			<button type="submit" id="submit" class="btn btn-success" [disabled]="signInForm.invalid">Login</button>
