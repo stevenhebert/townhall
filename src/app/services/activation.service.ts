@@ -17,7 +17,7 @@ export class ActivationService extends BaseService {
 	// uses session
 
 	profileActivationToken(activation: string): Observable<Status> {
-		return (this.http.get(this.activationUrl + "?profileActivationToken" + activation)
+		return (this.http.get(this.activationUrl + "?profileActivationToken=" + activation)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}

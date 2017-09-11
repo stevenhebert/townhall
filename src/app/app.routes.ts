@@ -6,6 +6,7 @@ import {HomeComponent} from "./components/home.component";
 import {MainNavComponent} from "./components/mainnav.component";
 import {SignInComponent} from "./components/signin.component"
 import {SignUpComponent} from "./components/signup.component";
+import {ActivationComponent} from "./components/activation.component";
 
 import {SessionService} from "./services/session.service";
 import {ActivationService} from "./services/activation.service";
@@ -23,7 +24,8 @@ export const allAppComponents = [
 	FooterComponent,
 	AboutComponent,
 	SignInComponent,
-	PostComponent
+	PostComponent,
+	ActivationComponent
 ];
 
 
@@ -31,7 +33,8 @@ export const routes: Routes = [
 
 	{path: "about", component: AboutComponent},
 	{path:  "tempPost", component: PostComponent},
-	{path: "", component: HomeComponent},
+	{path:	"activation/:activation", component: ActivationComponent},
+	{path: "", component: HomeComponent}
 
 ];
 

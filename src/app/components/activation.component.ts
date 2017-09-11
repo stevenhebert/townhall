@@ -4,8 +4,7 @@ import {Status} from "../classes/status";
 import {ActivationService} from "../services/activation.service";
 
 @Component({
-	templateUrl: "./templates/home-template.php",
-	selector: "activation"
+	templateUrl: "./templates/activation.html"
 })
 
 export class ActivationComponent implements OnInit{
