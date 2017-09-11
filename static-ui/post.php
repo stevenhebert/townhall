@@ -71,8 +71,8 @@
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 								</button>
-								<a class="navbar-brand" href="posts.php">
-									<img alt="Brand" src="images/abq-townhall.png">
+								<a class="navbar-brand" href="post.php">
+									<img src="lib/images/abq-townhall.png" alt="Brand">
 								</a>
 							</div>
 							<!-- Collect the nav links, forms, and other content for toggling -->
@@ -108,7 +108,7 @@
 						<div class="row">
 
 							<div class="col-md-4">
-								<h1>Create New Post</h1>
+								<h2>Create New Post</h2>
 
 								<!-- Create New Post Form -->
 								<form id="contact-form">
@@ -122,15 +122,16 @@
 											<textarea class="form-control" name="postContent" id="postContent" cols="30" rows="10" placeholder="1024 characters max."></textarea>
 										</div>
 									</div>
+									<div class="text-center center-block">
 
 									<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
-									<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+										<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button></div>
 								</form>
 
 							</div>
 
 							<div class="col-md-8">
-								<h1>Posts in District Number </h1>
+								<h2>Posts in District</h2>
 
 								<!-- Begin Post Item -->
 								<div class="panel panel-default">
