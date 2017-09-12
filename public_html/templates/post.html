@@ -43,7 +43,7 @@
 
 			<!-- Begin Post Item -->
 			<div class="panel panel-default" *ngFor="let post of posts">
-				<div class="panel-heading">{{post.postProfileUserName}}, {{post.postDateTime | date:"medium"}}</div>
+				<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime | date:"medium"}},  {{post.info.upVote}} up votes , {{post.info.downVote}} down votes</div>
 				<div class="panel-body">
 					{{ post.postContent }}
 				</div>
