@@ -18,6 +18,10 @@ import {PostService} from "./services/post.service";
 import {UserNavComponent} from "./components/usernav.component";
 
 import {APP_BASE_HREF} from "@angular/common";
+import {SignOutComponent} from "./components/signout.component";
+import {SignOutService} from "./services/signout.service";
+import {EditProfileComponent} from "./components/editprofile.component";
+import {EditProfileService} from "./services/editprofile.service";
 
 // TODO: add components to this array when ready to test
 export const allAppComponents = [
@@ -27,9 +31,11 @@ export const allAppComponents = [
 	FooterComponent,
 	AboutComponent,
 	SignInComponent,
+	SignOutComponent,
 	PostComponent,
 	ActivationComponent,
-	UserNavComponent
+	UserNavComponent,
+	EditProfileComponent
 ];
 
 
@@ -51,8 +57,10 @@ export const appRoutingProviders: any[] = [
 	ActivationService,
 	SessionService,
 	SignInService,
+	SignOutService,
 	SignUpService,
 	CookieService,
+	EditProfileService,
 	PostService
 ];
 

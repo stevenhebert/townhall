@@ -20,12 +20,12 @@ export class SignOutComponent {
 
 	isSignedIn = false;
 
-	ngOnChanges (): void{
+	ngOnChanges(): void{
 		this.isSignedIn = this.SignInService.isSignedIn;
 
 	}
 
-	signIn() : void {
+	signOut() : void {
 		this.SignOutService.getSignOut()
 			.subscribe(status => {
 				this.status = status;

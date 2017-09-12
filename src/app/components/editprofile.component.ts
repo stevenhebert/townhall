@@ -1,7 +1,7 @@
-import{Component, ViewChild, OnInit, EventEmitter, Output} from "@angular/core";
-import {Router} from "@angular/router";
+import{Component, ViewChild, OnInit} from "@angular/core";
+import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs/Observable"
-import {EditProfile} from "../classes/editprofile";
+import {Profile} from "../classes/profile";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
 
@@ -9,35 +9,23 @@ declare let $: any;
 
 @Component({
 	templateUrl: "./templates/editprofile.html",
-	selector: "editprofile"
 })
+
 export class EditProfileComponent implements OnInit {
-
-	@ViewChild("editprofileForm") editprofileForm: any;
-	editProfile: EditProfile = new EditProfile("", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
+	@ViewChild("editProfileForm") editProfileForm: any;
+	profile: Profile = new Profile(0, "", "", "", "", "", "", "", "", "");
 
-
-	constructor(private editProfileService: EditProfileService, private router: Router) {
+	constructor(private editProfileService: EditProfileService, private route: ActivatedRoute) {
 	}
 
 	ngOnInit(): void {
+		this.editProfile();
 	}
 
-	putEditProfile(): void {
-		this.editProfileService.putProfile(this.editProfile)
-
-			.subscribe(status => {
-				console.log(this.editProfile);
-
-				console.log(this.status);
-				if(status.status === 200) {
-					alert(status.message);
-					setTimeout(function() {
-						$("#editProfile-modal").modal('hide');
-					}, 500);
-					this.router.navigate([""]);
-				}
-			});
+	editProfile(): void {
+		this.route.params
+			.switchMap((params: Params) => this.editProfileService.getProfileByProfileId(params['id']))
+			.subscribe(reply => this.profile = reply);
 	}
 }

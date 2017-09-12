@@ -6,6 +6,7 @@ import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
 
 import {SignInService} from "./services/signin.service";
+import {SignOutService} from "./services/signout.service"
 import {SignUpService} from "./services/signup.service";
 import {EditProfileService} from "./services/editprofile.service"
 
@@ -23,6 +24,7 @@ const moduleDeclarations = [AppComponent];
 		appRoutingProviders,
 		EditProfileService,
 		SignInService,
+		SignOutService,
 		SignUpService
 	]})
 export class AppModule {	cookieJar : any = {};
