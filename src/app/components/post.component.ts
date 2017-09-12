@@ -5,8 +5,9 @@ this component is for posting and viewing ABQ Town Hall posts.
 // import modules associated with post
 import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Status} from "../classes/status";
+import 'rxjs/add/operator/switchMap';
 
 import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
@@ -18,14 +19,21 @@ import {Post} from "../classes/post";
 
 export class PostComponent implements OnInit {
 
-	newPost : Post = new Post(null, null, null, null, null, null);
+	newPost : Post = new Post(null, null, null, null, null, null, null);
 	posts : Post[] = [];
 	status : Status = null;
 
-	constructor(protected postService: PostService) {}
+	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute) {}
 
 	ngOnInit() : void {
-		/*this.getAllPosts();*/
+		this.loadDistrictById();
+
+	}
+
+	loadDistrictById() : void {
+		this.activatedRoute.params
+			.switchMap((params : Params)=>this.postService.getPostByPostDistrictId(+params[districtId]))
+			.subscribe(posts=>this.posts = posts);
 	}
 
 	getAllPosts() : void {
