@@ -15,6 +15,8 @@ import {SignUpService} from "./services/signup.service";
 import {CookieService} from "ng2-cookies";
 import {PostComponent} from "./components/post.component";
 import {PostService} from "./services/post.service";
+import {UserNavComponent} from "./components/usernav.component";
+
 import {APP_BASE_HREF} from "@angular/common";
 
 // TODO: add components to this array when ready to test
@@ -26,7 +28,8 @@ export const allAppComponents = [
 	AboutComponent,
 	SignInComponent,
 	PostComponent,
-	ActivationComponent
+	ActivationComponent,
+	UserNavComponent
 ];
 
 

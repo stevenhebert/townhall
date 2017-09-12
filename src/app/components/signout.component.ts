@@ -1,5 +1,3 @@
-//this is the modal that pops up when "sign-out" is clicked
-
 import{Component, } from "@angular/core";
 
 import {Router} from "@angular/router";
@@ -10,8 +8,8 @@ import {SignInService} from "../services/signin.service";
 declare var $: any;
 
 @Component({
-	templateUrl: "./templates/signout-template.html",
-	selector: "signOut"
+	templateUrl: "./templates/signout.html",
+	selector: "signout"
 })
 
 export class SignOutComponent {
