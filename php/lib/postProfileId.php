@@ -33,11 +33,11 @@ function getPostProfileName (\SplFixedArray $posts) : JsonObjectStorage {
 			'postParentId' => $post->getPostParentId(),
 			'postProfileUserName' => $profile->getProfileUserName(),
 			'postContent' => $post->getPostContent(),
-			'postDateTime' => $post->getPostDateTime()
+			'postDateTime' => round($post->getPostDateTime()->format("U.u" ) * 1000)
 		];
 
-		$vote = Vote::getSumOfVoteValuesByPostId($pdo, $postProfile->getPostId());
-		$storage->attach($postProfile, $vote);
+		$vote = Vote::getSumOfVoteValuesByPostId($pdo, $post->getPostId());
+		$storage->attach($postProfile,$vote);
 	}
 	return $storage;
 }
