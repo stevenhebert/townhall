@@ -57,6 +57,7 @@ export const routes: Routes = [
 
 // TODO: add services to this array when ready to test
 export const appRoutingProviders: any[] = [
+	{provide: APP_BASE_HREF, useValue: window["_base_href"]},
 	ActivationService,
 	SessionService,
 	SignInService,
