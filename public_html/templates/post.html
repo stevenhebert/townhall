@@ -42,11 +42,11 @@
 			<h2>All Posts in District</h2>
 
 			<!-- Begin Post Item -->
-			<div class="panel panel-default">
-				<!--<div class="panel-body">
-					{{ newPost.postContent }}
-
-				</div>-->
+			<div class="panel panel-default" *ngFor="let post of posts">
+				<div class="panel-heading">{{post.postProfileUserName}}, {{post.postDateTime | date:"medium"}}</div>
+				<div class="panel-body">
+					{{ post.postContent }}
+				</div>
 			</div>
 		</div>
 	</div>

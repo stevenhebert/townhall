@@ -36,11 +36,14 @@ export class PostComponent implements OnInit {
 	}
 
 	createPost() : void {
+		this.activatedRoute.params.subscribe(params=>{this.newPost.postDistrictId = +params['postDistrictId'] });
 		this.postService.createPost(this.newPost)
 			.subscribe(status => {
 				this.status = status;
 				if(this.status.status === 200) {
-					this.getAllPosts();
+					this.loadDistrictById();
+				} else {
+
 				}
 			});
 	}

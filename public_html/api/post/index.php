@@ -43,6 +43,8 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 501);
+
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
@@ -122,8 +124,9 @@ try {
 		//The argument for the function, here, is "php://input".
 		//This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
-		var_dump($requestObject);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
+
+
 
 		//make sure post content is available (required field)
 		if(empty($requestObject->postContent) === true) {
