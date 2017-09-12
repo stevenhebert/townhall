@@ -59,10 +59,8 @@ try {
 		if($hash !== $profile->getProfileHash()) {
 			throw(new \InvalidArgumentException("Password or email is incorrect."));
 		}
-		//grab the profile from the database and put into a session
-		$profile = Profile::getProfileByProfileId(($pdo, $profile->getProfileId());
+
 		$_SESSION["profile"] = $profile;
-		setcookie("profileId", $profile->getProfileId(), 0,"/");
 		$reply->message = "Sign in was successful.";
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP method request.", 418));
