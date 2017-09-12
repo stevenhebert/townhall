@@ -12,7 +12,24 @@ export class SignOutService extends BaseService {
 
 	private signOutUrl = "api/sign-out/";
 
-	getSignOut() : Observable<Status> {
+	getSignOut() :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	Observable<Status> {
 		return(this.http.get(this.signOutUrl)
 			.map(this.extractMessage)
 			.catch(this.handleError));

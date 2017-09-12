@@ -1,6 +1,5 @@
 import{Component, ViewChild, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
-import {Observable} from "rxjs/Observable"
 import {Profile} from "../classes/profile";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
@@ -9,6 +8,7 @@ declare let $: any;
 
 @Component({
 	templateUrl: "./templates/editprofile.html",
+	selector: "edit-profile",
 })
 
 export class EditProfileComponent implements OnInit {
@@ -25,7 +25,7 @@ export class EditProfileComponent implements OnInit {
 
 	editProfile(): void {
 		this.route.params
-			.switchMap((params: Params) => this.editProfileService.getProfileByProfileId(params['id']))
+			.switchMap((params: Params) => this.editProfileService.getProfileByProfileId(+params['id']))
 			.subscribe(reply => this.profile = reply);
 	}
 }

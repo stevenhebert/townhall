@@ -13,14 +13,14 @@
 			<div class="modal-body">
 
 				<!-- actual form -->
-				<form class="form-horizontal" #editProfileForm="ngForm" name="editProfileForm" (ngSubmit)="ngOnInit();">
+				<form class="form-horizontal" #editProfileForm="ngForm" name="editProfileForm" (ngSubmit)="editProfile();">
 
 					<!-- abq town hall first name -->
 					<div class="form-group">
 						<label for="profileFirstName" class="col-sm-2 control-label">First Name</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileFirstName" name="profileFirstName" class="form-control" required
-									 [(ngModel)]="editprofile.profileFirstName" #profileFirstName="ngModel">
+									 [(ngModel)]="profile.profileFirstName" #profileFirstName="ngModel">
 						</div>
 					</div>
 
@@ -28,8 +28,9 @@
 					<div class="form-group">
 						<label for="profileLastName" class="col-sm-2 control-label">Last Name </label>
 						<div class="col-sm-10">
-							<input type="text" id="profileLastName" name="profileLastName" class="form-control input-sm" required
-									 [(ngModel)]="editprofile.profileLastName" #profileLastName="ngModel">
+							<input type="text" id="profileLastName" name="profileLastName" class="form-control input-sm"
+									 required
+									 [(ngModel)]="profile.profileLastName" #profileLastName="ngModel">
 						</div>
 					</div>
 
@@ -37,8 +38,9 @@
 					<div class="form-group">
 						<label for="profileAddress1" class="col-sm-2 control-label">Address 1</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileAddress1" name="profileAdress1" class="form-control input-sm" required
-									 [(ngModel)]="editprofile.profileAddress1" #profileAddress1="ngModel">
+							<input type="text" id="profileAddress1" name="profileAdress1" class="form-control input-sm"
+									 required
+									 [(ngModel)]="profile.profileAddress1" #profileAddress1="ngModel">
 						</div>
 					</div>
 
@@ -46,8 +48,9 @@
 					<div class="form-group">
 						<label for="profileAddress2" class="col-sm-2 control-label">Address 2</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileAddress2" name="profileAddress2" class="form-control input-sm" required
-									 [(ngModel)]="editprofile.profileAddress2" #profileAddress2="ngModel">
+							<input type="text" id="profileAddress2" name="profileAddress2" class="form-control input-sm"
+									 required
+									 [(ngModel)]="profile.profileAddress2" #profileAddress2="ngModel">
 						</div>
 					</div>
 
@@ -56,7 +59,7 @@
 						<label for="profileCity" class="col-sm-2 control-label">City</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileCity" name="profileCity" class="form-control input-sm"
-									 required [(ngModel)]="editprofile.profileCity" #profileCity="ngModel">
+									 required [(ngModel)]="profile.profileCity" #profileCity="ngModel">
 						</div>
 					</div>
 
@@ -65,7 +68,7 @@
 						<label for="profileState" class="col-sm-2 control-label">State</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileState" name="profileState" class="form-control input-sm"
-									 required [(ngModel)]="editprofile.profileState" #profileState="ngModel">
+									 required [(ngModel)]="profile.profileState" #profileState="ngModel">
 						</div>
 					</div>
 
@@ -74,7 +77,7 @@
 						<label for="profileZip" class="col-sm-2 control-label">Zip Code</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileZip" name="profileZip" class="form-control input-sm"
-									 required [(ngModel)]="editprofile.profileZip" #profileZip="ngModel">
+									 required [(ngModel)]="profile.profileZip" #profileZip="ngModel">
 						</div>
 					</div>
 
@@ -83,7 +86,7 @@
 						<label for="profileEmail" class="col-sm-2 control-label">E-Mail</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileEmail" name="profileEmail" class="form-control input-sm"
-									 required [(ngModel)]="editprofile.profileEmail" #profileEmail="ngModel">
+									 required [(ngModel)]="profile.profileEmail" #profileEmail="ngModel">
 						</div>
 					</div>
 
@@ -92,7 +95,7 @@
 						<label for="profilePassword" class="col-sm-2 control-label">Requested Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePassword" name="profilePassword" class="form-control input-sm"
-									 required [(ngModel)]="editprofile.profilePassword" #profilePassword="ngModel">
+									 required [(ngModel)]="profile.profilePassword" #profilePassword="ngModel">
 						</div>
 					</div>
 
@@ -100,8 +103,9 @@
 					<div class="form-group">
 						<label for="profilePasswordConfirm" class="col-sm-2 control-label">Confirm Password</label>
 						<div class="col-sm-10">
-							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm" class="form-control input-sm"
-									 required [(ngModel)]="editprofile.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
+							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm"
+									 class="form-control input-sm"
+									 required [(ngModel)]="profile.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
 						</div>
 					</div>
 

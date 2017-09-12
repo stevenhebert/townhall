@@ -1,8 +1,3 @@
-/*
-this component is for posting and viewing ABQ Town Hall posts.
- */
-
-// import modules associated with post
 import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Router, ActivatedRoute, Params} from "@angular/router";
@@ -27,7 +22,6 @@ export class PostComponent implements OnInit {
 
 	ngOnInit() : void {
 		this.loadDistrictById();
-
 	}
 
 	loadDistrictById() : void {

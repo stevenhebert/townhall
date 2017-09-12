@@ -9,7 +9,7 @@ import {Profile} from "../classes/profile";
 export class EditProfileService extends BaseService {
 
 	constructor(protected http: Http) {
-		super(http)	;
+		super(http);
 	}
 
 	private profileUrl = "api/profile/";
