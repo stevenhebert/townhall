@@ -32,7 +32,7 @@ export class PostComponent implements OnInit {
 
 	loadDistrictById() : void {
 		this.activatedRoute.params
-			.switchMap((params : Params)=>this.postService.getPostByPostDistrictId(+params[districtId]))
+			.switchMap((params : Params)=>this.postService.getPostByPostDistrictId(+params["postDistrictId"]))
 			.subscribe(posts=>this.posts = posts);
 	}
 
