@@ -12,8 +12,8 @@ declare let $: any;
 })
 
 export class EditProfileComponent implements OnInit {
-	status: Status = null;
 	@ViewChild("editProfileForm") editProfileForm: any;
+	status: Status = null;
 	profile: Profile = new Profile(0, "", "", "", "", "", "", "", "", "");
 
 	constructor(private editProfileService: EditProfileService, private route: ActivatedRoute) {

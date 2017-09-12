@@ -39,6 +39,7 @@ export class SignUpComponent {
 					}, 500);
 					this.router.navigate([""]);
 				}
+				else alert(status.message);
 			});
 	}
 }
