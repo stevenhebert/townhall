@@ -49,7 +49,7 @@ export class PostService extends BaseService {
 			.map(this.extractData)
 			.catch(this.handleError));
 	}
-	getPostByPostDistrictId(postDistrictId : number) : Observable<Post> {
+	getPostByPostDistrictId(postDistrictId : number) : Observable<Post[]> {
 		return(this.http.get(this.postUrl + '?postDistrictId='+ postDistrictId)
 			.map(this.extractData)
 			.catch(this.handleError));
