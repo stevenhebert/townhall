@@ -7,6 +7,9 @@ import {MainNavComponent} from "./components/mainnav.component";
 import {SignInComponent} from "./components/signin.component"
 import {SignUpComponent} from "./components/signup.component";
 import {ActivationComponent} from "./components/activation.component";
+import {UserNavComponent} from "./components/usernav.component";
+import {EditProfileComponent} from "./components/editprofile.component";
+import {SignOutComponent} from "./components/signout.component";
 
 import {SessionService} from "./services/session.service";
 import {ActivationService} from "./services/activation.service";
@@ -15,12 +18,11 @@ import {SignUpService} from "./services/signup.service";
 import {CookieService} from "ng2-cookies";
 import {PostComponent} from "./components/post.component";
 import {PostService} from "./services/post.service";
-import {UserNavComponent} from "./components/usernav.component";
+
 
 import {APP_BASE_HREF} from "@angular/common";
-import {SignOutComponent} from "./components/signout.component";
+
 import {SignOutService} from "./services/signout.service";
-import {EditProfileComponent} from "./components/editprofile.component";
 import {EditProfileService} from "./services/editprofile.service";
 
 // TODO: add components to this array when ready to test
@@ -31,11 +33,11 @@ export const allAppComponents = [
 	FooterComponent,
 	AboutComponent,
 	SignInComponent,
-	SignOutComponent,
 	PostComponent,
 	ActivationComponent,
 	UserNavComponent,
-	EditProfileComponent
+	EditProfileComponent,
+	SignOutComponent
 ];
 
 
@@ -48,6 +50,7 @@ export const routes: Routes = [
 			{path: ":activation", component: ActivationComponent}
 		]
 	},
+	{path:	"signout", component: SignOutComponent},
 	{path: "", component: HomeComponent}
 
 ];
