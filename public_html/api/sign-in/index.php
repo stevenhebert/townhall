@@ -60,7 +60,11 @@ try {
 			throw(new \InvalidArgumentException("Password or email is incorrect."));
 		}
 
+		// grab the profile from database and put into a session
+		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
+
 		$_SESSION["profile"] = $profile;
+		setcookie("profileDistrictId", $profile->getProfileDistrictId(), 0,"/");
 		$reply->message = "Sign in was successful.";
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP method request.", 418));
