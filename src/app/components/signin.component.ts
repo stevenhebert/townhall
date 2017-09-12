@@ -27,6 +27,7 @@ export class SignInComponent {
 				this.router.navigate(["tempPost"]);
 			} else {
 				console.log("failed login");
+				alert(status.message);
 			}
 		});
 	}
