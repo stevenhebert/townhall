@@ -13,7 +13,7 @@ declare var $: any;
 
 export class SignInComponent {
 
-	signin: SignIn = new SignIn("E-Mail Address", "Password");
+	signin: SignIn = new SignIn(null, null);
 	status: Status = null;
 
 	constructor(private signInService: SignInService, private router: Router){

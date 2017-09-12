@@ -3,12 +3,12 @@
 	<form #signInForm="ngForm" id="signInForm" name="signInForm" (submit)="signIn();">
 		<div class="input-group">
 			<span class="input-group-addon"></span>
-			<input id="profileEmail" type="email" class="form-control" name="profileEmail" placeholder="email" required
+			<input id="profileEmail" type="email" class="form-control" name="profileEmail" placeholder="E-Mail" required
 					 [(ngModel)]="signin.profileEmail" #profileEmail="ngModel">
 		</div>
 		<div class="input-group">
 			<span class="input-group-addon"></span>
-			<input id="profilePassword" type="password" class="form-control" name="profilePassword" placeholder="password" required
+			<input id="profilePassword" type="password" class="form-control" name="profilePassword" placeholder="Password" required
 					 [(ngModel)]="signin.profilePassword" #profilePassword="ngModel">
 		</div>
 		<div class="row">
