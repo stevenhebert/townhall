@@ -71,8 +71,8 @@
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 								</button>
-								<a class="navbar-brand" href="post.php">
-									<img src="lib/images/abq-townhall.png" alt="Brand">
+								<a class="navbar-brand" href="">
+									<img src="../src/app/images/abq-townhall.png" alt="Brand">
 								</a>
 							</div>
 							<!-- Collect the nav links, forms, and other content for toggling -->
