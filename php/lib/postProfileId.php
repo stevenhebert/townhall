@@ -2,7 +2,9 @@
 
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Townhall\{Profile, Post, JsonObjectStorage};
+require_once (dirname(__DIR__) . "/classes/autoload.php");
+
+use Edu\Cnm\Townhall\{Profile, Vote, JsonObjectStorage};
 
 
 
@@ -17,10 +19,10 @@ use Edu\Cnm\Townhall\{Profile, Post, JsonObjectStorage};
  * Time: 9:55 AM
  */
 
-function getPostProfileName (\SplFixedArray $posts) : array {
+function getPostProfileName (\SplFixedArray $posts) : JsonObjectStorage {
 
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
-	$postProfiles = [];
+	$storage = new JsonObjectStorage();
 
 	foreach($posts as  $post) {
 
@@ -34,7 +36,8 @@ function getPostProfileName (\SplFixedArray $posts) : array {
 			'postDateTime' => $post->getPostDateTime()
 		];
 
-		$postProfiles[] =$postProfile;
+		$vote = Vote::getSumOfVoteValuesByPostId($pdo, $postProfile->getPostId());
+		$storage->attach($postProfile, $vote);
 	}
-	return $postProfiles;
+	return $storage;
 }
