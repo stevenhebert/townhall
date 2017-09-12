@@ -32,7 +32,7 @@ try {
 	// sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileUserName = filter_input(INPUT_GET, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$editProfile = filter_input(INPUT_GET, "profileEdit", )
+	$editProfile = filter_input(INPUT_GET, "profileEdit", FILTER_VALIDATE_INT);
 
 	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING);
 	// make sure the id is valid for methods that require it
