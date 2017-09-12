@@ -76,12 +76,17 @@
 
 				<div class="container-fluid bg-2 text-center">
 					<h3>Mission</h3>
-					<p></p>
+					<p>To give the people of Albuquerque the power to create and share ideas and concerns instantly, and communicate with their elected officals without barriers.</p>
 				</div>
 
 				<div class="container-fluid bg-3 text-center">
 					<h3>Values</h3>
-					<p></p>
+					<p>Values
+                        Diversity: It takes people with different ideas, strengths, interests, and cultural backgrounds for Townhall to succeed.
+                        Respect: We strive to show a deep respect for all people and for the communities in which they live.
+                        Collaboration: Leverage collective genius, together we make the difference
+                        Social value: We encourage healthy debate and differences of opinion.
+                        Democracy: We think it works well on the web.</p>
 				</div>
 			</div>
 

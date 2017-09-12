@@ -80,3 +80,12 @@ code {
 h2 {
 	color: white;
 }
+
+
+<style
+a.one:link {color:#000000;}
+a.one:visited {color:#00ff00;}
+a.one:hover {
+	color: #006dcc;
+/ style >
+}
