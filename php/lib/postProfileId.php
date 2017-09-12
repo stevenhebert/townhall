@@ -37,6 +37,7 @@ function getPostProfileName (\SplFixedArray $posts) : JsonObjectStorage {
 		];
 
 		$vote = Vote::getSumOfVoteValuesByPostId($pdo, $post->getPostId());
+
 		$storage->attach($postProfile,$vote);
 	}
 	return $storage;

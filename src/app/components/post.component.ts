@@ -6,6 +6,7 @@ import 'rxjs/add/operator/switchMap';
 
 import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
+import {PostVote} from "../classes/postvote";
 
 
 @Component({
@@ -27,7 +28,16 @@ export class PostComponent implements OnInit {
 	loadDistrictById() : void {
 		this.activatedRoute.params
 			.switchMap((params : Params)=>this.postService.getPostByPostDistrictId(+params["postDistrictId"]))
-			.subscribe(posts=>this.posts = posts);
+			.subscribe(posts => {
+				posts.map(post => {
+					if(Object.keys(post.info).length === 0 && post.info.constructor === Object) {
+						post.info = new PostVote(post.postId, 0, 0);
+					}
+				});
+				console.log(posts);
+				this.posts = posts;
+
+			});
 	}
 
 	getAllPosts() : void {
@@ -47,4 +57,5 @@ export class PostComponent implements OnInit {
 				}
 			});
 	}
+
 }
