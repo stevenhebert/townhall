@@ -46,6 +46,12 @@ h2 {
 h4 {
 	color: white;
 }
+
+.dropdown-menu {
+	background-color: hsla(120, 60%, 70%, 0.3);
+	font-weight: bold;
+}
+
 /*.navbar-brand {*/
 	/*margin-top: -15px;*/
 
