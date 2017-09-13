@@ -64,6 +64,7 @@ try {
 		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
 
 		$_SESSION["profile"] = $profile;
+		setcookie("profileId", $profile->getProfileId(), 0, "/");
 		setcookie("profileDistrictId", $profile->getProfileDistrictId(), 0,"/");
 		$reply->message = "Sign in was successful.";
 	} else {
