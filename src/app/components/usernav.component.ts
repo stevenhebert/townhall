@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignOutService} from "../services/signout.service";
 import {SignInService} from "../services/signin.service";
+import {CookieService} from "ng2-cookies";
+
 declare var $: any;
 
 @Component({
@@ -14,7 +16,7 @@ export class UserNavComponent {
 
 	status: Status = null;
 
-	constructor(private SignOutService: SignOutService, private SignInService: SignInService, private  router: Router){}
+	constructor(private SignOutService: SignOutService, private SignInService: SignInService, private  router: Router, private cookieService: CookieService){}
 
 	isSignedIn = false;
 
@@ -31,6 +33,8 @@ export class UserNavComponent {
 				if(status.status === 200) {
 					this.router.navigate(["signout"]);
 					this.SignInService.isSignedIn = false;
+					this.cookieService.deleteAll();
+					location.reload();
 				}
 			});
 	}
