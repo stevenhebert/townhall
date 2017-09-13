@@ -43,8 +43,6 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 501);
-
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
