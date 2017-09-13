@@ -15,14 +15,33 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-				<ul class="nav navbar-nav navbar-right">
-					<li><a routerLink=""><i class="fa fa-home"></i></a></li>
-					<li><a routerLink="/about"> About</a></li>
-					<li><a href="mailto:webmaster@abqtownhall.com"> Contact</a></li>
-					<li><a routerLink="#" data-toggle="modal" data-target="#editprofile-modal"> Edit Profile</a></li>
-					<li><a (click)="signOut()"> Sign Out</a></li>
-				</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a routerLink=""><i class="fa fa-home"></i></a></li>
+				<li><a routerLink="/about"> About</a></li>
+				<li><a href="mailto:webmaster@abqtownhall.com"> Contact</a></li>
+				<li><a routerLink="#" data-toggle="modal" data-target="#editprofile-modal"> Edit Profile</a></li>
+				<li><a (click)="signOut()"> Sign Out</a></li>
+			</ul>
+				<div class="nav navbar-nav navbar-left" id="bs-example-navbar-collapse-2">
 
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Districts <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a routerLink="/post/1"> District 1</a></li>
+							<li><a routerLink="/post/2"> District 2</a></li>
+							<li><a routerLink="/post/3"> District 3</a></li>
+							<li><a routerLink="/post/4"> District 4</a></li>
+							<li><a routerLink="/post/5"> District 5</a></li>
+							<li><a routerLink="/post/6"> District 6</a></li>
+							<li><a routerLink="/post/7"> District 7</a></li>
+							<li><a routerLink="/post/8"> District 8</a></li>
+							<li><a routerLink="/post/9"> District 9</a></li>
+							<li><a routerLink="/post/10"> District 10</a></li>
+						</ul>
+					</div>
+				</div>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
 	</nav>
