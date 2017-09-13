@@ -77,6 +77,7 @@ try {
 		if(empty($postId) === false) {
 			$post = Post::getPostByPostId($pdo, $postId);
 			if($post !== null) {
+				$postProfile = getPostProfile($post);
 				$reply->data = $post;
 			}
 		} else if(empty($postProfileId) === false) {
@@ -102,9 +103,10 @@ try {
 				$reply->data = $postProfiles;
 			}
 		} else if(empty($postParentId) === false) {
-			$posts = Post::getPostByPostParentId($pdo, $postParentId)->toArray();
+			$posts = Post::getPostByPostParentId($pdo, $postParentId);
 			if($posts !== null) {
-				$reply->data = $posts;
+				$postProfiles = getPostProfileName($posts);
+				$reply->data = $postProfiles;
 			}
 		}
 	} else if($method === "POST") {

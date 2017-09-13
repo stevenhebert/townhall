@@ -44,12 +44,6 @@ export class PostComponent implements OnInit {
 		this.router.navigate(["/reply/", post.postId]);
 	}
 
-	loadPostsByParentPostId(): void {
-		this.activatedRoute.params
-			.switchMap((params: Params) => this.postService.getPostsByPostParentId(+params["postParentId"]));
-	}
-
-
 	createPost(): void {
 		this.activatedRoute.params.subscribe(params => {
 			this.newPost.postDistrictId = +params['postDistrictId']
