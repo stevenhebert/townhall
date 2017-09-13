@@ -16,13 +16,13 @@ export class EditProfileService extends BaseService {
 
 
 	editProfile(profile: Profile): Observable<Status> {
-		return (this.http.put(this.profileUrl + profile.id, profile)
+		return (this.http.put(this.profileUrl + profile.profileId, profile)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 
-	getProfileByProfileId(id: number): Observable<Profile> {
-		return (this.http.get(this.profileUrl + id)
+	getProfile(profileId: number): Observable<Profile> {
+		return (this.http.get(this.profileUrl + profileId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}

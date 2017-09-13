@@ -1,31 +1,41 @@
-import{Component, ViewChild, OnInit} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
-import {Profile} from "../classes/profile";
+import {Component, ViewChild, OnInit} from "@angular/core";
+import {Observable} from "rxjs/Observable"
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
+import {Profile} from "../classes/profile";
+import {CookieService} from "ng2-cookies";
 
+//declare $ for good old jquery
 declare let $: any;
 
 @Component({
 	templateUrl: "./templates/editprofile.html",
-	selector: "edit-profile",
+	selector: "edit-profile"
 })
 
 export class EditProfileComponent implements OnInit {
-	@ViewChild("editProfileForm") editProfileForm: any;
+	@ViewChild("editProfileForm") signUpForm: any;
+	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null);
 	status: Status = null;
-	profile: Profile = new Profile(0, "", "", "", "", "", "", "", "", "");
+	cookieJar: any = {};
 
-	constructor(private editProfileService: EditProfileService, private route: ActivatedRoute) {
+	constructor(private editProfileService: EditProfileService, private router: Router, private cookieService: CookieService,private route: ActivatedRoute) {
 	}
 
-	ngOnInit(): void {
-		this.editProfile();
+	ngOnInit() : void {
+		this.route.params.forEach((params: Params) => {
+			let profileId = +params["profileId"];
+			this.cookieJar = this.cookieService.getAll();
+			this.editProfileService.getProfile(profileId)
+				.subscribe(profile => this.profile = profile);
+
+		})
 	}
 
-	editProfile(): void {
-		this.route.params
-			.switchMap((params: Params) => this.editProfileService.getProfileByProfileId(+params['id']))
-			.subscribe(reply => this.profile = reply);
+	createProfileEdit(): void {
+		this.editProfileService.editProfile(this.profile)
+			.subscribe(status => this.status = status);
+
 	}
 }
