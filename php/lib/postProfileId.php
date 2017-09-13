@@ -58,9 +58,9 @@ function getPostProfile(Post $post) {
 		'postDateTime' => round($post->getPostDateTime()->format("U.u" ) * 1000)
 	];
 
-	$vote = Vote::getSumOfVoteValuesByPostId($pdo, $post->getPostId());
 
-	$storage->attach($postProfile,$vote);
 
-	return $storage;
+
+
+	return $postProfile;
 }

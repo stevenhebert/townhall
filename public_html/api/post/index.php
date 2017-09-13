@@ -78,7 +78,7 @@ try {
 			$post = Post::getPostByPostId($pdo, $postId);
 			if($post !== null) {
 				$postProfile = getPostProfile($post);
-				$reply->data = $post;
+				$reply->data = $postProfile;
 			}
 		} else if(empty($postProfileId) === false) {
 			$posts = Post::getPostByPostProfileId($pdo, $postProfileId)->toArray();
