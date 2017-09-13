@@ -42,17 +42,12 @@ try {
 	if($method === "GET") {
 		// set XSRF cookie
 		setXsrfCookie();
-		// gets a profile by profileId
+		// gets a profile by content
 		if(empty($id) === false) {
 			$profile = Profile::getProfileByProfileId($pdo, $id);
-			//put the profile into a session cookie
-			$_SESSION["profile"] = $profile;
-			setcookie("profileId", $profile->getProfileId(), 0,"/");
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		} elseif($editprofile === 1) {
-
 		}
 
 
