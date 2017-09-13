@@ -1,6 +1,7 @@
 import {RouterModule, Routes} from "@angular/router";
 
 import {AboutComponent} from "./components/about.component";
+import {ReplyComponent} from "./components/reply.component"
 import {FooterComponent} from "./components/footer.component";
 import {HomeComponent} from "./components/home.component";
 import {MainNavComponent} from "./components/mainnav.component";
@@ -38,7 +39,8 @@ export const allAppComponents = [
 	ActivationComponent,
 	UserNavComponent,
 	EditProfileComponent,
-	SignOutComponent
+	SignOutComponent,
+	ReplyComponent
 ];
 
 
@@ -46,6 +48,7 @@ export const routes: Routes = [
 
 	{path: "about", component: AboutComponent},
 	{path:  "post/:postDistrictId", component: PostComponent},
+	{path:  "reply/:id", component: ReplyComponent},
 	{path:	"activation/:activation", component: ActivationComponent},
 	{path:	"signout", component: SignOutComponent},
 	{path: "", component: HomeComponent}

@@ -47,7 +47,9 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+
+	$postId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	//$id = filter_input(INPUT_GET, "postId", FILTER_VALIDATE_INT);
 	$postProfileId = filter_input(INPUT_GET, "postProfileId", FILTER_VALIDATE_INT);
 	$postContent = filter_input(INPUT_GET, "postContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -72,8 +74,8 @@ try {
 		setXsrfCookie();
 
 		//get a specific post or all posts and update reply
-		if(empty($id) === false) {
-			$post = Post::getPostByPostId($pdo, $id);
+		if(empty($postId) === false) {
+			$post = Post::getPostByPostId($pdo, $postId);
 			if($post !== null) {
 				$reply->data = $post;
 			}
@@ -101,11 +103,6 @@ try {
 			}
 		} else if(empty($postParentId) === false) {
 			$posts = Post::getPostByPostParentId($pdo, $postParentId)->toArray();
-			if($posts !== null) {
-				$reply->data = $posts;
-			}
-		} else {
-			$posts = Post::getAllPosts($pdo)->toArray();
 			if($posts !== null) {
 				$reply->data = $posts;
 			}

@@ -42,14 +42,14 @@
 			<h2>All Posts in District {{ posts[0]?.postDistrict}}</h2>
 
 			<!-- Begin Post Item -->
-			<div class="panel panel-default" *ngFor="let post of posts">
+			<div class="panel panel-default" *ngFor="let post of posts" (click)="switchPost(post);">
 
 				<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime | date:"medium"}} <button type="button"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{post.info.upVote}}</button> <button type="button"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{post.info.downVote}}</button></div>
 				<div class="panel-body">
 					{{ post.postContent }}
 				</div>
+				<button>click</button>
 			</div>
-			<!--<button (click)="createVote(post.postId);"></button>-->
 		</div>
 	</div>
 </div>
