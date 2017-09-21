@@ -26,13 +26,5 @@ export class VoteComponent implements OnInit {
 			.subscribe(votes => this.votes = votes);
 	}
 
-	createVote() : void {
-		this.voteService.createVote(this.newVote)
-			.subscribe(status => {
-				this.status = status;
-				if(this.status.status === 200) {
-					this.getAllVotes();
-				}
-			});
-	}
+
 }

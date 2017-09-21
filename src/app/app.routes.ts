@@ -26,6 +26,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {SignOutService} from "./services/signout.service";
 import {EditProfileService} from "./services/editprofile.service";
 import {ProfileService} from "./services/profile.service";
+import {VoteService} from "./services/vote.service";
 
 // TODO: add components to this array when ready to test
 export const allAppComponents = [
@@ -66,7 +67,8 @@ export const appRoutingProviders: any[] = [
 	CookieService,
 	EditProfileService,
 	PostService,
-	ProfileService
+	ProfileService,
+	VoteService
 ];
 
 export const routing = RouterModule.forRoot(routes);

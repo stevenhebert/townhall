@@ -4,7 +4,7 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	width: 100%;
-	height: 900px;
+	height: 801px;
 	padding: 5rem;
 }
 .navbar-brand {
@@ -82,7 +82,6 @@ h2 {
 }
 
 
-<style
 a.one:link {color:#000000;}
 a.one:visited {color:#00ff00;}
 a.one:hover {

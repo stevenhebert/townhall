@@ -7,6 +7,8 @@ import 'rxjs/add/operator/switchMap';
 import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
 import {PostVote} from "../classes/postvote";
+import {Vote} from "../classes/vote";
+import {VoteService} from "../services/vote.service";
 
 
 @Component({
@@ -18,8 +20,9 @@ export class PostComponent implements OnInit {
 	newPost: Post = new Post(null, null, null, null, null, null, null);
 	posts: Post[] = [];
 	status: Status = null;
+	newVote:  Vote = new Vote(null, null, null, null);
 
-	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute) {
+	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute,protected voteService:  VoteService) {
 	}
 
 	ngOnInit(): void {
@@ -58,6 +61,21 @@ export class PostComponent implements OnInit {
 				}
 			});
 	}
+
+	createVote(postId: number, voteValue: number) : void {
+		this.newVote.votePostId = postId;
+		this.newVote.voteValue = voteValue;
+
+		this.voteService.createVote(this.newVote)
+			.subscribe(status => {
+				this.status = status;
+				if(this.status.status === 200) {
+				this.loadDistrictById();
+				}
+			});
+	}
+
+
 
 }
 

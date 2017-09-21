@@ -5,6 +5,7 @@ import {BaseService} from "./base.service";
 import {Vote} from "../classes/vote";
 import {Status} from "../classes/status";
 
+
 @Injectable()
 export class VoteService extends BaseService {
 	constructor(protected http: Http) {
@@ -30,7 +31,7 @@ export class VoteService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	createVote(vote : Vote) : Observable<Status> {
+	createVote(vote: Vote) : Observable<Status> {
 		return(this.http.post(this.voteUrl, vote)
 			.map(this.extractMessage)
 			.catch(this.handleError));

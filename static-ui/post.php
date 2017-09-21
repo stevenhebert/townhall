@@ -131,7 +131,7 @@
 							</div>
 
 							<div class="col-md-8">
-								<h3>Posts in District</h3>
+								<h2>Posts in District 1</h2>
 
 								<!-- Begin Post Item -->
 								<div class="panel panel-default">
