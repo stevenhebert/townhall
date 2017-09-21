@@ -63,14 +63,25 @@ try {
 		if(empty($requestObject->votePostId) === true) {
 			throw (new \InvalidArgumentException("No Post found linked to vote", 405));
 		}
+
 		if($method === "POST") {
 			// ensure the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in to post a vote", 403));
 			}
-			$vote = new Vote($requestObject->votePostId , $_SESSION["profile"]->getProfileId(), null, $requestObject->voteValue);
-			$vote->insert($pdo);
-			$reply->message = "vote successful";
+			//does the vote exist?
+			$vote = Vote::getVoteByPostIdAndProfileId($pdo, $requestObject->votePostId, $_SESSION["profile"]->getProfileId());
+			//if vote does not exist, insert it
+			if($vote === null) {
+				$vote = new Vote($requestObject->votePostId, $_SESSION["profile"]->getProfileId(), null, $requestObject->voteValue);
+				$vote->insert($pdo);
+				$reply->message = "vote successful";
+			} else {
+				//update vote
+				$vote->setVoteValue($requestObject->voteValue);
+				$vote->update($pdo);
+				$reply->message = "vote update successful";
+			}
 		} else if($method === "PUT") {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
