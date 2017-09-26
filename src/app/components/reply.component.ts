@@ -52,6 +52,8 @@ export class ReplyComponent implements OnInit {
 
 	createPost(): void {
 
+		console.log(this.childPost);
+
 		this.newPost.postDistrictId = this.childPost.postDistrictId;
 		this.newPost.postParentId = this.childPost.postId;
 
@@ -69,6 +71,6 @@ export class ReplyComponent implements OnInit {
 	loadPostParentPostId(): void {
 		this.activatedRoute.params
 			.switchMap((params: Params) => this.postService.getPostByPostId(+params["id"]))
-			.subscribe(post => {this.childPost = post});
+			.subscribe(post => this.childPost = post);
 	}
 }

@@ -29,7 +29,7 @@ function getPostProfileName (\SplFixedArray $posts) : JsonObjectStorage {
 		$profile = Profile::getProfileByProfileId($pdo, $post->getPostProfileId());
 		$postProfile = (object) [
 			'postId' => $post->getPostId(),
-			'postDistrict' => $post->getPostDistrictId(),
+			'postDistrictId' => $post->getPostDistrictId(),
 			'postParentId' => $post->getPostParentId(),
 			'postProfileUserName' => $profile->getProfileUserName(),
 			'postContent' => $post->getPostContent(),
@@ -51,7 +51,7 @@ function getPostProfile(Post $post) {
 	$profile = Profile::getProfileByProfileId($pdo, $post->getPostProfileId());
 	$postProfile = (object) [
 		'postId' => $post->getPostId(),
-		'postDistrict' => $post->getPostDistrictId(),
+		'postDistrictId' => $post->getPostDistrictId(),
 		'postParentId' => $post->getPostParentId(),
 		'postProfileUserName' => $profile->getProfileUserName(),
 		'postContent' => $post->getPostContent(),
