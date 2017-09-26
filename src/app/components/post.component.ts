@@ -22,7 +22,7 @@ export class PostComponent implements OnInit {
 	status: Status = null;
 	newVote:  Vote = new Vote(null, null, null, null);
 
-	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute,protected voteService:  VoteService) {
+	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute, protected voteService:  VoteService) {
 	}
 
 	ngOnInit(): void {

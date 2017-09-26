@@ -7,6 +7,8 @@ import 'rxjs/add/operator/switchMap';
 import {PostService} from "../services/post.service";
 import {Post} from "../classes/post";
 import {PostVote} from "../classes/postvote";
+import {Vote} from "../classes/vote";
+import {VoteService} from "../services/vote.service";
 
 @Component({
 	templateUrl: "./templates/reply.html",
@@ -20,9 +22,10 @@ export class ReplyComponent implements OnInit {
 	newPost: Post = new Post(null, null, null, null, null, null, null);
 	posts: Post[] = [];
 	status: Status = null;
+	newVote:  Vote = new Vote(null, null, null, null);
 
 
-	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute) {
+	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute,  protected voteService:  VoteService) {
 	}
 
 
@@ -73,4 +76,18 @@ export class ReplyComponent implements OnInit {
 			.switchMap((params: Params) => this.postService.getPostByPostId(+params["id"]))
 			.subscribe(post => this.childPost = post);
 	}
+
+	createVote(postId: number, voteValue: number) : void {
+		this.newVote.votePostId = postId;
+		this.newVote.voteValue = voteValue;
+
+		this.voteService.createVote(this.newVote)
+			.subscribe(status => {
+				this.status = status;
+				if(this.status.status === 200) {
+					this.loadPostsByParentPostId();
+				}
+			});
+	}
+
 }
