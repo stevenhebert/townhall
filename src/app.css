@@ -71,6 +71,12 @@ h4 {
 	color: #ffffff;
 }
 
+.navbar-brand {
+	background-image: url("app/images/abq-townhall.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
 footer {
 	background: transparent;
 	color: #fff;
