@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__, 3 ) . "/vendor/autoload.php";
+require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/geocode.php";
@@ -113,7 +113,7 @@ EOF;
 		$swiftMessage = new Swift_Message();
 		// attach the sender to the message
 		// this takes the form of an associative array where the email is the key to a real name
-		$swiftMessage->setFrom(["abqtownhall@gmail.com" => "ABQ Town Hall"]);
+		$swiftMessage->setFrom(["shebert@abqtownhall.com" => "ABQ Town Hall"]);
 		/**
 		 * attach recipients to the message
 		 * notice this is an array that can include or omit the recipient's name

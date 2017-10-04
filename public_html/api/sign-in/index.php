@@ -47,11 +47,11 @@ try {
 		//grab the profile from the database by the email provided
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		if(empty($profile) === true) {
-			throw(new \InvalidArgumentException("Invalid Email", 401));
+			throw(new \InvalidArgumentException("No account found for this email and password combination", 401));
 		}
 		//if the profile activation is not null throw an error
 		if($profile->getProfileActivationToken() !== null) {
-			throw (new \InvalidArgumentException ("you are not allowed to sign in unless you have activated your account", 403));
+			throw (new \InvalidArgumentException ("You are not allowed to sign in unless you have activated your account", 403));
 		}
 		//hash the password given to make sure it matches.
 		$hash = hash_pbkdf2("sha512", $profilePassword, $profile->getProfileSalt(), 262144);
