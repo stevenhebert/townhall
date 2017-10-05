@@ -1,12 +1,30 @@
 /**
 TODO:
-Fix post/reply dependencies
-Vote component
+
+
+NOW:
+
+Configure mailer/postfix
+
+Display only parent posts in districts
+
+Add flag for officials accounts
+
+Prioritize posts by vote (need to determine method to sort)
+
 Edit profile
-Council-member accounts
-Prioritizing posts by vote + determine best method to sort votes
-Get-text
+
+Wire up contact form
+
+Change state from a text field to a drop down so that only state-abbreviations can be entered
+
+Check error messages for end-user-ability
+
+Search engine optimization
+
+District number not showing
 
 
-BUGS:
-abqtownhall.com not working in chrome -> https://abqtownhall.com/ does work -> maybe something to do with htaccess?
+LATER:
+
+Get-text for language translation
