@@ -17,10 +17,9 @@ header {
 	color: white;
 }
 .navbar {
-
+	box-shadow: 0 0 1em;
 	background: transparent;
 	border: none;
-
 }
 
 .navbar .nav > li > a {
