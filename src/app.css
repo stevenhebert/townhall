@@ -90,20 +90,24 @@ html {
 	display: flex;
 }
 
+/*
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 	color: #ffffff;
 }
+*/
 
 .btn {
 	margin: 2rem;
 }
 
-.btn-default {
+.panel-heading > button:nth-child(3) {
+	/*border-radius: 4px;*/
 	color: #333;
-	background-color: #fff;
-	border-color: #fff;
+	float: right;
 }
 
+
+/*
 .panel-heading > button:nth-child(1) {
 	background: transparent;
 	border: none;
@@ -113,9 +117,4 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 	background: transparent;
 	border: none;
 }
-
-.panel-heading > button:nth-child(3) {
-	border-radius: 4px;
-	color: #333;
-	float: right;
-}
+*/
