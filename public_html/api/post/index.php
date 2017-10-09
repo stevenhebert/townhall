@@ -127,17 +127,17 @@ try {
 
 		//make sure post content is available (required field)
 		if(empty($requestObject->postContent) === true) {
-			throw(new \InvalidArgumentException ("post cannot be empty", 405));
+			throw(new \InvalidArgumentException ("You cannot make an empty post", 405));
 		}
 
 		// enforce the user is signed in
 		if(empty($_SESSION["profile"]) === true) {
-			throw(new \InvalidArgumentException ("login to post (or account does not exist?)", 403));
+			throw(new \InvalidArgumentException ("You need to login in order to create a post", 403));
 		}
 
 		// make sure that district id from profile matches the session district id
 		if($_SESSION["profile"]->getProfileDistrictId() !== $requestObject->postDistrictId) {
-			throw(new \InvalidArgumentException("only residents of this district are allowed to post in this district", 405));
+			throw(new \InvalidArgumentException("Only residents of this district are allowed to make posts in this forum", 405));
 		}
 
 		// create the post and create the insert statement
@@ -145,7 +145,7 @@ try {
 		$post->insert($pdo);
 
 		// post post/reply
-		$reply->message = "your post was successful";
+		$reply->message = "Your post was successful";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request",418));
 	}

@@ -4,8 +4,6 @@ TODO:
 
 NOW:
 
-Configure mailer/postfix
-
 Display only parent posts in districts
 
 Add flag for officials accounts
@@ -19,6 +17,9 @@ Change state from a text field to a drop down so that only state-abbreviations c
 Check error messages for end-user-ability
 
 Search engine optimization
+
+Redirect after authorization token activation broken
+
 
 
 

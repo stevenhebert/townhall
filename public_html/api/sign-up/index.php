@@ -75,7 +75,7 @@ try {
 		}
 		//make sure the password and confirm password match
 		if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
-			throw(new \InvalidArgumentException("passwords do not match"));
+			throw(new \InvalidArgumentException("Passwords do not match"));
 		}
 		$latLongObject = getLatLongByAddress($requestObject->profileAddress1);
 		$district = District::getDistrictByLongLat($pdo, $latLongObject->long, $latLongObject->lat);
@@ -95,7 +95,7 @@ try {
 		//insert the profile into the database
 		$profile->insert($pdo);
 		//compose the email message to send with th activation token
-		$messageSubject = "One step closer to Sticky Head -- Account Activation";
+		$messageSubject = "ABQ Town Hall Account Activation";
 		//building the activation link that can travel to another server and still work. This is the link that will be clicked to confirm the account.
 		//make sure URL is /public_html/api/activation/$activation
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
@@ -113,7 +113,7 @@ EOF;
 		$swiftMessage = new Swift_Message();
 		// attach the sender to the message
 		// this takes the form of an associative array where the email is the key to a real name
-		$swiftMessage->setFrom(["shebert@abqtownhall.com" => "ABQ Town Hall"]);
+		$swiftMessage->setFrom(["abqtownhall@abqtownhall.com" => "ABQ Town Hall"]);
 		/**
 		 * attach recipients to the message
 		 * notice this is an array that can include or omit the recipient's name
@@ -154,12 +154,12 @@ EOF;
 		 **/
 		if($numSent !== count($recipients)) {
 			// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
-			throw(new RuntimeException("unable to send email"));
+			throw(new RuntimeException("Unable to send email",400));
 		}
 		// update reply
-		$reply->message = "Thank you for creating a profile with ABQ Townhall";
+		$reply->message = "Thank you for creating a profile with ABQ Town Hall, please check your email to complete your registration";
 	} else {
-		throw (new InvalidArgumentException("invalid http request", 400));
+		throw (new InvalidArgumentException("Invalid http request", 418));
 	}
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
