@@ -2,6 +2,7 @@
 TODO:
 
 
+
 NOW:
 
 Display only parent posts in districts
@@ -19,6 +20,10 @@ Check error messages for end-user-ability
 Search engine optimization
 
 Redirect after authorization token activation broken
+
+Edit profile broken - profile returning null in edit profile. needs more getProfileId
+
+Password min length?
 
 
 

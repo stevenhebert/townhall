@@ -50,7 +50,6 @@ try {
 			}
 		}
 
-
 	} elseif($method === "PUT") {
 		// enforce the user is signed in and only trying to edit their own profile
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {

@@ -15,17 +15,17 @@ declare let $: any;
 })
 
 export class EditProfileComponent implements OnInit {
-	@ViewChild("editProfileForm") signUpForm: any;
+	@ViewChild("editProfileForm") editProfileForm: any;
 	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null);
 	status: Status = null;
 	cookieJar: any = {};
 
-	constructor(private editProfileService: EditProfileService, private router: Router, private cookieService: CookieService,private route: ActivatedRoute) {
+	constructor(private editProfileService: EditProfileService, private router: Router, private cookieService: CookieService, private route: ActivatedRoute) {
 	}
 
 	ngOnInit() : void {
 		this.route.params.forEach((params: Params) => {
-			let profileId = +params["profileId"];
+			let profileId = + params["profileId"];
 			this.cookieJar = this.cookieService.getAll();
 			this.editProfileService.getProfile(profileId)
 				.subscribe(profile => this.profile = profile);

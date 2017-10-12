@@ -100,13 +100,13 @@ try {
 		//make sure URL is /public_html/api/activation/$activation
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "/api/activation/?activation=" . $profileActivationToken;
+		$urlglue = $basePath . "api/activation/?activation=" . $profileActivationToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
 		$message = <<< EOF
-<h2>Welcome to ABQ Townhall.</h2>
-<p>In order to start posting you must confirm your account </p>
+<h2>Welcome to ABQ Town Hall!</h2>
+<p>Please click the link below to activate your account.</p>
 <p><a href="$confirmLink">$confirmLink</a></p>
 EOF;
 		//create swift email
@@ -157,7 +157,7 @@ EOF;
 			throw(new RuntimeException("Unable to send email",400));
 		}
 		// update reply
-		$reply->message = "Thank you for creating a profile with ABQ Town Hall, please check your email to complete your registration";
+		$reply->message = "Thank you for creating a profile with ABQ Town Hall, please check your email to complete your registration.";
 	} else {
 		throw (new InvalidArgumentException("Invalid http request", 418));
 	}
