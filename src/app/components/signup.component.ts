@@ -1,6 +1,6 @@
 /*
- this component is for signing up to use the site.
- */
+this component is for signing up to use the site.
+*/
 
 //import needed modules for the sign-up component
 import {Component, ViewChild,} from "@angular/core";
@@ -17,13 +17,15 @@ declare let $: any;
 	templateUrl: "./templates/signup.html",
 	selector: "sign-up"
 })
+
 export class SignUpComponent {
 
 	@ViewChild("signUpForm") signUpForm: any;
 	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
 
-	constructor(private signUpService: SignUpService, private router: Router) {
+	constructor(private signUpService: SignUpService,
+					private router: Router) {
 	}
 
 	createSignUp(): void {
@@ -32,12 +34,8 @@ export class SignUpComponent {
 				this.status = status;
 				console.log(this.status);
 				if(status.status === 200) {
+					$('#signup-modal').modal('hide');
 					alert("Please check your email and follow the link to confirm your account.");
-					this.signUpForm.reset();
-					setTimeout(function() {
-						$("#signup-modal").modal('hide');
-					}, 500);
-					this.router.navigate([""]);
 				}
 				else alert(status.message);
 			});

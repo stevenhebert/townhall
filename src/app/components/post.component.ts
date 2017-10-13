@@ -38,7 +38,6 @@ export class PostComponent implements OnInit {
 						post.info = new PostVote(post.postId, 0, 0);
 					}
 				});
-				//console.log(posts);
 				this.posts = posts;
 			});
 	}
