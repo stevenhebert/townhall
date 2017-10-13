@@ -58,9 +58,5 @@ function getPostProfile(Post $post) {
 		'postDateTime' => round($post->getPostDateTime()->format("U.u" ) * 1000)
 	];
 
-
-
-
-
 	return $postProfile;
 }

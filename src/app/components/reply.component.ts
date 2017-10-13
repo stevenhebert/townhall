@@ -45,6 +45,8 @@ export class ReplyComponent implements OnInit {
 					}
 
 				});
+
+				//TODO: necessary?
 				console.log(posts);
 				this.posts = posts;
 
@@ -55,6 +57,7 @@ export class ReplyComponent implements OnInit {
 
 	createPost(): void {
 
+		//TODO: necessary?
 		console.log(this.childPost);
 
 		this.newPost.postDistrictId = this.childPost.postDistrictId;

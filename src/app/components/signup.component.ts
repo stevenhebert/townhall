@@ -8,7 +8,6 @@ import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignUpService} from "../services/signup.service";
 import {SignUp} from "../classes/signup";
-import {setTimeout} from "timers";
 
 //declare $ for good old jquery
 declare let $: any;
@@ -24,8 +23,7 @@ export class SignUpComponent {
 	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "", "");
 	status: Status = null;
 
-	constructor(private signUpService: SignUpService,
-					private router: Router) {
+	constructor(private signUpService: SignUpService, private router: Router) {
 	}
 
 	createSignUp(): void {
@@ -34,8 +32,8 @@ export class SignUpComponent {
 				this.status = status;
 				console.log(this.status);
 				if(status.status === 200) {
-					$('#signup-modal').modal('hide');
-					alert("Please check your email and follow the link to confirm your account.");
+					$('#signup-modal').modal('hide')
+					alert("Please check your email and follow the link to confirm your account.")
 				}
 				else alert(status.message);
 			});
