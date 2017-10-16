@@ -1,4 +1,4 @@
-import{Component} from "@angular/core";
+import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignInService} from "../services/signin.service";
@@ -31,6 +31,7 @@ export class SignInComponent {
 				this.districtId = this.cookieJar['profileDistrictId'];
 				this.router.navigate(["post/" + this.districtId]);
 			} else {
+				//TODO: necessary?
 				console.log("failed login");
 				alert(status.message);
 			}

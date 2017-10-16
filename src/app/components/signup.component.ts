@@ -35,7 +35,9 @@ export class SignUpComponent {
 					$('#signup-modal').modal('hide')
 					alert("Please check your email and follow the link to confirm your account.")
 				}
-				else alert(status.message);
+				else {
+					alert(status.message);
+				}
 			});
 	}
 }

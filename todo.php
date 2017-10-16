@@ -5,7 +5,7 @@ TODO:
 
 NOW:
 
-Display only parent posts in districts
+Display only parent posts in districts + then show number of replies
 
 Add indicators for officials accounts
 
