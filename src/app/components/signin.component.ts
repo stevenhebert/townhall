@@ -25,13 +25,12 @@ export class SignInComponent {
 	signIn(): void {
 		this.signInService.postSignIn(this.signin).subscribe(status=>{
 			this.status = status;
-			if(status.status === 200){
+			if(this.status.status === 200){
 				this.sessionService.setSession();
 				this.cookieJar = this.cookieService.getAll();
 				this.districtId = this.cookieJar['profileDistrictId'];
 				this.router.navigate(["post/" + this.districtId]);
 			} else {
-				//TODO: necessary?
 				console.log("failed login");
 				alert(status.message);
 			}
