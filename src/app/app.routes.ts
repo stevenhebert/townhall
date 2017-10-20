@@ -11,22 +11,24 @@ import {ActivationComponent} from "./components/activation.component";
 import {UserNavComponent} from "./components/usernav.component";
 import {EditProfileComponent} from "./components/editprofile.component";
 import {SignOutComponent} from "./components/signout.component";
+import {PostComponent} from "./components/post.component";
+
 
 import {SessionService} from "./services/session.service";
 import {ActivationService} from "./services/activation.service";
 import {SignInService} from "./services/signin.service";
 import {SignUpService} from "./services/signup.service";
 import {CookieService} from "ng2-cookies";
-import {PostComponent} from "./components/post.component";
 import {PostService} from "./services/post.service";
-
-
-import {APP_BASE_HREF} from "@angular/common";
-
 import {SignOutService} from "./services/signout.service";
 import {EditProfileService} from "./services/editprofile.service";
 import {ProfileService} from "./services/profile.service";
 import {VoteService} from "./services/vote.service";
+
+
+
+import {APP_BASE_HREF} from "@angular/common";
+
 
 export const allAppComponents = [
 	HomeComponent,

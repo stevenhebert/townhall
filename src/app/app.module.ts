@@ -12,6 +12,7 @@ import {EditProfileService} from "./services/editprofile.service"
 
 import {SessionService} from "./services/session.service";
 import {CookieService} from "ng2-cookies";
+import {ActivationService} from "./services/activation.service";
 
 
 const moduleDeclarations = [AppComponent];
@@ -25,7 +26,8 @@ const moduleDeclarations = [AppComponent];
 		EditProfileService,
 		SignInService,
 		SignOutService,
-		SignUpService
+		SignUpService,
+		ActivationService
 	]})
 export class AppModule {	cookieJar : any = {};
 

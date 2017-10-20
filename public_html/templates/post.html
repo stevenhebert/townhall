@@ -43,19 +43,24 @@
 					<h2>All posts in district {{ posts[0]?.postDistrictId}}</h2>
 
 					<!-- Begin Post Item -->
-					<div class="panel panel-default" *ngFor="let post of posts;">
-
-						<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime |
-							date:"medium"}}
-							<button type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{post.info.upVote}}
-							</button>
-							<button type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{post.info.downVote}}
-							</button>
-							<button (click)="switchPost(post)">Reply
-							</button>
-						</div>
-						<div class="panel-body">
-							{{ post.postContent }}
+					<div *ngFor="let post of posts;">
+						<div class="panel panel-default" *ngIf="this.post.postParentId == null">
+							<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime |
+								date:"medium"}}
+								<button type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up"
+																														  aria-hidden="true"></i>
+									{{post.info.upVote}}
+								</button>
+								<button type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down"
+																															aria-hidden="true"></i>
+									{{post.info.downVote}}
+								</button>
+								<button (click)="switchPost(post)">Reply
+								</button>
+							</div>
+							<div class="panel-body">
+								{{ post.postContent }}
+							</div>
 						</div>
 					</div>
 				</div>
