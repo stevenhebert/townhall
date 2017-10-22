@@ -19,7 +19,7 @@ Search engine optimization
 
 Redirect after authorization token activation broken
 
-Edit profile broken - profile returning null in edit profile. needs more getProfileId
+Edit profile broken -> can't leave 2nd address field blank if something was there previously, also does not recheck district after changing address
 
 Figure out how to avoid getting mail@abqtownhall from getting marked as spam
 

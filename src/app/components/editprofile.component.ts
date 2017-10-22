@@ -3,7 +3,6 @@ import {Observable} from "rxjs/Observable"
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
-import {ProfileService} from "../services/profile.service"
 import {Profile} from "../classes/profile";
 import {CookieService} from "ng2-cookies";
 
@@ -37,7 +36,15 @@ export class EditProfileComponent implements OnInit {
 
 	createProfileEdit(): void {
 		this.editProfileService.editProfile(this.profile)
-			.subscribe(status => this.status = status);
-
+			.subscribe(status => {
+				this.status = status;
+				console.log(this.status);
+				if(status.status === 200) {
+					$('#editprofile-modal').modal('hide')
+				}
+				else {
+					alert(status.message);
+				}
+			});
 	}
 }
