@@ -2,19 +2,21 @@
 require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
 require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once dirname(__DIR__, 3) . "/php/lib/geocode.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-use Edu\Cnm\Townhall\ {
-	Profile,
-	District
-};
+
+use Edu\Cnm\Townhall\ {Profile, District};
+
 /**
  * API for Profile
  *
  * @author Leonora Sanchez-Rees
- * @version 1.0
+ * @edited Steven Hebert
+ * @version 1.1
  * profile only allows get and put.  User cannot delete profile.
  * Post is done in the sign-up API.
  */
+
 // verify the session; if not active, start it
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
@@ -66,21 +68,14 @@ try {
 		if(empty($requestObject->ProfilePassword) === true) {
 			// enforce that the XSRF token is present in the header
 			verifyXsrf();
-			// profile user name
+
+			// profile username is a required field
 			if(empty($requestObject->profileUserName) === true) {
 				throw(new \InvalidArgumentException("No profile name", 405));
 			}
 			// profile email is a required field
 			if(empty($requestObject->profileEmail) === true) {
 				throw(new \InvalidArgumentException("No profile email present", 405));
-			}
-			// profile address1 is a required field
-			if(empty($requestObject->profileAddress1) === true) {
-				throw(new \InvalidArgumentException("No profile address present", 405));
-			}
-			// profile city is a required field
-			if(empty($requestObject->profileCity) === true) {
-				throw(new \InvalidArgumentException("No profile city present", 405));
 			}
 			// profile first name is a required field
 			if(empty($requestObject->profileFirstName) === true) {
@@ -90,24 +85,18 @@ try {
 			if(empty($requestObject->profileLastName) === true) {
 				throw(new \InvalidArgumentException("No profile last name present", 405));
 			}
-			// profile state is a required field
-			if(empty($requestObject->profileState) === true) {
-				throw(new \InvalidArgumentException("No profile state present", 405));
-			}
-			// profile zip is a required field
-			if(empty($requestObject->profileZip) === true) {
-				throw(new \InvalidArgumentException("No profile zip present", 405));
+			//if address2 empty set it too null
+			if(empty($requestObject->profileAddress2) === true) {
+				$requestObject->profileAddress2 = null;
 			}
 
 			$profile->setProfileUserName($requestObject->profileUserName);
 			$profile->setProfileEmail($requestObject->profileEmail);
-			$profile->setProfileAddress1($requestObject->profileAddress1);
 			$profile->setProfileAddress2($requestObject->profileAddress2);
-			$profile->setProfileCity($requestObject->profileCity);
 			$profile->setProfileFirstName($requestObject->profileFirstName);
 			$profile->setProfileLastName($requestObject->profileLastName);
-			$profile->setProfileState($requestObject->profileState);
-			$profile->setProfileZip($requestObject->profileZip);
+
+
 			// update reply
 			$reply->message = "Profile information updated successfully";
 		}
@@ -135,6 +124,51 @@ try {
 			$profile->setProfileSalt($newPasswordSalt);
 			$reply->message = "profile password successfully updated";
 		}
+		/**
+		 * update the address and district if user changes address
+		 */
+		if(empty($requestObject->profileAddress1) === false && empty($requestObject->profileCity) === false && empty($requestObject->profileState) === false && empty($requestObject->profileZip) === false) {
+
+			//profile address1 is a required field
+			if(empty($requestObject->profileAddress1) === true) {
+				throw(new \InvalidArgumentException ("address required", 401));
+			}
+			//profile city is a required field
+			if(empty($requestObject->profileCity) === true) {
+				throw(new \InvalidArgumentException ("city required", 401));
+			}
+
+			//profile state is a required field
+			if(empty($requestObject->profileState) === true) {
+				throw(new \InvalidArgumentException ("state required", 401));
+			}
+
+			//profile zip is a required field
+			if(empty($requestObject->profileZip) === true) {
+				throw(new \InvalidArgumentException ("zip required", 401));
+			}
+
+			$latLongObject = getLatLongByAddress($requestObject->profileAddress1);
+			$district = District::getDistrictByLongLat($pdo, $latLongObject->long, $latLongObject->lat);
+
+			//make sure district is not null
+			if($district == Null) {
+				$districtId = 10;
+			}
+			else {
+				$districtId = $district->getDistrictId();
+			}
+
+			//update the profile object
+			$profile->setProfileDistrictId($districtId);
+			$profile->setProfileAddress1($requestObject->profileAddress1);
+			$profile->setProfileCity($requestObject->profileCity);
+			$profile->setProfileState($requestObject->profileState);
+			$profile->setProfileZip($requestObject->profileZip);
+
+			$reply->message = "address successfully updated";
+		}
+
 		// perform the actual update to the database and update the message
 		$profile->update($pdo);
 
