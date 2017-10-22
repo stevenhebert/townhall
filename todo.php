@@ -38,3 +38,11 @@ Notify by email if password is changed an allow user to deny change if unrecogni
 Forgot password / password reset
 
 Password rules (block common passwords, min length, etc) but no security theater bullshit
+
+Send user email when password is changed
+
+Issue new session when address is changed -> otherwise they still only have access to their old district and not new
+
+Only allow user to change address once per day so they can just keep changing address to troll other districts
+
+Do something else today
