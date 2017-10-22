@@ -1,8 +1,3 @@
-/*
-this component is for signing up to use the site.
-*/
-
-//import needed modules for the sign-up component
 import {Component, ViewChild,} from "@angular/core";
 import {Router} from "@angular/router";
 import {Status} from "../classes/status";

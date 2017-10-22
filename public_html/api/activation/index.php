@@ -20,7 +20,7 @@ try{
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 	//check the HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
-	//sanitize input (never trust the end user
+	//sanitize input (never trust the end user)
 	$activation = filter_input(INPUT_GET, "activation", FILTER_SANITIZE_STRING);
 	// make sure the activation token is the correct size
 
@@ -49,7 +49,7 @@ try{
 				//update the profile in the database
 				$profile->update($pdo);
 				//set the reply for the end user
-				$reply->data = " WELCOME! Thank you for activating your account, you will be auto-redirected to your profile shortly.";
+				$reply->data = "Your account has been activated, you may now login.";
 			}
 		} else {
 			//throw an exception if the activation token does not exist

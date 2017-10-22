@@ -5,8 +5,6 @@ TODO:
 
 NOW:
 
-Display only parent posts in districts + then show number of replies
-
 Add indicators for officials accounts
 
 Prioritize posts by vote (need to determine method to sort)
@@ -28,6 +26,10 @@ Figure out how to avoid getting mail@abqtownhall from getting marked as spam
 
 
 LATER:
+
+Reset textbox after post success
+
+Show number of replies to parents in header
 
 Get-text for language translation
 

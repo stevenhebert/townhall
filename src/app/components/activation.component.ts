@@ -6,7 +6,8 @@ import {Status} from "../classes/status";
 import {ActivationService} from "../services/activation.service";
 
 @Component({
-	templateUrl: "./templates/activation.html"
+	templateUrl: "./templates/activation.html",
+	selector: "activation"
 })
 
 export class ActivationComponent implements OnInit{
@@ -22,7 +23,8 @@ export class ActivationComponent implements OnInit{
 				this.status = status;
 				if(this.status.status === 200) {
 					console.log("Thank you for activating your account. You can now login.");
-					alert(status.message)
+					alert(status.message);
+					this.router.navigate([""]);
 				}
 			});
 

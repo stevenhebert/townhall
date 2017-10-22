@@ -3,6 +3,7 @@ import {Observable} from "rxjs/Observable"
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
+import {ProfileService} from "../services/profile.service"
 import {Profile} from "../classes/profile";
 import {CookieService} from "ng2-cookies";
 
@@ -15,6 +16,7 @@ declare let $: any;
 })
 
 export class EditProfileComponent implements OnInit {
+
 	@ViewChild("editProfileForm") editProfileForm: any;
 	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null);
 	status: Status = null;
@@ -24,12 +26,12 @@ export class EditProfileComponent implements OnInit {
 	}
 
 	ngOnInit() : void {
-		this.route.params.forEach((params: Params) => {
-			let profileId = + params["profileId"];
+		this.route.params
+			.forEach((params:Params) => {
 			this.cookieJar = this.cookieService.getAll();
+			let profileId = this.cookieJar["profileId"];
 			this.editProfileService.getProfile(profileId)
 				.subscribe(profile => this.profile = profile);
-
 		})
 	}
 

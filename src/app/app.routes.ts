@@ -47,14 +47,12 @@ export const allAppComponents = [
 
 
 export const routes: Routes = [
-
 	{path:  "about", component: AboutComponent},
 	{path:  "post/:postDistrictId", component: PostComponent},
 	{path:  "reply/:id", component: ReplyComponent},
 	{path:  "activation/:activation", component: ActivationComponent},
 	{path:  "signout", component: SignOutComponent},
 	{path:  "", component: HomeComponent}
-
 ];
 
 export const appRoutingProviders: any[] = [

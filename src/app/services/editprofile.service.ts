@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Status} from "../classes/status";
 import {Profile} from "../classes/profile";
+import {ObjectUnsubscribedError} from "rxjs/Rx";
 
 @Injectable()
 export class EditProfileService extends BaseService {
