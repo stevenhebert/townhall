@@ -11,6 +11,8 @@ Redirect after authorization token activation broken
 
 Limit activation token life span (24 hour expire)
 
+Show district number even if there are no posts
+
 Figure out how to avoid getting mail@abqtownhall from getting marked as spam
 
 Prioritize posts by vote (need to determine method to sort)
