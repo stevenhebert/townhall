@@ -539,7 +539,7 @@ class Profile implements \JsonSerializable {
 		}
 		// verify the profile state will fit in the database
 		if(strlen($newProfileState) > 2) {
-			throw(new \RangeException("profile state content too large"));
+			throw(new \RangeException("please use the state abbreviation"));
 		}
 		// store the profile state
 		$this->profileState = $newProfileState;
