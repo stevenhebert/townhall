@@ -19,7 +19,7 @@
 					<h2>Create a reply</h2>
 
 					<!-- Create New Reply Form -->
-					<form #postForm="ngForm" id="postForm" (submit)="createPost();">
+					<form #postForm="ngForm" id="postForm" (submit)="createPost(); postForm.reset();">
 
 						<div class="form-group">
 							<label class="sr-only" for="postContent">Content <span class="text-danger">*</span></label>

@@ -5,7 +5,11 @@ TODO:
 
 NOW:
 
-Add indicators for officials accounts
+Forgot password / password reset
+
+Redirect after authorization token activation broken
+
+Figure out how to avoid getting mail@abqtownhall from getting marked as spam
 
 Prioritize posts by vote (need to determine method to sort)
 
@@ -13,36 +17,27 @@ Wire up contact form
 
 Change state from a text field to a drop down so that only state-abbreviations can be entered (in sign-up and edit profile)
 
-Check error messages for end-user-ability
+Show number of replies to parentPosts in parent header
 
-Search engine optimization
+Add indicators for officials accounts
 
-Redirect after authorization token activation broken
-
-Edit profile broken -> can't leave 2nd address field blank if something was there previously, also does not recheck district after changing address
-
-Figure out how to avoid getting mail@abqtownhall from getting marked as spam
 
 
 
 LATER:
 
-Reset textbox after post success
+Check error messages for end-user-ability
 
-Show number of replies to parents in header
+Search engine optimization
 
 Get-text for language translation
 
 Notify by email if password is changed an allow user to deny change if unrecognized
 
-Forgot password / password reset
-
-Password rules (block common passwords, min length, etc) but no security theater bullshit
+Minimal password rules (block common passwords, min length, etc)
 
 Send user email when password is changed
 
 Issue new session when address is changed -> otherwise they still only have access to their old district and not new
 
 Only allow user to change address once per day so they can just keep changing address to troll other districts
-
-Do something else today
