@@ -9,6 +9,8 @@ Forgot password / password reset
 
 Redirect after authorization token activation broken
 
+Limit activation token life span (24 hour expire)
+
 Figure out how to avoid getting mail@abqtownhall from getting marked as spam
 
 Prioritize posts by vote (need to determine method to sort)
