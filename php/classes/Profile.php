@@ -184,9 +184,9 @@ class Profile implements \JsonSerializable {
 			$this->profileDistrictId = null;
 			return;
 		}
-		// verify the  profileId is positive
+		// verify the  profileDistrictId is positive
 		if($newProfileDistrictId <= 0) {
-			throw(new \RangeException("profile id is not positive"));
+			throw(new \RangeException("profile district id is not positive"));
 		}
 		// convert and store the profileId
 		$this->profileDistrictId = $newProfileDistrictId;
@@ -222,7 +222,7 @@ class Profile implements \JsonSerializable {
 		}
 		// verify the profileActivationToken will fit in the database
 		if(strlen($newProfileActivationToken) > 32) {
-			throw(new \RangeException("profile activation token description content too large"));
+			throw(new \RangeException("profile activation token is too long"));
 		}
 		// store the profileActivationToken
 		$this->profileActivationToken = $newProfileActivationToken;
@@ -249,11 +249,11 @@ class Profile implements \JsonSerializable {
 		$newProfileAddress1 = trim($newProfileAddress1);
 		$newProfileAddress1 = filter_var($newProfileAddress1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileAddress1) === true) {
-			throw(new \InvalidArgumentException("profile address is empty or insecure"));
+			throw(new \InvalidArgumentException("address is empty or insecure"));
 		}
 		// verify the profileAddress1 fit in the database
 		if(strlen($newProfileAddress1) > 64) {
-			throw(new \RangeException("profile address too large"));
+			throw(new \RangeException("address can be no more than 64 characters"));
 		}
 		// store the profileAddress1
 		$this->profileAddress1 = $newProfileAddress1;
@@ -285,11 +285,11 @@ class Profile implements \JsonSerializable {
 		$newProfileAddress2 = trim($newProfileAddress2);
 		$newProfileAddress2 = filter_var($newProfileAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileAddress2) === true) {
-			throw(new \InvalidArgumentException("profile address is empty or insecure"));
+			throw(new \InvalidArgumentException("address is empty or insecure"));
 		}
 		// verify the profileAddress2 fit in the database
 		if(strlen($newProfileAddress2) > 64) {
-			throw(new \RangeException("profile address content too large"));
+			throw(new \RangeException("address can be no more than 64 characters"));
 		}
 		// store the profileAddress2
 		$this->profileAddress2 = $newProfileAddress2;
@@ -316,11 +316,11 @@ class Profile implements \JsonSerializable {
 		$newProfileCity = trim($newProfileCity);
 		$newProfileCity = filter_var($newProfileCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileCity) === true) {
-			throw(new \InvalidArgumentException("profile city is empty or insecure"));
+			throw(new \InvalidArgumentException("city is empty or insecure"));
 		}
 		// verify the profile city fits in the database
 		if(strlen($newProfileCity) > 64) {
-			throw(new \RangeException("profile city content too large"));
+			throw(new \RangeException("name of city can be no more than 64 characters, please abbreviate"));
 		}
 		// store the profile city
 		$this->profileCity = $newProfileCity;
@@ -347,11 +347,11 @@ class Profile implements \JsonSerializable {
 		$newProfileEmail = trim($newProfileEmail);
 		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileEmail) === true) {
-			throw(new \InvalidArgumentException("profile email is empty or insecure"));
+			throw(new \InvalidArgumentException("email is empty or insecure"));
 		}
 		// verify the profile email will fit in the database
 		if(strlen($newProfileEmail) > 128) {
-			throw(new \RangeException("profile email content too large"));
+			throw(new \RangeException("email can be no more than 64 characters"));
 		}
 		// store the profile email
 		$this->profileEmail = $newProfileEmail;
@@ -378,11 +378,11 @@ class Profile implements \JsonSerializable {
 		$newProfileFirstName = trim($newProfileFirstName);
 		$newProfileFirstName = filter_var($newProfileFirstName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileFirstName) === true) {
-			throw(new \InvalidArgumentException("profile first name is empty or insecure"));
+			throw(new \InvalidArgumentException("first name is empty or insecure"));
 		}
 		// verify the profile first name fits in the database
 		if(strlen($newProfileFirstName) > 64) {
-			throw(new \RangeException("profile first name content too large"));
+			throw(new \RangeException("first name can be no more than 64 characters"));
 		}
 		// store the profileFirstName
 		$this->profileFirstName = $newProfileFirstName;
@@ -440,11 +440,11 @@ class Profile implements \JsonSerializable {
 		$newProfileLastName = trim($newProfileLastName);
 		$newProfileLastName = filter_var($newProfileLastName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileLastName) === true) {
-			throw(new \InvalidArgumentException("profile last name is empty or insecure"));
+			throw(new \InvalidArgumentException("last name is empty or insecure"));
 		}
 		// verify the profile last name fits in the database
 		if(strlen($newProfileLastName) > 64) {
-			throw(new \RangeException("profile last name content too large"));
+			throw(new \RangeException("last name can be no more than 64 characters"));
 		}
 		// store the profile last name
 		$this->profileLastName = $newProfileLastName;
@@ -477,7 +477,7 @@ class Profile implements \JsonSerializable {
 		}
 		// verify the  profile representative is 0 if not NULL
 		if($newProfileRepresentative !== 1 ){
-			throw(new \RangeException("profile representative is not zero"));
+			throw(new \RangeException("profile representative must be true"));
 		}
 		// convert and store the profile representative
 		$this->profileRepresentative = $newProfileRepresentative;
@@ -508,7 +508,7 @@ class Profile implements \JsonSerializable {
 		}
 		// verify the profileS salt will fit in the database
 		if(strlen($newProfileSalt) > 64) {
-			throw(new \RangeException("profile salt content too large"));
+			throw(new \RangeException("too salty"));
 		}
 		// store the profile salt
 		$this->profileSalt = $newProfileSalt;
@@ -535,7 +535,7 @@ class Profile implements \JsonSerializable {
 		$newProfileState = trim($newProfileState);
 		$newProfileState = filter_var($newProfileState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileState) === true) {
-			throw(new \InvalidArgumentException("profile state is empty or insecure"));
+			throw(new \InvalidArgumentException("state is empty or insecure"));
 		}
 		// verify the profile state will fit in the database
 		if(strlen($newProfileState) > 2) {
@@ -566,11 +566,11 @@ class Profile implements \JsonSerializable {
 		$newProfileUserName = trim($newProfileUserName);
 		$newProfileUserName = filter_var($newProfileUserName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileUserName) === true) {
-			throw(new \InvalidArgumentException("profile at handle is empty or insecure"));
+			throw(new \InvalidArgumentException("username is empty or insecure"));
 		}
 		// verify the profile user name will fit in the database
 		if(strlen($newProfileUserName) > 32) {
-			throw(new \RangeException("profile at table description content too large"));
+			throw(new \RangeException("username can be no more than 32 characters"));
 		}
 		// store the profile user name
 		$this->profileUserName = $newProfileUserName;
@@ -597,11 +597,11 @@ class Profile implements \JsonSerializable {
 		$newProfileZip = trim($newProfileZip);
 		$newProfileZip = filter_var($newProfileZip, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileZip) === true) {
-			throw(new \InvalidArgumentException("profile zip is empty or insecure"));
+			throw(new \InvalidArgumentException("zip is empty or insecure"));
 		}
 		// verify the profile zip will fit in the database
 		if(strlen($newProfileZip) > 10) {
-			throw(new \RangeException("profile zip too large"));
+			throw(new \RangeException("zip can be no more than 10 characters"));
 		}
 		// store the profile zip
 		$this->profileZip = $newProfileZip;
@@ -640,7 +640,7 @@ class Profile implements \JsonSerializable {
 	public function delete(\PDO $pdo): void {
 		// enforce the profileId is not null (i.e., don't delete a profile that hasn't been inserted)
 		if($this->profileId === null) {
-			throw(new \PDOException("unable to delete a profile that does not exist"));
+			throw(new \PDOException("profile that does not exist, unable to delete"));
 		}
 		// create query template
 		$query = "DELETE FROM profile WHERE profileId = :profileId";
@@ -660,7 +660,7 @@ class Profile implements \JsonSerializable {
 	public function update(\PDO $pdo): void {
 		// enforce the profile id is not null (i.e., don't update a profile that hasn't been inserted)
 		if($this->profileId === null) {
-			throw(new \PDOException("unable to update a profile that does not exist"));
+			throw(new \PDOException("profile that does not exist, unable to update"));
 		}
 		// create query template
 		$query = "UPDATE profile SET profileDistrictId = :profileDistrictId, profileActivationToken = :profileActivationToken, profileAddress1 = :profileAddress1, profileAddress2 = :profileAddress2, profileCity = :profileCity, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profileRepresentative = :profileRepresentative, profileSalt = :profileSalt, profileState = :profileState, profileUserName = :profileUserName, profileZip = :profileZip WHERE profileId = :profileId";
@@ -719,7 +719,7 @@ class Profile implements \JsonSerializable {
 	public static function getProfileByProfileDistrictId(\PDO $pdo, int $profileDistrictId): \SPLFixedArray {
 		// sanitize the district id before searching
 		if($profileDistrictId <= 0) {
-			throw(new \RangeException("district profile id must be positive"));
+			throw(new \RangeException("profile district id must be positive"));
 		}
 		// create query template
 		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileDistrictId = :profileDistrictId";
@@ -799,7 +799,7 @@ class Profile implements \JsonSerializable {
 		$profileEmail = trim($profileEmail);
 		$profileEmail = filter_var($profileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($profileEmail) === true) {
-			throw(new \PDOException("profile activation token is invalid"));
+			throw(new \PDOException("profile email is invalid"));
 		}
 		// create query template
 		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileEmail = :profileEmail";
