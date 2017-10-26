@@ -21,9 +21,12 @@ try{
 	//check the HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input (never trust the end user)
-	$activation = filter_input(INPUT_GET, "activation", FILTER_SANITIZE_STRING);
-	// make sure the activation token is the correct size
+	$activation = filter_input(INPUT_GET, 'activation', FILTER_SANITIZE_STRING);
 
+	//TODO: remove this when done debugging
+	echo('activation');
+
+	// make sure the activation token is the correct size
 	if(strlen($activation) !== 32){
 		throw(new InvalidArgumentException("activation has an incorrect length", 405));
 	}
@@ -37,8 +40,6 @@ try{
 		setXsrfCookie();
 		//find profile associated with the activation token
 		$profile = Profile::getProfileByActivationToken($pdo, $activation);
-
-
 
 		//verify the profile is not null
 		if($profile !== null){

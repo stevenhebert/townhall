@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Status} from "../classes/status";
 
@@ -7,18 +7,17 @@ import {ActivationService} from "../services/activation.service";
 
 @Component({
 	templateUrl: "./templates/activation.html",
-	selector: "activation"
 })
 
-export class ActivationComponent implements OnInit{
+export class ActivationComponent implements OnInit {
 
 	status: Status = null;
 
-	constructor(private activationService: ActivationService, private router: Router, private route: ActivatedRoute){}
+	constructor(private activationService: ActivationService, private router: Router, private route: ActivatedRoute) {}
 
-		ngOnInit(): void {
+	ngOnInit(): void {
 		this.route.params
-			.switchMap((params: Params) => this.activationService.profileActivationToken(params['activation']))
+			.switchMap((param: Params) => this.activationService.profileActivationToken(param['activation']))
 			.subscribe(status => {
 				this.status = status;
 				if(this.status.status === 200) {

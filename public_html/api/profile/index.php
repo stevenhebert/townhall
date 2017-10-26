@@ -29,18 +29,20 @@ $reply->data = null;
 try {
 	// grab the MySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
+
 	// determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+
 	// sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileUserName = filter_input(INPUT_GET, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$editProfile = filter_input(INPUT_GET, "profileEdit", FILTER_VALIDATE_INT);
-
 	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING);
+
 	// make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
+
 	if($method === "GET") {
 		// set XSRF cookie
 		setXsrfCookie();
@@ -96,13 +98,14 @@ try {
 			$profile->setProfileFirstName($requestObject->profileFirstName);
 			$profile->setProfileLastName($requestObject->profileLastName);
 
-
 			// update reply
 			$reply->message = "Profile information updated successfully";
 		}
+
 		/**
 		 * update the password if requested
 		 */
+
 		// enforce that the current password and new password are present
 		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->Confirm) === false) {
 
@@ -124,9 +127,11 @@ try {
 			$profile->setProfileSalt($newPasswordSalt);
 			$reply->message = "profile password successfully updated";
 		}
+
 		/**
 		 * update the address and district if user changes address
 		 */
+
 		if(empty($requestObject->profileAddress1) === false && empty($requestObject->profileCity) === false && empty($requestObject->profileState) === false && empty($requestObject->profileZip) === false) {
 
 			//profile address1 is a required field
