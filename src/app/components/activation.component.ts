@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Status} from "../classes/status";
 
@@ -21,8 +20,9 @@ export class ActivationComponent implements OnInit {
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {
-					alert(status.message);
-					this.router.navigate([""]);
+					setTimeout((router: Router) => {
+						this.router.navigate([""]);
+					}, 10000);
 				}
 			});
 

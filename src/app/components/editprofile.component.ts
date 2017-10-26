@@ -1,5 +1,4 @@
 import {Component, ViewChild, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable"
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";

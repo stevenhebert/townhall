@@ -1,6 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
-import {Observable} from "rxjs";
 import {VoteService} from "../services/vote.service";
 import {Vote} from "../classes/vote";
 import {Status} from "../classes/status";
