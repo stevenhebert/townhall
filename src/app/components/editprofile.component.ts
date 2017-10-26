@@ -43,7 +43,7 @@ export class EditProfileComponent implements OnInit {
 					$('#editprofile-modal').modal('hide')
 				}
 				else {
-					alert(status.message);
+					alert(this.status.message);
 				}
 			});
 	}

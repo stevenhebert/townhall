@@ -23,16 +23,13 @@ try{
 	//sanitize input (never trust the end user)
 	$activation = filter_input(INPUT_GET, 'activation', FILTER_SANITIZE_STRING);
 
-	//TODO: remove this when done debugging
-	echo('activation');
-
 	// make sure the activation token is the correct size
 	if(strlen($activation) !== 32){
-		throw(new InvalidArgumentException("activation has an incorrect length", 405));
+		throw(new InvalidArgumentException("activation token is not the correct length", 405));
 	}
 	// verify that the activation token is a string value of a hexadeciaml
 	if(ctype_xdigit($activation) === false) {
-		throw (new \InvalidArgumentException("activation is empty or has invalid contents", 405));
+		throw (new \InvalidArgumentException("activation token is invalid", 405));
 	}
 	// handle The GET HTTP request
 	if($method === "GET"){
@@ -50,7 +47,7 @@ try{
 				//update the profile in the database
 				$profile->update($pdo);
 				//set the reply for the end user
-				$reply->data = "Your account has been activated, you may now login.";
+				$reply->message = "Your account has been activated, you may now login.";
 			}
 		} else {
 			//throw an exception if the activation token does not exist
@@ -61,16 +58,14 @@ try{
 		throw(new InvalidArgumentException("Invalid HTTP method request", 403));
 	}
 	//update the reply objects status and message state variables if an exception or type exception was thrown;
-} catch (Exception $exception){
+} catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-} catch(TypeError $typeError){
-	$reply->status = $typeError->getCode();
-	$reply->message = $typeError->getMessage();
 }
 //prepare and send the reply
 header("Content-type: application/json");
 if($reply->data === null){
 	unset($reply->data);
 }
+// encode and return reply to front end caller
 echo json_encode($reply);

@@ -17,11 +17,10 @@ export class ActivationComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.route.params
-			.switchMap((param: Params) => this.activationService.profileActivationToken(param['activation']))
+			.switchMap((params: Params) => this.activationService.profileActivationToken(params['activation']))
 			.subscribe(status => {
 				this.status = status;
-				if(this.status.status === 200) {
-					console.log("Thank you for activating your account. You can now login.");
+				if(status.status === 200) {
 					alert(status.message);
 					this.router.navigate([""]);
 				}
