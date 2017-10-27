@@ -301,10 +301,7 @@ class Post implements \JsonSerializable {
 
 		// update the auto generated timestamp
 		$tempPost = Post::getPostByPostId($pdo, $this->postId);
-
-
 		$this->setPostDateTime($tempPost->getPostDateTime());
-
 	}
 
 	/** deletes this post from mySQL
