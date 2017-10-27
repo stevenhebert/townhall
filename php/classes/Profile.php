@@ -65,6 +65,11 @@ class Profile implements \JsonSerializable {
 	 **/
 	private $profileLastName;
 	/**
+	 * recovery token for the profile
+	 * @var string $profileRecoveryToken
+	 **/
+	private $profileRecoveryToken;
+	/**
 	 * whether or not profile is for representative
 	 * @var int $profileRepresentative
 	 **/
@@ -99,11 +104,12 @@ class Profile implements \JsonSerializable {
 	 * @param string $newProfileAddress1 of the user profile
 	 * @param string|null $newProfileAddress2 of the user profile
 	 * @param string $newProfileCity of the user profile
-	 * @param string $newProfileDateTime of the user profile
+	 * @param \DateTime|null $newProfileDateTime timestamp of the profile
 	 * @param string $newProfileEmail of the user profile
 	 * @param string $newProfileFirstName of the user profile
 	 * @param string $newProfileHash of the user profile
 	 * @param string $newProfileLastName of the user profile
+	 * @param string|null $newProfileRecoveryToken of the user profile
 	 * @param int $newProfileRepresentative of the user profile
 	 * @param string $newProfileSalt of the user profile
 	 * @param string $newProfileState of the user profile
@@ -114,7 +120,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct(?int $newProfileId, int $newProfileDistrictId, ?string $newProfileActivationToken, string $newProfileAddress1, ?string $newProfileAddress2, string $newProfileCity, $newPostDateTime = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, ?int $newProfileRepresentative, string $newProfileSalt, string $newProfileState, string $newProfileUserName, string $newProfileZip) {
+	public function __construct(?int $newProfileId, int $newProfileDistrictId, ?string $newProfileActivationToken, string $newProfileAddress1, ?string $newProfileAddress2, string $newProfileCity, $newProfileDateTime = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, ?string $newProfileRecoveryToken, ?int $newProfileRepresentative, string $newProfileSalt, string $newProfileState, string $newProfileUserName, string $newProfileZip) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileDistrictId($newProfileDistrictId);
@@ -127,6 +133,7 @@ class Profile implements \JsonSerializable {
 			$this->setProfileFirstName($newProfileFirstName);
 			$this->setProfileHash($newProfileHash);
 			$this->setProfileLastName($newProfileLastName);
+			$this->setProfileRecoveryToken($newProfileRecoveryToken);
 			$this->setProfileRepresentative($newProfileRepresentative);
 			$this->setProfileSalt($newProfileSalt);
 			$this->setprofileState($newProfileState);
@@ -492,6 +499,42 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
+	 * accessor method for profileRecoveryToken
+	 *
+	 * @return string value of profileRecoveryToken
+	 **/
+	public function getProfileRecoveryToken(): ?string {
+		return ($this->profileRecoveryToken);
+	}
+
+	/**
+	 * mutator method for profileRecoveryToken
+	 *
+	 * @param string $newProfileRecoveryToken new value of profileRecoveryToken
+	 * @throws \InvalidArgumentException if $newProfileRecoveryToken is not a string or insecure
+	 * @throws \TypeError if $newProfileRecoveryToken is not a string
+	 **/
+	public function setProfileRecoveryToken(?string $newProfileRecoveryToken): void {
+		if($newProfileRecoveryToken === null) {
+			$this->profileRecoveryToken = null;
+			return;
+		}
+
+		// verify the profileRecoveryToken is secure
+		$newProfileRecoveryToken = trim($newProfileRecoveryToken);
+		$newProfileRecoveryToken = filter_var($newProfileRecoveryToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileRecoveryToken) === true) {
+			throw(new \InvalidArgumentException("profile recovery token is empty or insecure"));
+		}
+		// verify the profileActivationToken will fit in the database
+		if(strlen($newProfileRecoveryToken) > 32) {
+			throw(new \RangeException("profile recovery token is too long"));
+		}
+		// store the profileActivationToken
+		$this->profileRecoveryToken = $newProfileRecoveryToken;
+	}
+
+	/**
 	 * accessor method for profile representative
 	 *
 	 * @return int|null value of profileRepresentative
@@ -661,10 +704,10 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("not a new profile"));
 		}
 		// create query template
-		$query = "INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(:profileDistrictId, :profileActivationToken, :profileAddress1, :profileAddress2, :profileCity, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profileRepresentative, :profileSalt, :profileState, :profileUserName, :profileZip)";
+		$query = "INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(:profileDistrictId, :profileActivationToken, :profileAddress1, :profileAddress2, :profileCity, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profileRecoveryToken, :profileRepresentative, :profileSalt, :profileState, :profileUserName, :profileZip)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
+		$parameters = ["profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRecoveryToken" => $this->profileRecoveryToken, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
 
 		$statement->execute($parameters);
 		// update the null profileId with what mySQL just gave us
@@ -709,11 +752,11 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("profile that does not exist, unable to update"));
 		}
 		// create query template
-		$query = "UPDATE profile SET profileDistrictId = :profileDistrictId, profileActivationToken = :profileActivationToken, profileAddress1 = :profileAddress1, profileAddress2 = :profileAddress2, profileCity = :profileCity, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profileRepresentative = :profileRepresentative, profileSalt = :profileSalt, profileState = :profileState, profileUserName = :profileUserName, profileZip = :profileZip WHERE profileId = :profileId";
+		$query = "UPDATE profile SET profileDistrictId = :profileDistrictId, profileActivationToken = :profileActivationToken, profileAddress1 = :profileAddress1, profileAddress2 = :profileAddress2, profileCity = :profileCity, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profileRecoveryToken = :profileRecoveryToken, profileRepresentative = :profileRepresentative, profileSalt = :profileSalt, profileState = :profileState, profileUserName = :profileUserName, profileZip = :profileZip WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileId" => $this->profileId, "profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
+		$parameters = ["profileId" => $this->profileId, "profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRecoveryToken" => $this->profileRecoveryToken, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
 		$statement->execute($parameters);
 
 		// update the null profileId with what mySQL just gave us
@@ -740,7 +783,7 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("profile id is not positive"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileId = :profileId";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileId" => $profileId];
@@ -751,7 +794,7 @@ class Profile implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -775,7 +818,7 @@ class Profile implements \JsonSerializable {
 			throw(new \RangeException("profile district id must be positive"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileDistrictId = :profileDistrictId";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileDistrictId = :profileDistrictId";
 		$statement = $pdo->prepare($query);
 
 		// bind the profile district id to the place holder in the template
@@ -787,7 +830,7 @@ class Profile implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 				$profiles[$profiles->key()] = $profile;
 				$profiles->next();
 			} catch(\Exception $exception) {
@@ -817,7 +860,7 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("profile activation token is invalid"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileActivationToken = :profileActivationToken";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileActivationToken = :profileActivationToken";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileActivationToken" => $profileActivationToken];
@@ -828,7 +871,7 @@ class Profile implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileRecoveryToken"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -854,7 +897,7 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("profile email is invalid"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileEmail = :profileEmail";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileEmail = :profileEmail";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileEmail" => $profileEmail];
@@ -865,7 +908,46 @@ class Profile implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}
+
+	/**
+	 * GET profileRecoveryToken
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $profileRecoveryToken content to search for
+	 *
+	 * @return Profile|null Profile found or null if not found
+	 *
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProfileByRecoveryToken(\PDO $pdo, string $profileRecoveryToken): ?Profile {
+		// sanitize the description before searching
+		$profileRecoveryToken = trim($profileRecoveryToken);
+		$profileRecoveryToken = filter_var($profileRecoveryToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileRecoveryToken) === true) {
+			throw(new \PDOException("profile recovery token is invalid"));
+		}
+		// create query template
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileRecoveryToken = :profileRecoveryToken";
+		$statement = $pdo->prepare($query);
+		// bind the profile id to the place holder in the template
+		$parameters = ["profileRecoveryToken" => $profileRecoveryToken];
+		$statement->execute($parameters);
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileRecoveryToken"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -891,7 +973,7 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("profile user name is invalid"));
 		}
 		// create query template
-		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileUserName = :profileUserName";
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileUserName = :profileUserName";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileUserName" => $profileUserName];
@@ -902,7 +984,7 @@ class Profile implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
