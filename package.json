@@ -32,9 +32,10 @@
     "@angular/platform-browser": "~4.4.3",
     "@angular/platform-browser-dynamic": "~4.4.3",
     "@angular/router": "~4.4.3",
+    "composer": "^0.14.2",
     "core-js": "^2.5.1",
-    "rxjs": "^5.4.3",
     "jquery": "^3.2.1",
+    "rxjs": "^5.4.3",
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
