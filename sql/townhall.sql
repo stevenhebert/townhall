@@ -20,7 +20,7 @@ CREATE TABLE profile (
 	profileAddress1        VARCHAR(64)                 NOT NULL,
 	profileAddress2        VARCHAR(64),
 	profileCity            VARCHAR(64)                 NOT NULL,
-	voteDateTime           TIMESTAMP(6)                NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+	ProfileDateTime        TIMESTAMP(6)                NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
 	profileEmail           VARCHAR(128)                NOT NULL,
 	profileFirstName       VARCHAR(64)                 NOT NULL,
 	profileHash            CHAR(128)                   NOT NULL,

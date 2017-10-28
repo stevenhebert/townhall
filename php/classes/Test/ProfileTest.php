@@ -42,6 +42,19 @@ class ProfileTest extends TownhallTest {
 	 * @var $INVALID_PROFILE_ACTIVATION_TOKEN
 	 **/
 	protected $INVALID_PROFILE_ACTIVATION_TOKEN = "2222222222222";
+
+	/**
+	 * valid profile activation token to create the profile object to own the test
+	 * @var $VALID_PROFILE_ACTIVATION_TOKEN
+	 **/
+	protected $VALID_PROFILE_RECOVERY_TOKEN = "111111111111";
+
+	/**
+	 * invalid profile activation token to create the profile object to own the test
+	 * @var $INVALID_PROFILE_ACTIVATION_TOKEN
+	 **/
+	protected $INVALID_PROFILE_RECOVERY_TOKEN = "2222222222222";
+
 	/**
 	 * valid address1 to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ADDRESS1
@@ -65,6 +78,16 @@ class ProfileTest extends TownhallTest {
 	 * @var string $VALID_PROFILE_CITY
 	 */
 	protected $VALID_PROFILE_CITY = "Albuquerque";
+
+	/**
+	 * Valid timestamp to use as sunrisePostDate
+	 */
+	protected $VALID_SUNRISEDATE = null;
+
+	/**
+	 * Valid timestamp to use as sunsetPostDate
+	 */
+	protected $VALID_SUNSETDATE = null;
 
 	/**
 	 * valid email to use to create the profile object to own the test
@@ -159,11 +182,18 @@ class ProfileTest extends TownhallTest {
 		$this->assertEquals($pdoProfile->getProfileAddress1(), $this->VALID_PROFILE_ADDRESS1);
 		$this->assertEquals($pdoProfile->getProfileAddress2(), $this->VALID_PROFILE_ADDRESS2);
 		$this->assertEquals($pdoProfile->getProfileCity(), $this->VALID_PROFILE_CITY);
+		//format the sunrise date to use for testing
+		$this->VALID_SUNRISEDATE = new \DateTime();
+		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
+		//format the sunset date to use for testing
+		$this->VALID_SUNSETDATE = new\DateTime();
+		$this->VALID_SUNSETDATE->add(new \DateInterval("P10D"));
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
 		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->VALID_PROFILE_FIRST_NAME);
 		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_PROFILE_HASH);
 		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_PROFILE_LAST_NAME);
 		$this->assertEquals($pdoProfile->getProfileRepresentative(), $this->VALID_PROFILE_REPRESENTATIVE);
+		$this->ASSERTEQUALS($pdoProfile->getProfileRecoveryToken(), $this->VALID_PROFILE_RECOVERY_TOKEN);
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_PROFILE_SALT);
 		$this->assertEquals($pdoProfile->getProfileState(), $this->VALID_PROFILE_STATE);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_PROFILE_USER_NAME);
@@ -224,7 +254,7 @@ class ProfileTest extends TownhallTest {
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testUpdateInvalidProfile() : void {
+	public function testUpdateInvalidProfile(): void {
 		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRST_NAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
 		$profile->update($this->getPDO());
 	}
@@ -413,10 +443,11 @@ class ProfileTest extends TownhallTest {
 		$profile = Profile::getProfileByProfileUserName($this->getPDO(), $this->INVALID_PROFILE_ACTIVATION_TOKEN);
 		$this->assertNull($profile);
 	}
+
 	/**
 	 * test grabbing Profiles by district ID
 	 **/
-	public function testGetProfileByProfileDistrictId() : void {
+	public function testGetProfileByProfileDistrictId(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 
@@ -447,4 +478,43 @@ class ProfileTest extends TownhallTest {
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_PROFILE_USER_NAME);
 		$this->assertEquals($pdoProfile->getProfileZip(), $this->VALID_PROFILE_ZIP);
 	}
+
+	/**
+	 * test grabbing a valid Profile by sunset and sunrise date
+	 *
+	 */
+	public function testGetValidProfileBySunDate(): void {
+
+
+
+
+
+
+
+
+
+
+			//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		//create a new Profile and insert to into mySQL
+		$profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, null, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRST_NAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LAST_NAME, $this->VALID_PROFILE_RECOVERY_TOKEN, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USER_NAME, $this->VALID_PROFILE_ZIP);
+		$profile->insert($this->getPDO());
+
+		// grab the post from the database and see if it matches expectations
+		$results = Profile::getProfi($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+		//enforce that no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Townhall\\Post", $results);
+		//use the first result to make sure that the inserted post meets expectations
+		$pdoPost = $results[0];
+		$this->assertEquals($pdoPost->getPostId(), $post->getPostId());
+		$this->assertEquals($pdoPost->getPostDistrictId(), $post->getPostDistrictId());
+		$this->assertEquals($pdoPost->getPostParentId(), $post->getPostParentId());
+		$this->assertEquals($pdoPost->getPostProfileId(), $post->getPostProfileId());
+		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
+		$this->assertEquals($pdoPost->getPostDateTime(), $post->getPostDateTime());
+	}
+
 }

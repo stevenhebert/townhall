@@ -2,6 +2,8 @@
 
 namespace Edu\Cnm\Townhall;
 
+require_once("autoload.php");
+
 /**
  * town hall capstone project class profile
  * @author Ryan Henson <hensojr@gmail.com>
@@ -364,7 +366,7 @@ class Profile implements \JsonSerializable {
 			return;
 		}
 
-		//store the post date using the ValidateDate trait
+		//store the profile date using the ValidateDate trait
 		try {
 			$newProfileDateTime = self::validateDateTime($newProfileDateTime);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
@@ -803,6 +805,61 @@ class Profile implements \JsonSerializable {
 		return ($profile);
 	}
 
+	/** gets an array of profiles based by dateTime
+	 *
+	 * @param \PDO $pdo connection object
+	 * @param \DateTime $sunriseProfileDate beginning date of search
+	 * @param \DateTime $sunsetProfileDate ending date of search
+	 * @return \SplFixedArray of profiles found
+	 * @throws \PDOException error when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 * @throws \InvalidArgumentException if either sun dates are in the wrong format
+	 **/
+	public static function getProfileByProfileDate(\PDO $pdo, $sunriseProfileDate, $sunsetProfileDate): \SplFixedArray {
+		//enforce both dates are present
+		if((empty($sunriseProfileDate) === true) || (empty($sunsetProfileDate) === true)) {
+			throw(new \InvalidArgumentException("dates are empty or insecure"));
+		}
+
+		//ensure both dates are in the correct format and are secure
+		try {
+			$sunriseProfileDate = self::validateDateTime($sunriseProfileDate);
+			$sunsetProfileDate = self::validateDateTime($sunsetProfileDate);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		//create query template
+		$query = "SELECT profileId, profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileDateTime, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip FROM profile WHERE profileDateTime >= :sunriseProfileDate AND profileDateTime <= :sunsetProfileDate";
+		$statement = $pdo->prepare($query);
+
+		//format the dates so that mySQL can use them
+		$formattedSunriseDate = $sunriseProfileDate->format("Y-m-d H:i:s.u");
+		$formattedSunsetDate = $sunsetProfileDate->format("Y-m-d H:i:s.u");
+
+
+		$parameters = ["sunriseProfileDate" => $formattedSunriseDate, "sunsetProfileDate" => $formattedSunsetDate];
+		$statement->execute($parameters);
+
+		// build an array of profiles
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($profiles);
+
+	}
+
+
 	/**
 	 * GET profileDistrictId
 	 *
@@ -996,6 +1053,9 @@ class Profile implements \JsonSerializable {
 		$fields = get_object_vars($this);
 		unset($fields["profileHash"]);
 		unset($fields["profileSalt"]);
+		//format the data so that the front end can consume it
+		$fields["profileDateTime"] = round(floatval($this->profileDateTime->format("U.u")) * 1000);
 		return($fields);
 	}
+
 }
