@@ -32,7 +32,7 @@ class Vote  implements \JsonSerializable {
 	 *
 	 * constructor for this vote
 	 *
-	 * @param\null int $newPostVoteId for the post that is voted on
+	 * @param \null int $newPostVoteId for the post that is voted on
 	 * @param int $newVoteProfileId for the Profile that voted on this post
 	 * @param \DateTime null $newVoteDateTime timestamp of vote
 	 * @param int $newVoteValue value for this vote

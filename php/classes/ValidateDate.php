@@ -17,7 +17,7 @@ trait ValidateDate {
 	 *
 	 * Converts a string to a DateTime object; this is designed to be used within a mutator method.
 	 *
-	 * @param \DateTime|string $newDate date to validate
+	 * @param \DateTime | string $newDate date to validate
 	 * @return \DateTime DateTime object containing the validated date
 	 * @see http://php.net/manual/en/class.datetime.php PHP's DateTime class
 	 * @throws \InvalidArgumentException if the date is in an invalid format

@@ -100,18 +100,18 @@ class Profile implements \JsonSerializable {
 	/**
 	 * constructor for the profile class
 	 *
-	 * @param int|null $newProfileId of this profile or null if a new user
+	 * @param int | null $newProfileId of this profile or null if a new user
 	 * @param int $newProfileDistrictId of this profile
-	 * @param string|null $newProfileActivationToken of the user profile
+	 * @param string | null $newProfileActivationToken of the user profile
 	 * @param string $newProfileAddress1 of the user profile
-	 * @param string|null $newProfileAddress2 of the user profile
+	 * @param string | null $newProfileAddress2 of the user profile
 	 * @param string $newProfileCity of the user profile
-	 * @param \DateTime|null $newProfileDateTime timestamp of the profile
+	 * @param \DateTime | null $newProfileDateTime timestamp of the profile
 	 * @param string $newProfileEmail of the user profile
 	 * @param string $newProfileFirstName of the user profile
 	 * @param string $newProfileHash of the user profile
 	 * @param string $newProfileLastName of the user profile
-	 * @param string|null $newProfileRecoveryToken of the user profile
+	 * @param string | null $newProfileRecoveryToken of the user profile
 	 * @param int $newProfileRepresentative of the user profile
 	 * @param string $newProfileSalt of the user profile
 	 * @param string $newProfileState of the user profile

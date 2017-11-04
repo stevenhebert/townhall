@@ -329,7 +329,7 @@ class ProfileTest extends TownhallTest {
 	 **/
 	public function testGetInvalidProfileByProfileId(): void {
 		// grab a profile id that is not valid
-		$profile = Profile::getProfileByProfileId($this->getPDO(), TownhallTest::INVALID_ID);
+		$profile = Profile::getProfileByProfileId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertNull($profile);
 	}
 
@@ -370,7 +370,7 @@ class ProfileTest extends TownhallTest {
 	 **/
 	public function testGetInvalidProfileByProfileEmail(): void {
 		// grab a profile email that is not valid
-		$profile = Profile::getProfileByProfileEmail($this->getPDO(), TownhallTest::INVALID_EMAIL);
+		$profile = Profile::getProfileByProfileEmail($this->getPDO(),"xzy@qrs.abc");
 		$this->assertNull($profile);
 	}
 
@@ -411,7 +411,7 @@ class ProfileTest extends TownhallTest {
 	 **/
 	public function testGetInvalidProfileByUserName(): void {
 		// grab a profile email that is not valid
-		$profile = Profile::getProfileByProfileUserName($this->getPDO(), TownhallTest::INVALID_USERNAME);
+		$profile = Profile::getProfileByProfileUserName($this->getPDO(), "unrowdyryan");
 		$this->assertNull($profile);
 	}
 
