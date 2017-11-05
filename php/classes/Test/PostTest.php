@@ -1,177 +1,211 @@
 <?php
+
 namespace Edu\Cnm\Townhall\Test;
 use Edu\Cnm\Townhall\{Post, Profile, District};
+
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
+
 /**
  * Full PHPUnit test for the Post class
  *
  * This is a complete PHPUnit test of the Post class. It is complete because *ALL* mySQL/PDO enabled methods
  * are tested for both invalid and valid inputs.
  *
- *
  * @author Leonora Sanchez-Rees <leonora621@yahoo.com>
  **/
+
 class PostTest extends TownhallTest {
-	/*district data needs to be set up first*/
+
 	/**
-	 * district that created the profile; this is for foreign key relations
+	 * District of this profile; this is for foreign key relations
 	 * @var District district
+	 *
 	 **/
 	protected $district = null;
-	/**t
-	 * valid district id to use to create the profile object to own the test
-	 * @var int $VALID_DISTRICT_ID
-	 */
-	protected $VALID_DISTRICT_ID;
+
+
 	/**
 	 * valid DISTRICT NAME to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_NAME
 	 */
 	protected $VALID_DISTRICT_NAME = "District 1";
+
 	/**
 	 * valid district geom to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_GEOM
 	 */
 	protected $VALID_DISTRICT_GEOM = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}';
+
 	/**
 	 * Profile that created the Post; this is for foreign key relations
 	 * @var Profile profile
 	 **/
 	protected $profile = null;
+
 	/**
 	 * valid profile id to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ID
 	 */
 	protected $VALID_PROFILE_ID;
+
 	/**
 	 * valid district id to use to create the profile object to own the test
 	 * @var int $VALID_PROFILE_DISTRICT_ID
 	 */
 	protected $VALID_PROFILE_DISTRICT_ID;
+
 	/**
 	 * valid activation token to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ACTIVATION_TOKEN
 	 */
 	protected $VALID_PROFILE_ACTIVATION_TOKEN = "abcdef123456";
+
 	/**
 	 * valid address1 to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ADDRESS1
 	 */
 	protected $VALID_PROFILE_ADDRESS1 = "123 Main St";
+
 	/**
 	 * valid address2 to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ADDRESS2
 	 */
 	protected $VALID_PROFILE_ADDRESS2 = "Suite 311";
+
 	/**
 	 * valid CITY to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_CITY
 	 */
 	protected $VALID_PROFILE_CITY = "Albuquerque";
+
 	/**
 	 * valid email to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_EMAIL
 	 */
 	protected $VALID_PROFILE_EMAIL = "mybestemailever@email.com";
+
 	/**
 	 * valid first name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_FIRSTNAME
 	 */
 	protected $VALID_PROFILE_FIRSTNAME = "Jean-Luc";
+
 	/**
 	 * valid profile hash to create the profile object to own the test
 	 * @var $VALID_HASH
 	 */
 	protected $VALID_PROFILE_HASH;
+
 	/**
 	 * valid last name to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_LASTNAME
 	 */
 	protected $VALID_PROFILE_LASTNAME = "Picard";
+
 	/**
 	 * valid representative indicator to use to create the profile object
 	 * @var int $VALID_PROFILE_REPRESENTATIVE;
 	 */
+	protected $VALID_PROFILE_RECOVERY_TOKEN = "111111111111";
+
+	/**
+	 * invalid profile activation token to create the profile object to own the test
+	 * @var $INVALID_PROFILE_RECOVERY_TOKEN
+	 **/
 	protected $VALID_PROFILE_REPRESENTATIVE;
+
 	/**
 	 * valid salt to use to create the profile object to own the test
 	 * @var string $VALID_SALT
 	 */
 	protected $VALID_PROFILE_SALT;
+
 	/**
 	 * valid state to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_STATE
 	 */
 	protected $VALID_PROFILE_STATE = "NM";
+
 	/**
 	 * valid username to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_USERNAME
 	 */
 	protected $VALID_PROFILE_USERNAME ="IamJeanLuc";
+
 	/**
 	 * valid zip to use to create the profile object to own the test
 	 * @var string $VALID_PROFILE_ZIP
 	 */
 	protected $VALID_PROFILE_ZIP = "87508";
+
 	/*set up the variables for the post table*/
 	/**
 	 * district id of the Post
 	 * @var int $VALID_POST_DISTRICTID
 	 **/
 	protected $VALID_POST_DISTRICTID;
+
 	/**
 	 * PARENT ID of the Post
 	 * @var int $VALID_POST_PARENTID
 	 **/
 	protected $VALID_POST_PARENTID = null;
+
 	/**
 	 * PARENT ID of the 2nd Post
 	 * @var int $VALID_POST_PARENTID2
 	 **/
 	protected $VALID_POST_PARENTID2 = null;
 
-
 	/**
 	 * PROFILE ID of the Post
 	 * @var int $VALID_POST_PROFILEID
 	 **/
 	protected $VALID_POST_PROFILEID;
+
 	/**
 	 * content of the Post
 	 * @var string $VALID_POSTCONTENT
 	 **/
 	protected $VALID_POSTCONTENT = "May the force be with you.  Oops, wrong reference.";
+
 	/**
 	 * content of the updated Post
 	 * @var string $VALID_POSTCONTENT2
 	 **/
 	protected $VALID_POSTCONTENT2 = "Let's ask some serious questions here.";
+
 	/**
 	 * Valid timestamp to use as sunrisePostDate
 	 */
 	protected $VALID_SUNRISEDATE = null;
+
 	/**
 	 * Valid timestamp to use as sunsetPostDate
 	 */
 	protected $VALID_SUNSETDATE = null;
+
 	/**
 	 * create dependent objects before running each test
 	 **/
-	public final function setUp()  : void {
+	public final function setUp(): void {
 		// run the default setUp() method first
 		parent::setUp();
 		$password = "abc123";
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
+
 		// create and insert a District for the test Post
 		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$this->district->insert($this->getPDO());
+
 		// create and insert a Profile to own the test Post
 		//need to get the districtId from the district
 		// create a new Profile and insert to into mySQL
-		$this->profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
+		$this->profile = new Profile(null, $this->district->getDistrictId(), $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_ADDRESS1, $this->VALID_PROFILE_ADDRESS2, $this->VALID_PROFILE_CITY, null ,$this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_FIRSTNAME, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_LASTNAME, $this->VALID_PROFILE_RECOVERY_TOKEN, $this->VALID_PROFILE_REPRESENTATIVE, $this->VALID_PROFILE_SALT, $this->VALID_PROFILE_STATE, $this->VALID_PROFILE_USERNAME, $this->VALID_PROFILE_ZIP);
 		$this->profile->insert($this->getPDO());
+
 		//format the sunrise date to use for testing
 		$this->VALID_SUNRISEDATE = new \DateTime();
 		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
@@ -282,13 +316,13 @@ class PostTest extends TownhallTest {
 		$this->assertNull($tweet);
 	}
 	/**
-	 * test inserting a Post and regrabbing it from mySQL, using postprofileid
+	 * test inserting a Post and regrabbing it from mySQL, using postProfileId
 	 **/
 	public function testGetValidPostByPostDistrictId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 		// create a new Post and insert to into mySQL
-		$post = new Post(null,$this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
+		$post = new Post(null, $this->profile->getProfileDistrictId(), $this->VALID_POST_PARENTID, $this->profile->getProfileId(), $this->VALID_POSTCONTENT, null);
 		$post->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -309,10 +343,6 @@ class PostTest extends TownhallTest {
 		$post = Post::getPostByPostDistrictId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertCount(0, $post);
 	}
-
-
-
-
 
 	/*
 	 * get a post by parent id
@@ -340,8 +370,9 @@ class PostTest extends TownhallTest {
 		$postChild->delete($this->getPDO());
 	}
 
-	/*test inserting an invalid parent key.  key must exist as a post in  the table */
-
+	/*
+	 * test inserting an invalid parent key, must exist as a post in the table
+	 */
 	public function testGetInvalidPostByParentId() : void {
 		//try to get post by invalid parent key
 
@@ -349,9 +380,9 @@ class PostTest extends TownhallTest {
 		$this->assertCount(0, $post);
 	}
 
-
-	/*test getting post by profile id */
-
+	/*
+	 * test getting post by profile id
+	 */
 	public function testGetValidPostByPostProfileId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
@@ -368,6 +399,7 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 	}
+
 	/**
 	 * test grabbing a Post by profile that does not exist
 	 **/
@@ -397,15 +429,16 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostContent(), $this->VALID_POSTCONTENT);
 	}
-	/**
-	 * test inserting a Post and regrabbing it from mySQL, using postprofileid
-	 **/
 
+	/**
+	 * test inserting a Post and regrabbing it from mySQL, using postProfileId
+	 **/
 	public function testGetInvalidPostByPostContent() : void {
 		// grab a tweet by content that does not exist
 		$post = Post::getPostByPostContent($this->getPDO(), "Reports of my assimilation are greatly exaggerated.");
 		$this->assertCount(0, $post);
 	}
+
 	/**
 	 * test grabbing a valid Post by sunset and sunrise date
 	 *
@@ -431,6 +464,7 @@ class PostTest extends TownhallTest {
 		$this->assertEquals($pdoPost->getPostContent(), $post->getPostContent());
 		$this->assertEquals($pdoPost->getPostDateTime(), $post->getPostDateTime());
 	}
+
 	/**
 	 * test grabbing all Posts
 	 **/

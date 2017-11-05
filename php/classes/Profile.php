@@ -9,8 +9,8 @@ require_once("autoload.php");
  * @author Ryan Henson <hensojr@gmail.com>
  * @version 1.0.0
  **/
-
 class Profile implements \JsonSerializable {
+	use ValidateDate;
 	/**
 	 * id for this profile; this is the primary key
 	 * @var int $profileId
@@ -281,8 +281,8 @@ class Profile implements \JsonSerializable {
 	 * @return string value of profileAddress2
 	 **/
 	public function getProfileAddress2(): string {
-			return ($this->profileAddress2);
-		}
+		return ($this->profileAddress2);
+	}
 
 	/**
 	 * mutator method for profileAddress2
@@ -343,10 +343,10 @@ class Profile implements \JsonSerializable {
 	}
 
 	/*
- * accessor method for profileDateTime
- *
- * @return \DateTime value of dateTime profile was created
- **/
+ 	* accessor method for profileDateTime
+ 	*
+ 	* @return \DateTime value of profileDateTime when created
+ 	**/
 	public function getProfileDateTime(): \DateTime {
 		return ($this->profileDateTime);
 	}
@@ -542,7 +542,7 @@ class Profile implements \JsonSerializable {
 	 * @return int|null value of profileRepresentative
 	 **/
 	public function getProfileRepresentative(): ?int {
-		if($this->profileRepresentative === Null){
+		if($this->profileRepresentative === Null) {
 			return $this->profileDistrictId = null;
 		}
 		return ($this->profileRepresentative);
@@ -562,7 +562,7 @@ class Profile implements \JsonSerializable {
 			return;
 		}
 		// verify the  profile representative is 0 if not NULL
-		if($newProfileRepresentative !== 1 ){
+		if($newProfileRepresentative !== 1) {
 			throw(new \RangeException("profile representative must be true"));
 		}
 		// convert and store the profile representative
@@ -712,13 +712,13 @@ class Profile implements \JsonSerializable {
 		$parameters = ["profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRecoveryToken" => $this->profileRecoveryToken, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
 
 		$statement->execute($parameters);
+
 		// update the null profileId with what mySQL just gave us
 		$this->profileId = intval($pdo->lastInsertId());
 
-		// update the auto generated timestamp
-		$tempPost = Profile::getProfileByProfileId($pdo, $this->profileId);
-		$this->setProfileDateTime($tempPost->getProfileDateTime());
-
+		// generate a timestamp
+		$tempProfile = Profile::getProfileByProfileId($pdo, $this->profileId);
+		$this->setProfileDateTime($tempProfile->getProfileDateTime());
 	}
 
 	/**
@@ -761,13 +761,9 @@ class Profile implements \JsonSerializable {
 		$parameters = ["profileId" => $this->profileId, "profileDistrictId" => $this->profileDistrictId, "profileActivationToken" => $this->profileActivationToken, "profileAddress1" => $this->profileAddress1, "profileAddress2" => $this->profileAddress2, "profileCity" => $this->profileCity, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profileRecoveryToken" => $this->profileRecoveryToken, "profileRepresentative" => $this->profileRepresentative, "profileSalt" => $this->profileSalt, "profileState" => $this->profileState, "profileUserName" => $this->profileUserName, "profileZip" => $this->profileZip];
 		$statement->execute($parameters);
 
-		// update the null profileId with what mySQL just gave us
-		$this->profileId = intval($pdo->lastInsertId());
-
 		// update the auto generated timestamp
-		// necessary for deleting accounts that haven't been activated after (x)hours
-		$tempPost = Profile::getProfileByProfileId($pdo, $this->profileId);
-		$this->setProfileDateTime($tempPost->getProfileDateTime());
+		$tempProfile = Profile::getProfileByProfileId($pdo, $this->profileId);
+		$this->setProfileDateTime($tempProfile->getProfileDateTime());
 	}
 
 	/**
@@ -805,7 +801,8 @@ class Profile implements \JsonSerializable {
 		return ($profile);
 	}
 
-	/** gets an array of profiles based by dateTime
+	/**
+	 * GET an array of profiles by profileDateTime
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param \DateTime $sunriseProfileDate beginning date of search
@@ -856,7 +853,6 @@ class Profile implements \JsonSerializable {
 			}
 		}
 		return ($profiles);
-
 	}
 
 
@@ -928,7 +924,7 @@ class Profile implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileRecoveryToken"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -1004,7 +1000,7 @@ class Profile implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileRecoveryToken"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
+				$profile = new Profile($row["profileId"], $row["profileDistrictId"], $row["profileActivationToken"], $row["profileAddress1"], $row["profileAddress2"], $row["profileCity"], $row["profileDateTime"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profileRecoveryToken"], $row["profileRepresentative"], $row["profileSalt"], $row["profileState"], $row["profileUserName"], $row["profileZip"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -1014,7 +1010,7 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the profile by user name
+	 * GET the profile by username
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $profileUserName content to search for
@@ -1049,13 +1045,21 @@ class Profile implements \JsonSerializable {
 		}
 		return ($profile);
 	}
+	/*
+* needed to add the microsecond to the profileDateTime field
+*
+* @param $fields object to process profileDateTime
+*
+*/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
+
+		//format the data so that the front end can consume it
+		//$fields["profileDateTime"] = round(floatval($this->profileDateTime->format("U.u")) * 1000);
+
 		unset($fields["profileHash"]);
 		unset($fields["profileSalt"]);
-		//format the data so that the front end can consume it
-		$fields["profileDateTime"] = round(floatval($this->profileDateTime->format("U.u")) * 1000);
+
 		return($fields);
 	}
-
 }

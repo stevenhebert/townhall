@@ -277,7 +277,8 @@ class Post implements \JsonSerializable {
 		$this->postDateTime = $newPostDateTime;
 	}
 
-	/** inserts post into mySQL
+	/**
+	 * inserts post into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL-related errors occur
@@ -299,12 +300,13 @@ class Post implements \JsonSerializable {
 		//update the null postId with what mySQL just gave us
 		$this->postId = intval($pdo->lastInsertId());
 
-		// update the auto generated timestamp
+		// generate a timestamp
 		$tempPost = Post::getPostByPostId($pdo, $this->postId);
 		$this->setPostDateTime($tempPost->getPostDateTime());
 	}
 
-	/** deletes this post from mySQL
+	/**
+	 * deletes this post from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -326,7 +328,8 @@ class Post implements \JsonSerializable {
 	}
 
 
-	/** updates the post in mySQL
+	/**
+	 * updates the post in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -351,7 +354,8 @@ class Post implements \JsonSerializable {
 
 	}
 
-	/**gets the post by postId
+	/**
+	 * GET the post by postId
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $postId to search for
@@ -390,7 +394,8 @@ class Post implements \JsonSerializable {
 		return ($post);
 	}
 
-	/**gets the post by postDistrictId
+	/**
+	 * GET the post by postDistrictId
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $postDistrictId to search for
@@ -428,7 +433,8 @@ class Post implements \JsonSerializable {
 		return ($posts);
 	}
 
-	/** gets the post by postParentId
+	/**
+	 * GET the post by postParentId
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $postParentId to search for
@@ -466,7 +472,8 @@ class Post implements \JsonSerializable {
 		return ($posts);
 	}
 
-	/** gets the post by postProfileId
+	/**
+	 * GET the post by postProfileId
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param int $postProfileId to search for
@@ -505,7 +512,8 @@ class Post implements \JsonSerializable {
 	}
 
 
-	/** gets the post by content
+	/**
+	 * GET the post by content
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $postContent post content to search for
@@ -550,7 +558,8 @@ class Post implements \JsonSerializable {
 	}
 
 
-	/** gets an array of posts based on its date
+	/**
+	 * GET an array of posts by postDateTime
 	 *
 	 * @param \PDO $pdo connection object
 	 * @param \DateTime $sunrisePostDate beginning date of search
