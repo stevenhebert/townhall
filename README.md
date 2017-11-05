@@ -1,5 +1,3 @@
-# townhall
+# Albuquerque Town Hall
 
-A virtual townhall for Albuquerque city council representatives to interact with their consitituents. 
-
-This project was developed by, Michelle Allen, Leonora Sanchez-Rees, Ryan Henson, and Steven Hebert.
+A (virtual) town hall for Albuquerque city council representatives and their consitituents.
