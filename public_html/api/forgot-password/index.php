@@ -6,13 +6,13 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\Townhall\{Profile};
 
 /**
- * API for handling account recovery
+ * API for handling account forgot-password
  *
  * @author Steven Hebert
  *
  * user has forgotten password
- * API sends recovery link via email
- * recovery token is given a short life span
+ * API sends forgot-password link via email
+ * forgot-password token is given a short life span
  * timely user can reset her password by supplying token and email
  **/
 
@@ -53,9 +53,9 @@ try {
 			//not
 		}
 
-		$profileActivationToken = bin2hex(random_bytes(16));
-		//reset activation token
-		$profile->setProfileActivationToken($profileActivationToken);
+		$profileRecoveryToken = bin2hex(random_bytes(16));
+		//reset recovery token
+		$profile->setprofileRecoveryToken($profileRecoveryToken);
 
 		//update the profile in the database
 		$profile->update($pdo);
@@ -63,11 +63,11 @@ try {
 		//compose the email message to send with the recovery url
 		$messageSubject = "ABQ Town Hall Account Recovery";
 
-		//building the activation link that can travel to another server and still work. This is the link that will be clicked to confirm the account.
-		//make sure URL is api/account-recovery/$account-recovery
+		//building the recovery link that can travel to another server and still work. This is the link that will be clicked to confirm the account.
+		//make sure URL is recovery/$profileRecoveryToken
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "api/account-recovery/?activation=" . $profileActivationToken;
+		$urlglue = $basePath . "recovery/" . $profileRecoveryToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
@@ -80,7 +80,7 @@ EOF;
 		$swiftMessage = new Swift_Message();
 		// attach the sender to the message
 		// this takes the form of an associative array where the email is the key to a real name
-		$swiftMessage->setFrom(["abqtownhall@abqtownhall.com" => "ABQ TownHall"]);
+		$swiftMessage->setFrom(["admin@abqtownhall.com" => "ABQ Town Hall"]);
 		/**
 		 * attach recipients to the message
 		 * notice this is an array that can include or omit the recipient's name
