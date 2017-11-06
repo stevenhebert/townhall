@@ -209,34 +209,28 @@ class VoteTest extends TownhallTest {
 	 * create dependent objects before running each test
 	 **/
 	public final function setUp(): void {
-		// run the default setUp() method first
 		parent::setUp();
 		$password = "abc123";
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
-		$password2 = "ilovelucy";
 		$this->VALID_PROFILE_SALT2 = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH2 = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 
-		// create and insert a District for the test Post
+		// create and insert a district for the test post
 		$this->district = new District(null, $this->VALID_DISTRICT_GEOM, $this->VALID_DISTRICT_NAME);
 		$this->district->insert($this->getPDO());
 
-		// create and insert a Profile to own the test Post
-		//need to get the districtId from the district
-		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "Albuquerque", "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", null, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
-		//what is the district Id?  Need to get this
+		// create and insert a profile to own the post
+		// get districtId from the district
+		$this->profile = new Profile(null, $this->district->getDistrictId(), "123", "123 Main St", "+12125551212", "Albuquerque", null, "test@email.com", "Jean-Luc", $this->VALID_PROFILE_HASH, "Picard", "789",null, $this->VALID_PROFILE_SALT, "NM", "iamjeanluc", "12345");
 		$this->profile->insert($this->getPDO());
-		// calculate the date (just use the time the unit test was setup...)
+
 		//create second profile
-		$this->profile2 = new Profile(null, $this->district->getDistrictId(), "456", "124 Main St", "+12125551212", "Albuquerque", "test2@email.com", "Lucy", $this->VALID_PROFILE_HASH2, "Lu", null, $this->VALID_PROFILE_SALT2, "NM", "lucygirl", "12345");
-		//what is the district Id?  Need to get this
+		$this->profile2 = new Profile(null, $this->district->getDistrictId(), "456", "124 Main St", "+12125551212", "Albuquerque", null, "test2@email.com", "Lucy", $this->VALID_PROFILE_HASH2, "Lu", "101112",null, $this->VALID_PROFILE_SALT2, "NM", "lucygirl", "12345");
 		$this->profile2->insert($this->getPDO());
 
-
-		/*create some valid posts to vote on */
-
+		// create valid posts to vote on
 		$this->post = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
 		$this->post->insert($this->getPDO());
 		$this->post2 = new Post(null, $this->district->getDistrictId(), null, $this->profile->getProfileId(),$this->VALID_POSTCONTENT, null);
@@ -247,20 +241,13 @@ class VoteTest extends TownhallTest {
 		$this->post4->insert($this->getPDO());
 	}
 
-
-
-
 	/**
 	 * test inserting a valid Vote and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidVote(): void {
 		$numRows = $this->getConnection()->getRowCount("vote");
 		// create a new vote and insert to into mySQL
-
-
 		$vote = new Vote($this->post->getPostId(), $this->profile->getProfileId(), null,$this->VALID_VOTEVALUE);
-
-
 		$vote->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -268,9 +255,6 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
-
-
-
 	}
 
 
@@ -285,6 +269,7 @@ class VoteTest extends TownhallTest {
 		$vote = new Vote(TownhallTest::INVALID_KEY, TownhallTest::INVALID_KEY, null, 1);
 		$vote->insert($this->getPDO());
 	}
+
 /* update a valid vote */
 	public function testUpdateValidVote() : void {
 		// count the number of rows and save it for later
@@ -303,9 +288,6 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
 		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
-
-
-
 	}
 
 	/**
@@ -362,8 +344,6 @@ class VoteTest extends TownhallTest {
 		// grab the result from the array and validate it
 		$pdoVote = $results[0];
 		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
-
-
 	}
 
 	/**
@@ -373,7 +353,6 @@ class VoteTest extends TownhallTest {
 		// grab a profile id that exceeds the maximum allowable profile id
 		$vote = Vote::getVoteByPostId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertCount(0, $vote);
-
 	}
 
 	/**
@@ -403,7 +382,6 @@ class VoteTest extends TownhallTest {
 		// grab a profile id that exceeds the maximum allowable profile id
 		$vote = Vote::getVoteByProfileId($this->getPDO(), TownhallTest::INVALID_KEY);
 		$this->assertCount(0, $vote);
-
 	}
 
 	/**
@@ -427,7 +405,6 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($pdoVote->getvoteProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoVote->getvotePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
-
 	}
 
 	/**
@@ -437,7 +414,6 @@ class VoteTest extends TownhallTest {
 		// grab a vote by value that does not exist
 		$vote = Vote::getVotebyVoteValue($this->getPDO(), 1);
 		$this->assertCount(0, $vote);
-
 	}
 
 
@@ -461,14 +437,12 @@ class VoteTest extends TownhallTest {
 		$this->assertEquals($pdoVote->getVoteProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoVote->getVotePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoVote->getVoteValue(), $this->VALID_VOTEVALUE);
-
 	}
 
 	/*
 	 * test get sum of vote value
-	 *  *
+	 *
 	 */
-	/*++++++++*/
 	public function testGetValidSumOfVoteValues(): void {
 		// create new Votes and insert into mySQL
 
@@ -483,22 +457,20 @@ class VoteTest extends TownhallTest {
 
 		$vote4 = new Vote($this->post2->getPostId(), $this->profile2->getProfileId(), null, 1);
 		$vote4->insert($this->getPDO());
+
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("vote");
-		//votes are in place, so we need to test the values
 
+		//votes are in place, so we need to test the values
 		$results = Vote::getSumOfVoteValuesByPostId($this->getPDO(), $this->post->getPostId());
 		$results2 = Vote::getSumOfVoteValuesByPostId($this->getPDO(), $this->post2->getPostId());
+
+
 		$this->assertEquals($results->votePostId, $this->post->getPostId());
+		//$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("vote"));
+
 		$this->assertEquals($results2->votePostId, $this->post2->getPostId());
-		//test with var dump?
-		var_dump($results);
-		var_dump($results2);
-
-
-
-
+		//$this->assertEquals($numRows + 2, $this->getConnection()->getRowCount("vote"));
 	}
-
 
 }

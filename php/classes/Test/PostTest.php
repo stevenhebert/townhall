@@ -24,7 +24,6 @@ class PostTest extends TownhallTest {
 	 **/
 	protected $district = null;
 
-
 	/**
 	 * valid DISTRICT NAME to use to create the profile object to own the test
 	 * @var string $VALID_DISTRICT_NAME
