@@ -9,10 +9,10 @@ import {SignInService} from "./services/signin.service";
 import {SignOutService} from "./services/signout.service"
 import {SignUpService} from "./services/signup.service";
 import {EditProfileService} from "./services/editprofile.service"
-
 import {SessionService} from "./services/session.service";
 import {CookieService} from "ng2-cookies";
 import {ActivationService} from "./services/activation.service";
+import {RecoveryService} from "./services/recovery.service";
 
 
 const moduleDeclarations = [AppComponent];
@@ -27,7 +27,8 @@ const moduleDeclarations = [AppComponent];
 		SignInService,
 		SignOutService,
 		SignUpService,
-		ActivationService
+		ActivationService,
+		RecoveryService
 	]})
 export class AppModule {	cookieJar : any = {};
 

@@ -6,13 +6,13 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\Townhall\{Profile};
 
 /**
- * API for handling account forgot-password
+ * API for handling account forgot
  *
  * @author Steven Hebert
  *
  * user has forgotten password
- * API sends forgot-password link via email
- * forgot-password token is given a short life span
+ * API sends forgot link via email
+ * forgot token is given a short life span
  * timely user can reset her password by supplying token and email
  **/
 

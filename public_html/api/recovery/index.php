@@ -6,7 +6,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\Townhall\Profile;
 
 /**
- * API for checking forgot-password token and resetting password
+ * API for checking forgot token and resetting password
  *
  * @author Steven Hebert
  *
@@ -14,7 +14,7 @@ use Edu\Cnm\Townhall\Profile;
  * posts token from email
  * posts email from email
  * check to see if token and email matches
- * if matches void (forgot-password)token and accept users new password
+ * if matches void (forgot)token and accept users new password
  **/
 
 // Check the session. If it is not active, start the session.
@@ -48,15 +48,15 @@ try {
 		} else {
 			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
 		}
-		//if the forgot-password token is null throw an error
+		//if the forgot token is null throw an error
 		if($requestObject->profileRecoveryToken() === true) {
-			throw(new \InvalidArgumentException("You must enter your forgot-password token.", 401));
+			throw(new \InvalidArgumentException("You must enter your forgot token.", 401));
 		}
-		//if the forgot-password token is the wrong length throw an error
+		//if the forgot token is the wrong length throw an error
 		if(strlen($recovery) !== 32) {
 			throw(new InvalidArgumentException("token invalid", 405));
 		}
-		// if the forgot-password token is not a string value of a hexadeciaml throw an error
+		// if the forgot token is not a string value of a hexadeciaml throw an error
 		if(ctype_xdigit($recovery) === false) {
 			throw (new \InvalidArgumentException("token invalid", 405));
 		} else {
@@ -65,12 +65,11 @@ try {
 		//grab the profile from the database by the email provided
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		if(empty($profile) === true) {
-			throw(new \InvalidArgumentException("Could not verify forgot-password for this account.", 401));
+			throw(new \InvalidArgumentException("Account could not be verified.", 401));
 		}
-		//if the forgot-password token does not match throw an error
-		//if the recover token has expire it will not match
+		//if the recovery token has expired => or does not match throw an error
 		if($profile->getProfileRecoveryToken() !== $profileRecoveryToken) {
-			throw (new \InvalidArgumentException ("Could not verify forgot-password for this account.", 403));
+			throw (new \InvalidArgumentException ("Account could not be verified.", 403));
 		}
 		//verify that the user has entered a new password
 		if(empty($requestObject->profilePassword) === true) {
@@ -92,7 +91,7 @@ try {
 			$profile->setProfileHash($newPasswordHash);
 			$profile->setProfileSalt($newPasswordSalt);
 
-			//set forgot-password to null
+			//set forgot to null
 			$profile->setProfileRecoveryToken(null);
 
 			//update the profile in the database

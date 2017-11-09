@@ -354,9 +354,9 @@ class Profile implements \JsonSerializable {
 	/**
 	 * mutator method for profileDateTime
 	 *
-	 * @param \DateTime |string |null $profileDateTime dateTime profile was created as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $profileDateTime is not a valid object or string
-	 * @throws \RangeException if $profileDateTime is a date that does not exist
+	 * @param \DateTime |string |null $newProfileDateTime dateTime profile was created as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newProfileDateTime is not a valid object or string
+	 * @throws \RangeException if $newProfileDateTime is a date that does not exist
 	 *
 	 **/
 	public function setProfileDateTime($newProfileDateTime = null): void {
