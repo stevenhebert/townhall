@@ -1,4 +1,5 @@
 import {Component, ViewChild, OnInit} from "@angular/core";
+import {Observable} from "rxjs/Observable"
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
@@ -26,11 +27,11 @@ export class EditProfileComponent implements OnInit {
 	ngOnInit() : void {
 		this.route.params
 			.forEach((params:Params) => {
-			this.cookieJar = this.cookieService.getAll();
-			let profileId = this.cookieJar["profileId"];
-			this.editProfileService.getProfile(profileId)
-				.subscribe(profile => this.profile = profile);
-		})
+				this.cookieJar = this.cookieService.getAll();
+				let profileId = this.cookieJar["profileId"];
+				this.editProfileService.getProfile(profileId)
+					.subscribe(profile => this.profile = profile);
+			})
 	}
 
 	createProfileEdit(): void {

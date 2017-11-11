@@ -13,7 +13,7 @@ import {EditProfileComponent} from "./components/editprofile.component";
 import {SignOutComponent} from "./components/signout.component";
 import {PostComponent} from "./components/post.component";
 import {RecoveryComponent} from "./components/recovery.component";
-
+import {ForgotComponent} from "./components/forgot.component";
 
 import {SessionService} from "./services/session.service";
 import {ActivationService} from "./services/activation.service";
@@ -26,8 +26,7 @@ import {EditProfileService} from "./services/editprofile.service";
 import {ProfileService} from "./services/profile.service";
 import {VoteService} from "./services/vote.service";
 import {RecoveryService} from "./services/recovery.service";
-
-
+import {ForgotService} from "./services/forgot.service";
 
 import {APP_BASE_HREF} from "@angular/common";
 
@@ -45,7 +44,8 @@ export const allAppComponents = [
 	EditProfileComponent,
 	SignOutComponent,
 	RecoveryComponent,
-	ReplyComponent
+	ReplyComponent,
+	ForgotComponent
 ];
 
 
@@ -71,7 +71,8 @@ export const appRoutingProviders: any[] = [
 	PostService,
 	ProfileService,
 	RecoveryService,
-	VoteService
+	VoteService,
+	ForgotService
 ];
 
 export const routing = RouterModule.forRoot(routes);

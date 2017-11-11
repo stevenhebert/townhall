@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {RecoveryService} from "../services/recovery.service";
-import {Profile} from "../classes/profile";
+import {Recovery} from "../classes/recovery";
 
 @Component({
 	templateUrl: "./templates/recovery.html",
@@ -10,25 +10,30 @@ import {Profile} from "../classes/profile";
 
 export class RecoveryComponent implements OnInit {
 
-	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null);
+	@Input("recoveryForm") recoveryForm: any;
+	recovery: Recovery = new Recovery(null, null, );
 	status: Status = null;
-	@Input('profile') profileEmail: string;
 
 	constructor(private recoveryService: RecoveryService, private router: Router, private route: ActivatedRoute) {
 	}
 
 	ngOnInit(): void {
-		this.route.params
-			.switchMap((params: Params) => this.recoveryService.postRecovery(params['recovery']))
+		this.activatedRoute.params.subscribe((params: Params) => {
+			let recovery.profileRecoveryToken = params['recovery'];
+			console.log(profileRecoveryToken);
+		});
 	}
 
 	createRecovery(): void {
-		this.recoveryService.postRecovery(this.profile)
+		this.route.params.subscribe(params => {
+			this.recovery.profileEmail = +params['profileEmail']
+		});
+		this.recoveryService.postRecovery(this.recovery)
 			.subscribe(status => {
 				this.status = status;
 				console.log(this.status);
 				if(status.status === 200) {
-					alert("You may now login.")
+					alert("account recovered, you may now login.")
 				}
 				else {
 					alert(status.message);

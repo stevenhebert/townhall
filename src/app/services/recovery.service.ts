@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Status} from "../classes/status";
-import {Profile} from "../classes/profile";
+import {Recovery} from "../classes/recovery";
 
 @Injectable()
 export class RecoveryService extends BaseService {
@@ -13,8 +13,8 @@ export class RecoveryService extends BaseService {
 
 	private recoveryUrl = "api/recovery/";
 
-	postRecovery(profile: Profile): Observable<Status> {
-		return (this.http.post(this.recoveryUrl + profile.profileEmail + recovery, profile)
+	postRecovery(recovery: string): Observable<Status> {
+		return (this.http.post(this.recoveryUrl + profileEmail + recovery)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}

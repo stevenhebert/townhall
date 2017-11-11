@@ -13,6 +13,7 @@ import {SessionService} from "./services/session.service";
 import {CookieService} from "ng2-cookies";
 import {ActivationService} from "./services/activation.service";
 import {RecoveryService} from "./services/recovery.service";
+import {ForgotService} from "./services/forgot.service";
 
 
 const moduleDeclarations = [AppComponent];
@@ -28,7 +29,8 @@ const moduleDeclarations = [AppComponent];
 		SignOutService,
 		SignUpService,
 		ActivationService,
-		RecoveryService
+		RecoveryService,
+		ForgotService
 	]})
 export class AppModule {	cookieJar : any = {};
 
