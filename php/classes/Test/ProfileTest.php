@@ -120,7 +120,7 @@ class ProfileTest extends TownhallTest {
 
 	/**
 	 * valid profile representative to use to create the profile object to own the test
-	 * @var int $VALID_PROFILE_REPRESENTATIVE ;
+	 * @var int $VALID_PROFILE_REPRESENTATIVE;
 	 */
 	protected $VALID_PROFILE_REPRESENTATIVE;
 
