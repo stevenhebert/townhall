@@ -6,7 +6,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\Townhall\Profile;
 
 /**
- * API for checking forgot token and resetting password
+ * API for checking profileRecoveryToken and resetting password
  *
  * @author Steven Hebert
  *
@@ -14,7 +14,7 @@ use Edu\Cnm\Townhall\Profile;
  * posts token from email
  * posts email from email
  * check to see if token and email matches
- * if matches void (forgot)token and accept users new password
+ * if matches void profileRecoveryToken and accept users new password
  **/
 
 // Check the session. If it is not active, start the session.
@@ -48,16 +48,16 @@ try {
 		} else {
 			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
 		}
-		//if the forgot token is null throw an error
+		//if the profileRecoveryToken is null throw an error
 		if($requestObject->profileRecoveryToken() === true) {
-			throw(new \InvalidArgumentException("You must enter your forgot token.", 401));
+			throw(new \InvalidArgumentException("profile recovery is not active.", 401));
 		}
-		//if the forgot token is the wrong length throw an error
-		if(strlen($recovery) !== 32) {
+		//if the profileRecoveryToken is the wrong length throw an error
+		if(strlen($profileRecoveryToken) !== 32) {
 			throw(new InvalidArgumentException("token invalid", 405));
 		}
-		// if the forgot token is not a string value of a hexadeciaml throw an error
-		if(ctype_xdigit($recovery) === false) {
+		// if the profileRecoveryToken is not a string value of a hexadeciaml throw an error
+		if(ctype_xdigit($profileRecoveryToken) === false) {
 			throw (new \InvalidArgumentException("token invalid", 405));
 		} else {
 			$profileRecoveryToken = filter_var($requestObject->profileRecoveryToken, FILTER_SANITIZE_STRING);
@@ -67,7 +67,7 @@ try {
 		if(empty($profile) === true) {
 			throw(new \InvalidArgumentException("Account could not be verified.", 401));
 		}
-		//if the recovery token has expired => or does not match throw an error
+		//if the profileRecoveryToken has expired => or does not match throw an error
 		if($profile->getProfileRecoveryToken() !== $profileRecoveryToken) {
 			throw (new \InvalidArgumentException ("Account could not be verified.", 403));
 		}
@@ -91,7 +91,7 @@ try {
 			$profile->setProfileHash($newPasswordHash);
 			$profile->setProfileSalt($newPasswordSalt);
 
-			//set forgot to null
+			//set profileRecoveryToken to null
 			$profile->setProfileRecoveryToken(null);
 
 			//update the profile in the database

@@ -28,10 +28,10 @@ export class ForgotComponent {
 				console.log(this.status);
 				if(status.status === 200) {
 					$('#forgot-modal').modal('hide')
-					alert("If registered, a recovery link has been sent to the provided email. Requests are valid for 15 minutes from the time sent.")
+					alert("If your account was found you should receive a recovery link shortly")
 				}
 				else {
-					alert(status.message);
+					alert(this.status.message);
 				}
 			});
 	}

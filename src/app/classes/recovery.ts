@@ -2,7 +2,7 @@ export class Recovery {
 	constructor(
 		public profileEmail: string,
 		public profilePassword: string,
-		public profileActivationToken: string
+		public profileRecoveryToken: string
 	)
 	{
 	}

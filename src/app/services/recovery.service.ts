@@ -13,8 +13,8 @@ export class RecoveryService extends BaseService {
 
 	private recoveryUrl = "api/recovery/";
 
-	postRecovery(recovery: string): Observable<Status> {
-		return (this.http.post(this.recoveryUrl + recovery.profileEmail + recovery, recovery)
+	createRecovery(recovery: Recovery): Observable<Status> {
+		return (this.http.post(this.recoveryUrl, recovery)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}

@@ -26,7 +26,6 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 
-
 	getPostByPostId(postId : number) : Observable<Post> {
 		return(this.http.get(this.postUrl + "?id=" + postId)
 			.map(this.extractData)

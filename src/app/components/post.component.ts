@@ -55,7 +55,7 @@ export class PostComponent implements OnInit {
 				if(this.status.status === 200) {
 					this.loadDistrictById();
 				} else {
-
+					alert(this.status.message);
 				}
 			});
 	}
