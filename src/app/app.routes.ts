@@ -23,7 +23,6 @@ import {CookieService} from "ng2-cookies";
 import {PostService} from "./services/post.service";
 import {SignOutService} from "./services/signout.service";
 import {EditProfileService} from "./services/editprofile.service";
-import {ProfileService} from "./services/profile.service";
 import {VoteService} from "./services/vote.service";
 import {RecoveryService} from "./services/recovery.service";
 import {ForgotService} from "./services/forgot.service";
@@ -32,47 +31,48 @@ import {APP_BASE_HREF} from "@angular/common";
 
 
 export const allAppComponents = [
-	HomeComponent,
-	SignUpComponent,
-	MainNavComponent,
-	FooterComponent,
 	AboutComponent,
-	SignInComponent,
-	PostComponent,
 	ActivationComponent,
-	UserNavComponent,
 	EditProfileComponent,
-	SignOutComponent,
+	FooterComponent,
+	ForgotComponent,
+	HomeComponent,
+	MainNavComponent,
+	PostComponent,
 	RecoveryComponent,
 	ReplyComponent,
-	ForgotComponent
+	SignInComponent,
+	SignOutComponent,
+	SignUpComponent,
+	UserNavComponent
 ];
 
 
 export const routes: Routes = [
+	{path:  "", component: HomeComponent},
 	{path:  "about", component: AboutComponent},
-	{path:  "post/:postDistrictId", component: PostComponent},
-	{path:  "reply/:id", component: ReplyComponent},
 	{path:  "activation/:activation", component: ActivationComponent},
+	//{path:  "post", component: PostComponent},
+	{path:  "post/:postDistrictId", component: PostComponent},
 	{path:  "recovery/:recovery", component: RecoveryComponent},
+	{path:  "reply/:id", component: ReplyComponent},
 	{path:  "signout", component: SignOutComponent},
-	{path:  "", component: HomeComponent}
+	{path:  "signup", component: SignUpComponent}
 ];
 
 export const appRoutingProviders: any[] = [
 	{provide: APP_BASE_HREF, useValue: window["_base_href"]},
 	ActivationService,
+	CookieService,
+	EditProfileService,
+	ForgotService,
+	PostService,
+	RecoveryService,
 	SessionService,
 	SignInService,
 	SignOutService,
 	SignUpService,
-	CookieService,
-	EditProfileService,
-	PostService,
-	ProfileService,
-	RecoveryService,
 	VoteService,
-	ForgotService
 ];
 
 export const routing = RouterModule.forRoot(routes);

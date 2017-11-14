@@ -5,7 +5,7 @@ import {Status} from "../classes/status";
 import {ActivationService} from "../services/activation.service";
 
 @Component({
-	templateUrl: "./templates/activation.html",
+	templateUrl: "./templates/activation.html"
 })
 
 export class ActivationComponent implements OnInit {

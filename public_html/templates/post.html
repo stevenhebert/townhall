@@ -1,6 +1,5 @@
 <div class="sfooter">
 	<div class="sfooter-content">
-
 		<user-nav></user-nav>
 
 		<div class="container">
@@ -9,7 +8,7 @@
 				<div class="col-md-4">
 					<h2>Create a new post </h2>
 
-					<!-- Create New Post Form -->
+					<!-- Create a new post -->
 					<form #postForm="ngForm" id="postForm" (submit)="createPost(); postForm.reset();">
 
 						<div class="form-group">
@@ -35,14 +34,12 @@
 						</button>
 						{{ status.message }}
 					</div>
-
-
 				</div>
 
 				<div class="col-md-8">
 					<h2>All posts in district {{ posts[0]?.postDistrictId}}</h2>
 
-					<!-- Begin Post Item -->
+					<!-- Thread of posts -->
 					<div *ngFor="let post of posts;">
 						<div class="panel panel-default" *ngIf="this.post.postParentId == null">
 							<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime |
@@ -64,8 +61,10 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
+
 	</div>
 	<app-footer></app-footer>
 </div>

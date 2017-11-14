@@ -6,7 +6,7 @@ import {RecoveryService} from "../services/recovery.service";
 import {Recovery} from "../classes/recovery";
 
 @Component({
-	templateUrl: "./templates/recovery.html",
+	templateUrl: "./templates/recovery.html"
 })
 
 export class RecoveryComponent {

@@ -8,8 +8,7 @@ import {Forgot} from "../classes/forgot";
 declare let $: any;
 
 @Component({
-	templateUrl: "./templates/forgot.html",
-	selector: "forgot"
+	templateUrl: "./templates/forgot.html"
 })
 
 export class ForgotComponent {

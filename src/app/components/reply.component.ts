@@ -10,7 +10,7 @@ import {Vote} from "../classes/vote";
 import {VoteService} from "../services/vote.service";
 
 @Component({
-	templateUrl: "./templates/reply.html",
+	templateUrl: "./templates/reply.html"
 })
 
 

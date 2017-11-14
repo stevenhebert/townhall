@@ -1,18 +1,11 @@
-<div id="signup-modal" class="modal fade" tabindex="-1" role="dialog">
+<div class="sfooter">
+	<div class="sfooter-content">
+		<main-nav></main-nav>
+		<main class="home">
 
-	<div class="modal-dialog modal-lg" role="document">
+			<div class="container-fluid">
+				<h1>Create a New ABQ Town Hall Account</h1>
 
-		<div class="modal-content">
-
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-					aria-hidden="true">&times;</span></button>
-				<h3 class="modal-title">Create a New ABQ Town Hall Account</h3>
-			</div>
-
-			<div class="modal-body">
-
-				<!-- actual form -->
 				<form class="form-horizontal" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
 
 					<!-- abq town hall first name -->
@@ -101,7 +94,7 @@
 
 					<!--abq town hall password -->
 					<div class="form-group">
-						<label for="profilePassword" class="col-sm-2 control-label">Requested Password</label>
+						<label for="profilePassword" class="col-sm-2 control-label">Account Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePassword" name="profilePassword" class="form-control input-sm"
 									 required [(ngModel)]="signUp.profilePassword" #profilePassword="ngModel">
@@ -110,7 +103,7 @@
 
 					<!--abq town hall password confirm -->
 					<div class="form-group">
-						<label for="profilePasswordConfirm" class="col-sm-2 control-label">Confirm Password</label>
+						<label for="profilePasswordConfirm" class="col-sm-2 control-label">Re-enter Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm"
 									 class="form-control input-sm"
@@ -124,6 +117,7 @@
 				</form>
 			</div>
 
-		</div>
+		</main>
 	</div>
+	<app-footer></app-footer>
 </div>

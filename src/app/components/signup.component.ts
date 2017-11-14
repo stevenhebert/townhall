@@ -8,8 +8,7 @@ import {SignUp} from "../classes/signup";
 declare let $: any;
 
 @Component({
-	templateUrl: "./templates/signup.html",
-	selector: "sign-up"
+	templateUrl: "./templates/signup.html"
 })
 
 export class SignUpComponent {

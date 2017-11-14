@@ -5,16 +5,16 @@ import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
 
+import {ActivationService} from "./services/activation.service";
+
+import {CookieService} from "ng2-cookies";
+import {EditProfileService} from "./services/editprofile.service"
+import {ForgotService} from "./services/forgot.service";
+import {SessionService} from "./services/session.service";
 import {SignInService} from "./services/signin.service";
 import {SignOutService} from "./services/signout.service"
 import {SignUpService} from "./services/signup.service";
-import {EditProfileService} from "./services/editprofile.service"
-import {SessionService} from "./services/session.service";
-import {CookieService} from "ng2-cookies";
-import {ActivationService} from "./services/activation.service";
 import {RecoveryService} from "./services/recovery.service";
-import {ForgotService} from "./services/forgot.service";
-
 
 const moduleDeclarations = [AppComponent];
 
@@ -24,13 +24,13 @@ const moduleDeclarations = [AppComponent];
 	bootstrap:    [AppComponent],
 	providers: [
 		appRoutingProviders,
+		ActivationService,
 		EditProfileService,
+		ForgotService,
+		RecoveryService,
 		SignInService,
 		SignOutService,
 		SignUpService,
-		ActivationService,
-		RecoveryService,
-		ForgotService
 	]})
 export class AppModule {	cookieJar : any = {};
 

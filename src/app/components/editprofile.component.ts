@@ -10,8 +10,8 @@ import {CookieService} from "ng2-cookies";
 declare let $: any;
 
 @Component({
-	templateUrl: "./templates/editprofile.html",
-	selector: "edit-profile"
+	selector: "edit-profile",
+	templateUrl: "./templates/editprofile.html"
 })
 
 export class EditProfileComponent implements OnInit {

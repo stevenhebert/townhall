@@ -8,8 +8,8 @@ import {CookieService} from "ng2-cookies";
 
 
 @Component({
-	templateUrl: "./templates/signin.html",
-	selector: "sign-in"
+	selector: "sign-in",
+	templateUrl: "./templates/signin.html"
 })
 
 export class SignInComponent {

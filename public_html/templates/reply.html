@@ -1,6 +1,5 @@
 <div class="sfooter">
 	<div class="sfooter-content">
-
 		<user-nav></user-nav>
 
 		<div class="container">
@@ -18,7 +17,7 @@
 				<div class="col-md-4">
 					<h2>Create a reply</h2>
 
-					<!-- Create New Reply Form -->
+					<!-- Create a new reply -->
 					<form #postForm="ngForm" id="postForm" (submit)="createPost(); postForm.reset();">
 
 						<div class="form-group">
@@ -48,6 +47,8 @@
 
 				<div class="col-md-8">
 					<h2>All replies to this post</h2>
+
+					<!-- Thread of replies -->
 					<div class="panel panel-default" *ngFor="let post of posts">
 
 						<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime |
@@ -67,10 +68,10 @@
 						</div>
 					</div>
 				</div>
-
-
 			</div>
+
 		</div>
 	</div>
+
 	<app-footer></app-footer>
 </div>

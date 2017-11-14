@@ -9,7 +9,7 @@ declare var $: any;
 
 @Component({
 	selector: "user-nav",
-	templateUrl: "./templates/user-nav.html",
+	templateUrl: "./templates/user-nav.html"
 })
 
 export class UserNavComponent {

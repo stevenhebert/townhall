@@ -11,7 +11,7 @@ import {VoteService} from "../services/vote.service";
 
 
 @Component({
-	templateUrl: "./templates/post.html",
+	templateUrl: "./templates/post.html"
 })
 
 export class PostComponent implements OnInit {
