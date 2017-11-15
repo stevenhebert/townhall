@@ -54,20 +54,20 @@ try {
 				$reply->data = $vote;
 			}
 		} else {
-			throw new InvalidArgumentException("incorrect parameters ", 404);
+			throw new InvalidArgumentException("Incorrect parameters", 404);
 		}
 	} else if($method === "POST" || $method === "PUT") {
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		if(empty($requestObject->votePostId) === true) {
-			throw (new \InvalidArgumentException("No Post found linked to vote", 405));
+			throw (new \InvalidArgumentException("Vote is invalid, no associated post found", 405));
 		}
 
 		if($method === "POST") {
 			// ensure the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("you must be logged in to post a vote", 403));
+				throw(new \InvalidArgumentException("You must be logged in to vote", 403));
 			}
 			//does the vote exist?
 			$vote = Vote::getVoteByPostIdAndProfileId($pdo, $requestObject->votePostId, $_SESSION["profile"]->getProfileId());
@@ -75,12 +75,12 @@ try {
 			if($vote === null) {
 				$vote = new Vote($requestObject->votePostId, $_SESSION["profile"]->getProfileId(), null, $requestObject->voteValue);
 				$vote->insert($pdo);
-				$reply->message = "vote successful";
+				$reply->message = "Vote successful";
 			} else {
 				//update vote
 				$vote->setVoteValue($requestObject->voteValue);
 				$vote->update($pdo);
-				$reply->message = "vote update successful";
+				$reply->message = "Vote successful";
 			}
 		} else if($method === "PUT") {
 			//enforce that the end user has a XSRF token.
@@ -94,14 +94,14 @@ try {
 			$vote->setVoteValue($requestObject->voteValue);
 			$vote->update($pdo);
 			// update reply
-			$reply->message = "Vote updated OK";
+			$reply->message = "Vote updated";
 			// if any other HTTP request is sent throw an exception
 		} else {
-			throw new \InvalidArgumentException("invalid http request", 400);
+			throw new \InvalidArgumentException("Invalid http request", 400);
 		}
 		// if any other HTTP request is sent throw an exception		 		// if any other HTTP request is sent throw an exception
 	} else {
-		throw new \InvalidArgumentException("invalid http request", 400);
+		throw new \InvalidArgumentException("Invalid http request", 400);
 	}
 	//catch any exceptions that is thrown and update the reply status and message		 	//catch any exceptions that is thrown and update the reply status and message
 } catch(\Exception | \TypeError $exception)  {

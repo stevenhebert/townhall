@@ -4,7 +4,7 @@ TODO:
 
 NOW: 
 
-Forgot password / password reset
+Forgot password expire
 Limit activation token life span (24 hour expire)
 Resend activation
 

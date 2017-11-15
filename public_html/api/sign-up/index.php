@@ -81,17 +81,18 @@ try {
 		$district = District::getDistrictByLongLat($pdo, $latLongObject->long, $latLongObject->lat);
 
 		//make sure district is not null
-		if($district == Null) {
+		if($district == null) {
 			$districtId = 10;
 		}
 		else {
 			$districtId = $district->getDistrictId();
 		}
+
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
 		$profileActivationToken = bin2hex(random_bytes(16));
 		//create the profile object and prepare to insert into the database
-		$profile = new Profile(null, $districtId, $profileActivationToken, $requestObject->profileAddress1, $requestObject->profileAddress2, $requestObject->profileCity, $requestObject->profileEmail, $requestObject->profileFirstName, $hash, $requestObject->profileLastName,null, $salt,$requestObject->profileState,  $requestObject->profileUserName, $requestObject->profileZip);
+		$profile = new Profile(null, $districtId, $profileActivationToken, $requestObject->profileAddress1, $requestObject->profileAddress2, $requestObject->profileCity, null, $requestObject->profileEmail, $requestObject->profileFirstName, $hash, $requestObject->profileLastName,null, null, $salt, $requestObject->profileState, $requestObject->profileUserName, $requestObject->profileZip);
 		//insert the profile into the database
 		$profile->insert($pdo);
 		//compose the email message to send with th activation token
@@ -100,7 +101,7 @@ try {
 		//make sure URL is /public_html/api/activation/$activation
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "activation/" . $profileActivationToken;
+		$urlglue = $basePath . "/activation/" . $profileActivationToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
@@ -157,7 +158,7 @@ EOF;
 			throw(new RuntimeException("Unable to send email",400));
 		}
 		// update reply
-		$reply->message = "Thank you for creating a profile with ABQ Town Hall, please check your email to complete your registration.";
+		$reply->message = "Thanks for creating an ABQ Town Hall account, check your email to complete your registration";
 	} else {
 		throw (new InvalidArgumentException("Invalid http request", 418));
 	}

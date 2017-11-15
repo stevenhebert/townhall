@@ -14,7 +14,7 @@ try {
 		}
 		setXsrfCookie();
 	} else {
-		throw (new \InvalidArgumentException("attempting to brew coffee with a teapot", 418));
+		throw (new \InvalidArgumentException("Attempting to brew coffee with a teapot", 418));
 	}
 } catch(\Exception  | \TypeError $exception) {
 	$reply->status = $exception->getCode();

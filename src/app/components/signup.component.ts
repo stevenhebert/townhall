@@ -1,4 +1,4 @@
-import {Component, ViewChild,} from "@angular/core";
+import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignUpService} from "../services/signup.service";
@@ -8,13 +8,13 @@ import {SignUp} from "../classes/signup";
 declare let $: any;
 
 @Component({
+	selector: "sign-up",
 	templateUrl: "./templates/signup.html"
 })
 
 export class SignUpComponent {
 
-	@ViewChild("signUpForm") signUpForm: any;
-	signUp: SignUp = new SignUp("", "", "", "", "", "", "", "", "", "", "");
+	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null);
 	status: Status = null;
 
 	constructor(private signUpService: SignUpService, private router: Router) {
@@ -24,13 +24,10 @@ export class SignUpComponent {
 		this.signUpService.createSignUp(this.signUp)
 			.subscribe(status => {
 				this.status = status;
-				console.log(this.status);
-				if(status.status === 200) {
-					$('#signup-modal').modal('hide')
-					alert("Please check your email and follow the link to confirm your account.")
-				}
-				else {
-					alert(status.message);
+				if(this.status.status === 200) {
+					alert(this.status.message);
+				} else {
+					alert(this.status.message);
 				}
 			});
 	}

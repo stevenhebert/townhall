@@ -8,13 +8,14 @@ import {Forgot} from "../classes/forgot";
 declare let $: any;
 
 @Component({
+	selector: "forgot",
 	templateUrl: "./templates/forgot.html"
 })
 
 export class ForgotComponent {
 
 	@ViewChild("forgotForm") forgotForm: any;
-	forgot: Forgot = new Forgot("");
+	forgot: Forgot = new Forgot(null);
 	status: Status = null;
 
 	constructor(private forgotService: ForgotService, private router: Router) {
@@ -26,8 +27,10 @@ export class ForgotComponent {
 				this.status = status;
 				console.log(this.status);
 				if(status.status === 200) {
-					$('#forgot-modal').modal('hide')
-					alert("If your account was found you should receive a recovery link shortly")
+					$('#forgot-modal').modal('hide');
+					setTimeout((router: Router) => {
+						alert(this.status.message);
+					}, 1000);
 				}
 				else {
 					alert(this.status.message);

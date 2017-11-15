@@ -1,120 +1,122 @@
 <div class="sfooter">
 	<div class="sfooter-content">
 		<main-nav></main-nav>
-		<main class="home">
+		<main class="signup">
 
 			<div class="container-fluid">
+
 				<h1>Create a New ABQ Town Hall Account</h1>
 
 				<form class="form-horizontal" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
 
 					<!-- abq town hall first name -->
 					<div class="form-group">
-						<label for="profileFirstName" class="col-sm-2 control-label">First Name</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileFirstName" name="profileFirstName" class="form-control" required
-									 [(ngModel)]="signUp.profileFirstName" #profileFirstName="ngModel">
+							<input type="text" id="profileFirstName" name="profileFirstName" class="form-control input-sm"
+									 required placeholder="First Name" [(ngModel)]="signUp.profileFirstName"
+									 #profileFirstName="ngModel">
 						</div>
 					</div>
 
 					<!-- abq town hall last name-->
 					<div class="form-group">
-						<label for="profileLastName" class="col-sm-2 control-label">Last Name </label>
 						<div class="col-sm-10">
 							<input type="text" id="profileLastName" name="profileLastName" class="form-control input-sm"
-									 required
-									 [(ngModel)]="signUp.profileLastName" #profileLastName="ngModel">
+									 required placeholder="Last Name" [(ngModel)]="signUp.profileLastName"
+									 #profileLastName="ngModel">
 						</div>
 					</div>
 
 					<!-- abq town hall address 1 -->
 					<div class="form-group">
-						<label for="profileAddress1" class="col-sm-2 control-label">Address 1</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileAddress1" name="profileAdress1" class="form-control input-sm"
-									 required
-									 [(ngModel)]="signUp.profileAddress1" #profileAddress1="ngModel">
+									 required placeholder="Street Address" [(ngModel)]="signUp.profileAddress1"
+									 #profileAddress1="ngModel">
 						</div>
 					</div>
 
 					<!-- abq town hall address 2 -->
 					<div class="form-group">
-						<label for="profileAddress2" class="col-sm-2 control-label">Address 2</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileAddress2" name="profileAddress2" class="form-control input-sm"
-									 required
-									 [(ngModel)]="signUp.profileAddress2" #profileAddress2="ngModel">
+									 placeholder="Unit Number" [(ngModel)]="signUp.profileAddress2" #profileAddress2="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall city -->
 					<div class="form-group">
-						<label for="profileCity" class="col-sm-2 control-label">City</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileCity" name="profileCity" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileCity" #profileCity="ngModel">
+									 required placeholder="City" [(ngModel)]="signUp.profileCity" #profileCity="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall state -->
 					<div class="form-group">
-						<label for="profileState" class="col-sm-2 control-label">State</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileState" name="profileState" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileState" #profileState="ngModel">
+									 required placeholder="State Abbreviation" [(ngModel)]="signUp.profileState"
+									 #profileState="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall zip -->
 					<div class="form-group">
-						<label for="profileZip" class="col-sm-2 control-label">Zip Code</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileZip" name="profileZip" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileZip" #profileZip="ngModel">
+									 required placeholder="Zipcode" [(ngModel)]="signUp.profileZip" #profileZip="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall email -->
 					<div class="form-group">
-						<label for="profileEmail" class="col-sm-2 control-label">E-Mail</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileEmail" name="profileEmail" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileEmail" #profileEmail="ngModel">
+									 required placeholder="Email Address" [(ngModel)]="signUp.profileEmail"
+									 #profileEmail="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall username -->
 					<div class="form-group">
-						<label for="profileUserName" class="col-sm-2 control-label">Requested Username</label>
 						<div class="col-sm-10">
 							<input type="text" id="profileUserName" name="profileUserName" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profileUserName" #profileUserName="ngModel">
+									 required placeholder="Username" [(ngModel)]="signUp.profileUserName"
+									 #profileUserName="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall password -->
 					<div class="form-group">
-						<label for="profilePassword" class="col-sm-2 control-label">Account Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePassword" name="profilePassword" class="form-control input-sm"
-									 required [(ngModel)]="signUp.profilePassword" #profilePassword="ngModel">
+									 required placeholder="Password" [(ngModel)]="signUp.profilePassword"
+									 #profilePassword="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall password confirm -->
 					<div class="form-group">
-						<label for="profilePasswordConfirm" class="col-sm-2 control-label">Re-enter Password</label>
 						<div class="col-sm-10">
 							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm"
-									 class="form-control input-sm"
-									 required [(ngModel)]="signUp.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
+									 class="form-control input-sm" required placeholder="Re-enter Password"
+									 [(ngModel)]="signUp.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
 						</div>
 					</div>
 
 					<!-- Submit button -->
 					<button type="submit" id="submit" name="signup" class="btn btn-success">Sign Up</button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					<button routerLink="" type="button" class="btn btn-danger">Cancel</button>
 				</form>
+
+				<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
+					<button type="button" class="close" aria-label="Close" (click)="status = null;"><span
+						aria-hidden="true">&times;</span>
+					</button>
+					{{ status.message }}
+				</div>
+
 			</div>
 
 		</main>

@@ -1,32 +1,29 @@
 <div id="forgot-modal" class="modal fade" tabindex="-1" role="dialog">
-
 	<div class="modal-dialog modal-lg" role="document">
-
 		<div class="modal-content">
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-				<h3 class="modal-title">Enter your account email below to recover your account</h3>
+				<h3 class="modal-title">Enter your account email to recover your login</h3>
 			</div>
 
 			<div class="modal-body">
 
 				<!-- actual form -->
-				<form class="form-horizontal" #forgotForm="ngForm" name="forgotForm" (ngSubmit)="createForgot();">
+				<form #forgotForm="ngForm" name="forgotForm" (ngSubmit)="createForgot();">
 
 					<!--abq town hall email -->
 					<div class="form-group">
-						<label for="profileEmail" class="col-sm-2 control-label">E-Mail</label>
-						<div class="col-sm-10">
-							<input type="text" id="profileEmail" name="profileEmail" class="form-control input-sm"
-									 required [(ngModel)]="recovery.profileEmail" #profileEmail="ngModel">
-						</div>
+						<input id="profileEmail" type="email" class="form-control" name="profileEmail" placeholder="E-Mail"
+								 required [(ngModel)]="forgot.profileEmail" #profileEmail="ngModel">
 					</div>
 
 					<!-- Submit button -->
-					<button type="submit" id="submit" name="forgot" class="btn btn-primary">Submit</button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					<div class="row">
+						<button type="submit" id="submit" name="forgot" class="btn btn-default">Submit</button>
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+					</div>
 				</form>
 			</div>
 

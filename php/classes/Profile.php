@@ -542,7 +542,7 @@ class Profile implements \JsonSerializable {
 	 * @return int|null value of profileRepresentative
 	 **/
 	public function getProfileRepresentative(): ?int {
-		if($this->profileRepresentative === Null) {
+		if($this->profileRepresentative === null) {
 			return $this->profileDistrictId = null;
 		}
 		return ($this->profileRepresentative);

@@ -35,12 +35,12 @@ try {
 
 		//check to make sure the password and email field is not empty.s
 		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException("You must enter an email address.", 401));
+			throw(new \InvalidArgumentException("No account found for this email and password combination", 401));
 		} else {
 			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
 		}
 		if(empty($requestObject->profilePassword) === true) {
-			throw(new \InvalidArgumentException("You must enter a password.", 401));
+			throw(new \InvalidArgumentException("No account found for this email and password combination", 401));
 		} else {
 			$profilePassword = $requestObject->profilePassword;
 		}
@@ -51,13 +51,17 @@ try {
 		}
 		//if the profile activation is not null throw an error
 		if($profile->getProfileActivationToken() !== null) {
-			throw (new \InvalidArgumentException ("You are not allowed to sign in unless you have activated your account", 403));
+			throw (new \InvalidArgumentException ("Your account has not been activated, check your email", 403));
+		}
+		//if the profile activation is not null throw an error
+		if($profile->getProfileRecoveryToken() !== null) {
+			throw (new \InvalidArgumentException ("An account recovery has been requested, check your email", 403));
 		}
 		//hash the password given to make sure it matches.
 		$hash = hash_pbkdf2("sha512", $profilePassword, $profile->getProfileSalt(), 262144);
 		//verify hash is correct
 		if($hash !== $profile->getProfileHash()) {
-			throw(new \InvalidArgumentException("Password or email is incorrect."));
+			throw(new \InvalidArgumentException("No account found for this email and password combination"));
 		}
 
 		// grab the profile from database and put into a session
@@ -68,7 +72,7 @@ try {
 		setcookie("profileDistrictId", $profile->getProfileDistrictId(), 0,"/");
 		$reply->message = "Sign in was successful.";
 	} else {
-		throw(new \InvalidArgumentException("Invalid HTTP method request.", 418));
+		throw(new \InvalidArgumentException("Invalid HTTP method request", 418));
 	}
 	// if an exception is thrown update the
 } catch(Exception $exception) {

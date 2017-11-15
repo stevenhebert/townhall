@@ -31,9 +31,7 @@ try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
 	//check the HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
-	//sanitize input (never trust the end user)
-	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileRecoveryToken = filter_input(INPUT_GET, "profileRecoveryToken", FILTER_SANITIZE_STRING);
+
 
 	if($method === "POST") {
 		//make sure the XSRF Token is valid
@@ -42,77 +40,80 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//if the profile email is null throw an error
-		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException("You must enter an email address.", 401));
-		} else {
-			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
+		//never trust endtheworlduser
+		$recovery = filter_var($requestObject->profileRecoveryToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		//verify that the user supplied an email
+		if(empty($profileEmail) === true) {
+			throw(new \InvalidArgumentException("Email address is required", 401));
 		}
-		//if the profileRecoveryToken is null throw an error
-		if($requestObject->profileRecoveryToken() === true) {
-			throw(new \InvalidArgumentException("profile recovery is not active.", 401));
+
+		//verify that the recovery token is not the wrong length
+		if(strlen($recovery) !== 32) {
+			throw(new InvalidArgumentException("Recovery token is invalid", 405));
 		}
-		//if the profileRecoveryToken is the wrong length throw an error
-		if(strlen($profileRecoveryToken) !== 32) {
-			throw(new InvalidArgumentException("token invalid", 405));
+		//verify that the recovery token is not a string value of a hexadeciaml
+		if(ctype_xdigit($recovery) === false) {
+			throw (new \InvalidArgumentException("Recovery token is invalid", 405));
 		}
-		// if the profileRecoveryToken is not a string value of a hexadeciaml throw an error
-		if(ctype_xdigit($profileRecoveryToken) === false) {
-			throw (new \InvalidArgumentException("token invalid", 405));
-		} else {
-			$profileRecoveryToken = filter_var($requestObject->profileRecoveryToken, FILTER_SANITIZE_STRING);
-		}
-		//grab the profile from the database by the email provided
-		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
-		if(empty($profile) === true) {
-			throw(new \InvalidArgumentException("Account could not be verified.", 401));
-		}
-		//if the profileRecoveryToken has expired => or does not match throw an error
-		if($profile->getProfileRecoveryToken() !== $profileRecoveryToken) {
-			throw (new \InvalidArgumentException ("Account could not be verified.", 403));
-		}
-		//verify that the user has entered a new password
+
+		//verify that the user has supplied a new password
 		if(empty($requestObject->profilePassword) === true) {
-			throw(new \InvalidArgumentException ("A new password is required.", 405));
+			throw(new \InvalidArgumentException ("Password is required", 405));
 		}
-		//verify that the confirm password is present
+		//verify that the user can correctly type her password
 		if(empty($requestObject->profilePasswordConfirm) === true) {
-			throw(new \InvalidArgumentException ("Re-enter your new password.", 405));
+			throw(new \InvalidArgumentException ("Re-enter your password", 405));
 		}
 		//verify that the new password and password confirmation match
 		if($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
 			throw(new \InvalidArgumentException("Passwords do not match"));
-		}
-			//salt and hash the new password
-			$newPasswordSalt = bin2hex(random_bytes(16));
-			$newPasswordHash = hash_pbkdf2("sha512", $requestObject->profilePassword, $newPasswordSalt, 262144);
-
-			//set new hash and salt
-			$profile->setProfileHash($newPasswordHash);
-			$profile->setProfileSalt($newPasswordSalt);
-
-			//set profileRecoveryToken to null
-			$profile->setProfileRecoveryToken(null);
-
-			//update the profile in the database
-			$profile->update($pdo);
-
-			//congratulate user on her success
-			$reply->message = "profile password successfully updated";
 		} else {
-	//throw an exception if the HTTP request is not a POST
-	throw(new InvalidArgumentException("Invalid HTTP method request", 403));
-} 	//update the reply objects status and message state variables if an exception or type exception was thrown;
-} catch (Exception $exception){
+			//grab the profile from the database by the email provided
+			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+		}
+
+		//verify that the email is associated with a registered account
+		if(empty($profile) === true) {
+			throw(new \InvalidArgumentException("Account could not be verified", 401));
+		}
+
+		//verify that the recovery token is not expired, was requested and matches
+		if($profile->getProfileRecoveryToken() !== $recovery) {
+			throw (new \InvalidArgumentException ("Account could not be verified", 403));
+		}
+
+		//salt and hash the new password
+		$newPasswordSalt = bin2hex(random_bytes(16));
+		$newPasswordHash = hash_pbkdf2("sha512", $requestObject->profilePassword, $newPasswordSalt, 262144);
+
+		//set new hash and salt
+		$profile->setProfileHash($newPasswordHash);
+		$profile->setProfileSalt($newPasswordSalt);
+
+		//set users recovery token to null
+		$profile->setProfileRecoveryToken(null);
+
+		//update the profile in the database
+		$profile->update($pdo);
+
+		//congratulate user on her success
+		$reply->message = "Your profile has been updated";
+	} else {
+		//throw an exception if the HTTP request is not a POST
+		throw(new InvalidArgumentException("Invalid HTTP method request", 403));
+	}   //update the reply objects status and message state variables if an exception or type exception was thrown;
+} catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-} catch(TypeError $typeError){
+} catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
 //prepare and send the reply
 header("Content-type: application/json");
-if($reply->data === null){
+if($reply->data === null) {
 	unset($reply->data);
 }
 echo json_encode($reply);

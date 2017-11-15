@@ -57,7 +57,7 @@ try {
 	} elseif($method === "PUT") {
 		// enforce the user is signed in and only trying to edit their own profile
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
-			throw(new \InvalidArgumentException("you are not allowed to access this profile", 403));
+			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
 		}
 		// decode the response from the frontend
 		$requestContent = file_get_contents("php://input");
@@ -65,7 +65,7 @@ try {
 		// retrieve the profile to be updated
 		$profile = Profile::getProfileByProfileId($pdo, $id);
 		if($profile === null) {
-			throw(new RuntimeException("profile does not exist", 404));
+			throw(new RuntimeException("Profile does not exist", 404));
 		}
 		if(empty($requestObject->ProfilePassword) === true) {
 			// enforce that the XSRF token is present in the header
@@ -73,19 +73,19 @@ try {
 
 			// profile username is a required field
 			if(empty($requestObject->profileUserName) === true) {
-				throw(new \InvalidArgumentException("No profile name", 405));
+				throw(new \InvalidArgumentException("Username is required", 405));
 			}
 			// profile email is a required field
 			if(empty($requestObject->profileEmail) === true) {
-				throw(new \InvalidArgumentException("No profile email present", 405));
+				throw(new \InvalidArgumentException("Email is required", 405));
 			}
 			// profile first name is a required field
 			if(empty($requestObject->profileFirstName) === true) {
-				throw(new \InvalidArgumentException("No profile first name present", 405));
+				throw(new \InvalidArgumentException("First name is required", 405));
 			}
 			// profile last name is a required field
 			if(empty($requestObject->profileLastName) === true) {
-				throw(new \InvalidArgumentException("No profile last name present", 405));
+				throw(new \InvalidArgumentException("Last name is required", 405));
 			}
 			//if address2 empty set it too null
 			if(empty($requestObject->profileAddress2) === true) {
@@ -99,7 +99,7 @@ try {
 			$profile->setProfileLastName($requestObject->profileLastName);
 
 			// update reply
-			$reply->message = "Profile information updated successfully";
+			$reply->message = "Your profile has been updated";
 		}
 
 		/**
@@ -111,7 +111,7 @@ try {
 
 			// make sure of new password and enforce the password exists
 			if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
-				throw(new RuntimeException("New passwords do not match", 401));
+				throw(new RuntimeException("Passwords do not match", 401));
 			}
 			// hash the previous password
 			$currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword,
@@ -125,7 +125,7 @@ try {
 			$newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
 			$profile->setProfileHash($newPasswordHash);
 			$profile->setProfileSalt($newPasswordSalt);
-			$reply->message = "profile password successfully updated";
+			$reply->message = "Your profile has been updated";
 		}
 
 		/**
@@ -136,21 +136,21 @@ try {
 
 			//profile address1 is a required field
 			if(empty($requestObject->profileAddress1) === true) {
-				throw(new \InvalidArgumentException ("address required", 401));
+				throw(new \InvalidArgumentException ("Address is required", 401));
 			}
 			//profile city is a required field
 			if(empty($requestObject->profileCity) === true) {
-				throw(new \InvalidArgumentException ("city required", 401));
+				throw(new \InvalidArgumentException ("City is required", 401));
 			}
 
 			//profile state is a required field
 			if(empty($requestObject->profileState) === true) {
-				throw(new \InvalidArgumentException ("state required", 401));
+				throw(new \InvalidArgumentException ("State is required", 401));
 			}
 
 			//profile zip is a required field
 			if(empty($requestObject->profileZip) === true) {
-				throw(new \InvalidArgumentException ("zip required", 401));
+				throw(new \InvalidArgumentException ("Zipcode is required", 401));
 			}
 
 			$latLongObject = getLatLongByAddress($requestObject->profileAddress1);
@@ -171,7 +171,7 @@ try {
 			$profile->setProfileState($requestObject->profileState);
 			$profile->setProfileZip($requestObject->profileZip);
 
-			$reply->message = "address successfully updated";
+			$reply->message = "Your profile has been updated";
 		}
 
 		// perform the actual update to the database and update the message

@@ -137,7 +137,7 @@ try {
 
 		// make sure that district id from profile matches the session district id
 		if($_SESSION["profile"]->getProfileDistrictId() !== $requestObject->postDistrictId) {
-			throw(new \InvalidArgumentException("Only residents of this district are allowed to make posts in this forum", 405));
+			throw(new \InvalidArgumentException("Only residents of this district are allowed to create posts", 405));
 		}
 
 		// create the post and create the insert statement

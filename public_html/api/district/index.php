@@ -34,7 +34,7 @@ try {
 	$long = filter_input(INPUT_GET, "long", FILTER_VALIDATE_FLOAT);
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+		throw(new InvalidArgumentException("Id cannot be empty or negative", 405));
 	}
 	// handle GET request - if id is present, that district is returned, otherwise all districts are returned
 	if($method === "GET") {

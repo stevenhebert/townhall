@@ -41,7 +41,7 @@ try {
 
 		//check to make sure the email field is not empty
 		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException("You must enter an email address.", 401));
+			throw(new \InvalidArgumentException("Email address is required", 401));
 		} else {
 			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
 		}
@@ -49,7 +49,7 @@ try {
 		//grab the profile from the database by the email provided
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		if(empty($profile) === true) {
-			throw(new \InvalidArgumentException("An account recovery link has been sent to your email", 418));
+			throw(new \InvalidArgumentException("An account recovery request has been sent to your email", 418));
 			//not
 		}
 
@@ -67,7 +67,7 @@ try {
 		//make sure URL is recovery/$profileRecoveryToken
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "recovery/" . $profileRecoveryToken;
+		$urlglue = $basePath . "/recovery/" . $profileRecoveryToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
@@ -124,7 +124,7 @@ EOF;
 			throw(new RuntimeException("Unable to send email",400));
 		}
 		// update reply
-		$reply->message = "An account recovery link has been sent to your email";
+		$reply->message = "An account recovery request has been sent to your email, it is valid for 15 minutes";
 	} else {
 		throw (new InvalidArgumentException("Invalid http request", 418));
 	}

@@ -15,6 +15,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
 try{
 	// grab the MySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/townhall.ini");
@@ -25,11 +26,11 @@ try{
 
 	// make sure the activation token is the correct size
 	if(strlen($activation) !== 32){
-		throw(new InvalidArgumentException("activation token is not the correct length", 405));
+		throw(new InvalidArgumentException("Account activation token is invalid", 405));
 	}
 	// verify that the activation token is a string value of a hexadeciaml
 	if(ctype_xdigit($activation) === false) {
-		throw (new \InvalidArgumentException("activation token is invalid", 405));
+		throw (new \InvalidArgumentException("Account activation token is invalid", 405));
 	}
 	// handle The GET HTTP request
 	if($method === "GET"){
@@ -47,11 +48,11 @@ try{
 				//update the profile in the database
 				$profile->update($pdo);
 				//set the reply for the end user
-				$reply->message = "Your account has been activated, you will be redirected to the login page shortly.";
+				$reply->message = "Your account has been activated, you will be redirected to the login page shortly";
 			}
 		} else {
 			//throw an exception if the activation token does not exist
-			throw(new RuntimeException("Profile with this activation code does not exist", 404));
+			throw(new RuntimeException("Account activation token is invalid", 404));
 		}
 	} else {
 		//throw an exception if the HTTP request is not a GET
