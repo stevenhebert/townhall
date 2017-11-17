@@ -24,11 +24,6 @@ export class SignUpComponent {
 		this.signUpService.createSignUp(this.signUp)
 			.subscribe(status => {
 				this.status = status;
-				if(this.status.status === 200) {
-					alert(this.status.message);
-				} else {
-					alert(this.status.message);
-				}
 			});
 	}
 }

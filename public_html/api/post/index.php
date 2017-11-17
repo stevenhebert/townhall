@@ -124,15 +124,14 @@ try {
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 
 
+		// enforce the user is signed in
+		if(empty($_SESSION["profile"]) === true) {
+			throw(new \InvalidArgumentException ("Sign in to create a post", 403));
+		}
 
 		//make sure post content is available (required field)
 		if(empty($requestObject->postContent) === true) {
 			throw(new \InvalidArgumentException ("You cannot make an empty post", 405));
-		}
-
-		// enforce the user is signed in
-		if(empty($_SESSION["profile"]) === true) {
-			throw(new \InvalidArgumentException ("You need to login in order to create a post", 403));
 		}
 
 		// make sure that district id from profile matches the session district id

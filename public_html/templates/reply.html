@@ -1,17 +1,23 @@
 <div class="sfooter">
 	<div class="sfooter-content">
-		<user-nav></user-nav>
-
 		<div class="container">
+			<user-nav></user-nav>
 			<div class="row">
 
+				<button class="btn btn-default" (click)="switchReply(post)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to district {{ posts[0].postDistrictId}}</button><br>
+
+				<div class="col-md-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Post by {{childPost.postProfileUserName}}, on {{childPost.postDateTime |
-						date:"medium"}}
-					</div>
+					<div class="panel-heading">by {{childPost.postProfileUserName}}</div>
+
 					<div class="panel-body">
 						{{ childPost.postContent }}
 					</div>
+
+					<div class="panel panel-footer">
+						<em>{{childPost.postDateTime | date:"mediumDate"}} at {{childPost.postDateTime | date:"shortTime"}}</em>
+					</div>
+				</div>
 				</div>
 
 				<div class="col-md-4">
@@ -32,10 +38,8 @@
 							</div>
 						</div>
 
-						<button [disabled]="postForm.invalid" class="btn btn-success" type="submit"><i
-							class="fa fa-paper-plane"></i> Submit
-						</button>
-						<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+						<button class="btn btn-success" type="submit">Reply</button>
+						<button class="btn btn-warning" type="reset">Reset</button>
 					</form>
 					<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
 						<button type="button" class="close" aria-label="Close" (click)="status = null;"><span
@@ -50,26 +54,25 @@
 
 					<!-- Thread of replies -->
 					<div class="panel panel-default" *ngFor="let post of posts">
+						<div class="panel-heading">
+							by {{post.postProfileUserName}}
 
-						<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime |
-							date:"medium"}}
-							<button type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up"
-																													  aria-hidden="true"></i>
-								{{post.info.upVote}}
-							</button>
-							<button type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down"
-																														aria-hidden="true"></i>
-								{{post.info.downVote}}
-							</button>
-
+							<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{post.info.upVote}}</button>
+							<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{post.info.downVote}}</button>
 						</div>
+
 						<div class="panel-body">
 							{{ post.postContent }}
 						</div>
-					</div>
-				</div>
-			</div>
 
+						<div class="panel panel-footer">
+							<em>{{post.postDateTime | date:"mediumDate"}} at {{post.postDateTime | date:"shortTime"}}</em>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
 		</div>
 	</div>
 

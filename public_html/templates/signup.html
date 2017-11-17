@@ -100,14 +100,14 @@
 					<div class="form-group">
 						<div class="col-sm-10">
 							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm"
-									 class="form-control input-sm" required placeholder="Re-enter Password"
+									 class="form-control input-sm" required placeholder="Confirm Password"
 									 [(ngModel)]="signUp.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
 						</div>
 					</div>
 
 					<!-- Submit button -->
 					<button type="submit" id="submit" name="signup" class="btn btn-success">Sign Up</button>
-					<button routerLink="" type="button" class="btn btn-danger">Cancel</button>
+					<button routerLink="" type="button" class="btn btn-warning">Cancel</button>
 				</form>
 
 				<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">

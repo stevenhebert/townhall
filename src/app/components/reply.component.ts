@@ -42,14 +42,14 @@ export class ReplyComponent implements OnInit {
 					if(Object.keys(post.info).length === 0 && post.info.constructor === Object) {
 						post.info = new PostVote(post.postId, 0, 0);
 					}
-
 				});
-
 				console.log(posts);
 				this.posts = posts;
-
 			});
+	}
 
+	switchReply(): void {
+		this.router.navigate(["post/" + this.childPost.postDistrictId]);
 	}
 
 	createPost(): void {
@@ -62,11 +62,6 @@ export class ReplyComponent implements OnInit {
 		this.postService.createPost(this.newPost)
 			.subscribe(status => {
 				this.status = status;
-				if(this.status.status === 200) {
-					this.loadPostsByParentPostId();
-				} else {
-
-				}
 			});
 	}
 
@@ -83,9 +78,6 @@ export class ReplyComponent implements OnInit {
 		this.voteService.createVote(this.newVote)
 			.subscribe(status => {
 				this.status = status;
-				if(this.status.status === 200) {
-					this.loadPostsByParentPostId();
-				}
 			});
 	}
 

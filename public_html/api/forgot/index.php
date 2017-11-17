@@ -124,7 +124,7 @@ EOF;
 			throw(new RuntimeException("Unable to send email",400));
 		}
 		// update reply
-		$reply->message = "An account recovery request has been sent to your email, it is valid for 15 minutes";
+		$reply->message = "An account recovery link has been sent to your email, it is valid for 15 minutes";
 	} else {
 		throw (new InvalidArgumentException("Invalid http request", 418));
 	}

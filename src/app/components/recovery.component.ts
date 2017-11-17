@@ -23,10 +23,10 @@ export class RecoveryComponent {
 		this.recoveryService.createRecovery(this.recovery)
 			.subscribe(status => {
 				this.status = status;
-				if(this.status.status === 200) {
-					alert(this.status.message);
-				} else {
-					alert(this.status.message);
+				if(status.status === 200) {
+					setTimeout((router: Router) => {
+						this.router.navigate([""]);
+					}, 10000);
 				}
 			});
 	}

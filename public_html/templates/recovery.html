@@ -5,7 +5,7 @@
 
 			<div class="container-fluid">
 
-				<h4>Recover your ABQ Town Hall account</h4>
+				<h4>Enter your ABQ Town Hall account email and a new password</h4>
 
 				<form class="form-horizontal" #recoverPasswordForm="ngForm" id="recoverPasswordForm"
 						name="recoverPasswordForm" (submit)="createRecovery();">
@@ -39,7 +39,7 @@
 
 					<!-- Submit button -->
 					<button type="submit" id="submit" name="submitRecovery" class="btn btn-success">Save</button>
-					<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+					<button class="btn btn-warning" type="reset">Reset</button>
 				</form>
 
 				<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">

@@ -1,8 +1,7 @@
 <div class="sfooter">
 	<div class="sfooter-content">
-		<user-nav></user-nav>
-
 		<div class="container">
+			<user-nav></user-nav>
 			<div class="row">
 
 				<div class="col-md-4">
@@ -23,10 +22,8 @@
 							</div>
 						</div>
 
-						<button [disabled]="postForm.invalid" class="btn btn-success" type="submit"><i
-							class="fa fa-paper-plane"></i> Submit
-						</button>
-						<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+						<button [disabled]="postForm.invalid" class="btn btn-success" type="submit">Post</button>
+						<button class="btn btn-warning" type="reset">Reset</button>
 					</form>
 					<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
 						<button type="button" class="close" aria-label="Close" (click)="status = null;"><span
@@ -37,28 +34,29 @@
 				</div>
 
 				<div class="col-md-8">
-					<h2>All posts in district {{ posts[0]?.postDistrictId}}</h2>
+					<h2>All posts in district {{ posts[0].postDistrictId}}</h2>
 
 					<!-- Thread of posts -->
 					<div *ngFor="let post of posts;">
+
 						<div class="panel panel-default" *ngIf="this.post.postParentId == null">
-							<div class="panel-heading">Post by {{post.postProfileUserName}}, on {{post.postDateTime |
-								date:"medium"}}
-								<button type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up"
-																														  aria-hidden="true"></i>
-									{{post.info.upVote}}
-								</button>
-								<button type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down"
-																															aria-hidden="true"></i>
-									{{post.info.downVote}}
-								</button>
-								<button (click)="switchPost(post)">Reply
-								</button>
+
+							<div class="panel-heading">
+								by {{post.postProfileUserName}}
+
+								<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{post.info.upVote}}</button>
+								<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{post.info.downVote}}</button>
 							</div>
 							<div class="panel-body">
 								{{ post.postContent }}
 							</div>
+							<div class="panel panel-footer">
+								<em>{{post.postDateTime | date:"mediumDate"}} at {{post.postDateTime | date:"shortTime"}}</em>
+
+								<button class="pull-right" (click)="switchPost(post)">Reply</button>
+							</div>
 						</div>
+
 					</div>
 				</div>
 

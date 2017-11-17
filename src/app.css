@@ -90,31 +90,14 @@ html {
 	display: flex;
 }
 
-/*
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-	color: #ffffff;
-}
-*/
-
 .btn {
-	margin: 2rem;
+	margin: 1.5rem;
 }
 
-.panel-heading > button:nth-child(3) {
-	/*border-radius: 4px;*/
-	color: #333;
-	float: right;
+.panel {
+	margin-bottom: unset;
 }
 
-
-/*
-.panel-heading > button:nth-child(1) {
-	background: transparent;
-	border: none;
+.panel-footer {
+	background-color: unset;
 }
-
-.panel-heading > button:nth-child(2) {
-	background: transparent;
-	border: none;
-}
-*/

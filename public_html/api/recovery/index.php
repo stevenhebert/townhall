@@ -99,7 +99,7 @@ try {
 		$profile->update($pdo);
 
 		//congratulate user on her success
-		$reply->message = "Your profile has been updated";
+		$reply->message = "Your profile has been updated, you may now sign in";
 	} else {
 		//throw an exception if the HTTP request is not a POST
 		throw(new InvalidArgumentException("Invalid HTTP method request", 403));

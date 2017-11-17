@@ -31,8 +31,7 @@ export class SignInComponent {
 				this.districtId = this.cookieJar['profileDistrictId'];
 				this.router.navigate(["post/" + this.districtId]);
 			} else {
-				console.log("failed login");
-				alert(status.message);
+				alert(this.status.message);
 			}
 		});
 	}

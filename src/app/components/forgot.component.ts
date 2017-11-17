@@ -26,7 +26,7 @@ export class ForgotComponent {
 			.subscribe(status => {
 				this.status = status;
 				console.log(this.status);
-				if(status.status === 200) {
+				if(this.status.status === 200) {
 					$('#forgot-modal').modal('hide');
 					setTimeout((router: Router) => {
 						alert(this.status.message);
