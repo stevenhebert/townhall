@@ -532,7 +532,7 @@ class Profile implements \JsonSerializable {
 		if(strlen($newProfileRecoveryToken) > 32) {
 			throw(new \RangeException("profile recovery token is too long"));
 		}
-		// store the profileActivationToken
+		// store the profileRecoveryToken
 		$this->profileRecoveryToken = $newProfileRecoveryToken;
 	}
 
