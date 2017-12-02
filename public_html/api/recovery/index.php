@@ -48,7 +48,6 @@ try {
 		if(empty($profileEmail) === true) {
 			throw(new \InvalidArgumentException("Email address is required", 401));
 		}
-
 		//verify that the recovery token is not the wrong length
 		if(strlen($recovery) !== 32) {
 			throw(new InvalidArgumentException("Recovery token is invalid", 405));
@@ -57,7 +56,6 @@ try {
 		if(ctype_xdigit($recovery) === false) {
 			throw (new \InvalidArgumentException("Recovery token is invalid", 405));
 		}
-
 		//verify that the user has supplied a new password
 		if(empty($requestObject->profilePassword) === true) {
 			throw(new \InvalidArgumentException ("Password is required", 405));
@@ -73,16 +71,16 @@ try {
 			//grab the profile from the database by the email provided
 			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		}
-
 		//verify that the email is associated with a registered account
 		if(empty($profile) === true) {
 			throw(new \InvalidArgumentException("Account could not be verified", 401));
 		}
-
-		//verify that the recovery token is not expired, was requested and matches
+		//verify that the recovery token was requested and matches
 		if($profile->getProfileRecoveryToken() !== $recovery) {
 			throw (new \InvalidArgumentException ("Account could not be verified", 403));
 		}
+		//verify that the recovery token is not older than 15 minutes
+		if($profile->getProfileDateTime() >= )
 
 		//salt and hash the new password
 		$newPasswordSalt = bin2hex(random_bytes(16));
