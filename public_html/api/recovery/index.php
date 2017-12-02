@@ -80,7 +80,11 @@ try {
 			throw (new \InvalidArgumentException ("Account could not be verified", 403));
 		}
 		//verify that the recovery token is not older than 15 minutes
-		if($profile->getProfileDateTime() >= )
+		$timenow = new DateTime();
+		$timeexpires = $profile-> getProfileDateTime()-> add(new DateInterval(PT15M));
+		if($timenow >= $timeexpires) {
+			throw (new \InvalidArgumentException("Recovery token has expired", 418));
+		}
 
 		//salt and hash the new password
 		$newPasswordSalt = bin2hex(random_bytes(16));

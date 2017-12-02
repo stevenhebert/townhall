@@ -26,6 +26,10 @@ export class RecoveryComponent {
 				if(status.status === 200) {
 					setTimeout((router: Router) => {
 						this.router.navigate([""]);
+					}, 10000);}
+				if(status.status === 418) {
+					setTimeout((router: Router) => {
+						this.router.navigate(["forgot"]);
 					}, 10000);
 				}
 			});
