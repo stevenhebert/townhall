@@ -703,7 +703,12 @@ class Profile implements \JsonSerializable {
 	public function insert(\PDO $pdo): void {
 		// enforce the profileId is null (i.e., don't insert a profile that already exists)
 		if($this->profileId !== null) {
-			throw(new \PDOException("not a new profile"));
+			throw(new \PDOException("not a new account"));
+		}
+		// enforce the profileEmail is unique
+		$checkEmail = Profile::getProfileByProfileEmail($pdo, $this->profileEmail);
+		if(empty($checkEmail) === false) {
+			throw(new \PDOException("email is associated an active account"));
 		}
 		// create query template
 		$query = "INSERT INTO profile(profileDistrictId, profileActivationToken, profileAddress1, profileAddress2, profileCity, profileEmail, profileFirstName, profileHash, profileLastName, profileRecoveryToken, profileRepresentative, profileSalt, profileState, profileUserName, profileZip) VALUES(:profileDistrictId, :profileActivationToken, :profileAddress1, :profileAddress2, :profileCity, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profileRecoveryToken, :profileRepresentative, :profileSalt, :profileState, :profileUserName, :profileZip)";

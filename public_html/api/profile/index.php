@@ -103,9 +103,8 @@ try {
 		}
 
 		/**
-		 * update the password if requested
+		 * change the password if requested
 		 */
-
 		// enforce that the current password and new password are present
 		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->Confirm) === false) {
 
