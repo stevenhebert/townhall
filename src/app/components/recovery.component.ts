@@ -17,7 +17,8 @@ export class RecoveryComponent {
 	}
 
 	createRecovery(): void {
-		this.route.params.subscribe((params: Params) => {
+		this.route.params
+			.subscribe((params: Params) => {
 			this.recovery.profileRecoveryToken = (params['recovery'])
 		});
 		this.recoveryService.createRecovery(this.recovery)
@@ -26,10 +27,11 @@ export class RecoveryComponent {
 				if(status.status === 200) {
 					setTimeout((router: Router) => {
 						this.router.navigate([""]);
-					}, 10000);}
-				if(status.status === 418) {
+					}, 10000);
+				}
+				else if(status.status === 418) {
 					setTimeout((router: Router) => {
-						this.router.navigate(["forgot"]);
+						router.navigate(["forgot"]);
 					}, 10000);
 				}
 			});

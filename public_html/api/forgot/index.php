@@ -50,12 +50,12 @@ try {
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		if(empty($profile) === true) {
 			throw(new \InvalidArgumentException("An account recovery request has been sent to your email", 418));
-			//not
+			//intentionally obscure
 		}
 
 		$profileRecoveryToken = bin2hex(random_bytes(16));
-		//reset recovery token
-		$profile->setprofileRecoveryToken($profileRecoveryToken);
+		//set recovery token
+		$profile->setProfileRecoveryToken($profileRecoveryToken);
 
 		//update the profile in the database
 		$profile->update($pdo);

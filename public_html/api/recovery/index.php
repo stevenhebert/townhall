@@ -81,7 +81,7 @@ try {
 		}
 		//verify that the recovery token is not older than 15 minutes
 		$timenow = new DateTime();
-		$timeexpires = $profile-> getProfileDateTime()-> add(new DateInterval(PT15M));
+		$timeexpires = $profile-> getProfileDateTime()-> add(new DateInterval('PT15M'));
 		if($timenow >= $timeexpires) {
 			throw (new \InvalidArgumentException("Recovery token has expired", 418));
 		}
