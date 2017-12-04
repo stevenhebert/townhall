@@ -67,13 +67,13 @@ try {
 		//make sure URL is recovery/$profileRecoveryToken
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "/recovery/" . $profileRecoveryToken;
+		$urlglue = $basePath . "recovery/" . $profileRecoveryToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
 		$message = <<< EOF
 <h2>Your request to recover your ABQ Town Hall account</h2>
-<p>Please click the link below to reset your password.</p>
+<p>Click the link below to reset your password.</p>
 <p><a href="$confirmLink">$confirmLink</a></p>
 EOF;
 		//create swift email

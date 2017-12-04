@@ -53,7 +53,7 @@ try {
 		if($profile->getProfileActivationToken() !== null) {
 			throw (new \InvalidArgumentException ("Your account has not been activated, check your email", 403));
 		}
-		//if the profile activation is not null throw an error
+		//if the profile recovery is not null throw an error
 		if($profile->getProfileRecoveryToken() !== null) {
 			throw (new \InvalidArgumentException ("An account recovery has been requested, check your email", 403));
 		}

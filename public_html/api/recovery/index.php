@@ -87,7 +87,7 @@ try {
 		}
 
 		//salt and hash the new password
-		$newPasswordSalt = bin2hex(random_bytes(16));
+		$newPasswordSalt = bin2hex(random_bytes(32));
 		$newPasswordHash = hash_pbkdf2("sha512", $requestObject->profilePassword, $newPasswordSalt, 262144);
 
 		//set new hash and salt
@@ -105,13 +105,11 @@ try {
 	} else {
 		//throw an exception if the HTTP request is not a POST
 		throw(new InvalidArgumentException("Invalid HTTP method request", 403));
-	}   //update the reply objects status and message state variables if an exception or type exception was thrown;
-} catch(Exception $exception) {
+	}
+	//update the reply objects status and message state variables if an exception or type exception was thrown;
+} catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-} catch(TypeError $typeError) {
-	$reply->status = $typeError->getCode();
-	$reply->message = $typeError->getMessage();
 }
 //prepare and send the reply
 header("Content-type: application/json");
