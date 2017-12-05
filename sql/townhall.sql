@@ -20,7 +20,7 @@ CREATE TABLE profile (
 	profileAddress1        VARCHAR(64)                 NOT NULL,
 	profileAddress2        VARCHAR(64),
 	profileCity            VARCHAR(64)                 NOT NULL,
-	ProfileDateTime        TIMESTAMP(6)                NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+	profileDateTime        TIMESTAMP(6)                NOT NULL DEFAULT ON UPDATE CURRENT_TIMESTAMP(6),
 	profileEmail           VARCHAR(128)                NOT NULL,
 	profileFirstName       VARCHAR(64)                 NOT NULL,
 	profileHash            CHAR(128)                   NOT NULL,
