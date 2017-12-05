@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+	.background {
+		fill: #f6e8e3;
+		pointer-events: all;
+	}
+
+	.map-layer {
+		fill: #737373;
+		stroke: #737373;
+	}
+
+	.effect-layer{
+		pointer-events:none;
+	}
+
+	text{
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: 300;
+	}
+
+	text.big-text{
+		font-size: 30px;
+		font-weight: 400;
+	}
+
+	.effect-layer text, text.dummy-text{
+		font-size: 12px;
+	}
+
+</style>
+<body>
+
+	<svg></svg>
+
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script>
+
+		var width = 960,
+			height = 500,
+			centered;
+
+
+
+		var projection = d3.geo.mercator()
+			.scale(70000)
+			// Center the Map in Albuquerque
+			.center([-106.66465, 35.085216])
+			.translate([width / 2, height / 2]);
+
+		var path = d3.geo.path()
+			.projection(projection);
+
+		// Set svg width & height
+		var svg = d3.select('svg')
+			.attr('width', width)
+			.attr('height', height);
+
+		// Add background
+		svg.append('rect')
+			.attr('class', 'background')
+			.attr('width', width)
+			.attr('height', height);
+
+		var g = svg.append('g');
+
+		var effectLayer = g.append('g')
+			.classed('effect-layer', true);
+
+		var mapLayer = g.append('g')
+			.classed('map-layer', true);
+
+		var dummyText = g.append('text')
+			.classed('dummy-text', true)
+			.attr('x', 10)
+			.attr('y', 30)
+			.style('opacity', 0);
+
+		var bigText = g.append('text')
+			.classed('big-text', true)
+			.attr('x', 20)
+			.attr('y', 45);
+
+		// Load map data
+		d3.json('http://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson', function(error, mapData) {
+			var features = mapData.features;
+
+
+
+
+			// Draw each district as a path
+			mapLayer.selectAll('path')
+				.data(features)
+				.enter().append('path')
+				.attr('d', path)
+				.attr('vector-effect', 'non-scaling-stroke')
+				.style('fill', fillFn);
+			console.log(features);
+
+			mapLayer.selectAll('text')
+				.data(features).enter()
+
+				.append('svg:text')
+				.text(function(d){
+					return d.properties.DISTRICTNUMBER;
+
+				})
+				.attr('x', function(d){
+					return path.centroid(d)[0] - 15;
+				})
+				.attr('y', function(d){
+					return  path.centroid(d)[1] + 5;
+				})
+				.attr('text-anchor',"middle")
+				.attr('font-size','15pt')
+				.attr('color', 'black');
+
+
+		});
+
+		// Get province name
+		function nameFn(d){
+			return d && d.properties ? d.properties.DISTRICTNUMBER : null;
+		}
+
+
+
+		// Get province color
+		function fillFn(d){
+			var districtColor
+			if(d.properties.DISTRICTNUMBER == 8) {
+				districtColor = '#56b056';
+			}
+			else districtColor = '#dff1df';
+			return districtColor;
+		}
+
+
+
+
+
+
+
+
+
+	</script>
