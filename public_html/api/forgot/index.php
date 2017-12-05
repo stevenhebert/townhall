@@ -56,7 +56,7 @@ try {
 		$profileRecoveryToken = bin2hex(random_bytes(16));
 		//set recovery token
 		$profile->setProfileRecoveryToken($profileRecoveryToken);
-
+		$profile->setProfileDateTime();
 		//update the profile in the database
 		$profile->update($pdo);
 
