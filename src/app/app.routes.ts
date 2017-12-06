@@ -1,19 +1,21 @@
 import {RouterModule, Routes} from "@angular/router";
 
 import {AboutComponent} from "./components/about.component";
-import {ReplyComponent} from "./components/reply.component"
-import {FooterComponent} from "./components/footer.component";
-import {HomeComponent} from "./components/home.component";
-import {MainNavComponent} from "./components/mainnav.component";
-import {SignInComponent} from "./components/signin.component"
-import {SignUpComponent} from "./components/signup.component";
 import {ActivationComponent} from "./components/activation.component";
-import {UserNavComponent} from "./components/usernav.component";
 import {EditProfileComponent} from "./components/editprofile.component";
-import {SignOutComponent} from "./components/signout.component";
+import {FooterComponent} from "./components/footer.component";
+import {ForgotComponent} from "./components/forgot.component";
+import {HomeComponent} from "./components/home.component";
+import {LeafletComponent} from "./components/leaflet.component";
+import {MainNavComponent} from "./components/mainnav.component";
 import {PostComponent} from "./components/post.component";
 import {RecoveryComponent} from "./components/recovery.component";
-import {ForgotComponent} from "./components/forgot.component";
+import {ReplyComponent} from "./components/reply.component"
+import {SignInComponent} from "./components/signin.component"
+import {SignOutComponent} from "./components/signout.component";
+import {SignUpComponent} from "./components/signup.component";
+import {UserNavComponent} from "./components/usernav.component";
+
 
 import {SessionService} from "./services/session.service";
 import {ActivationService} from "./services/activation.service";
@@ -37,6 +39,7 @@ export const allAppComponents = [
 	FooterComponent,
 	ForgotComponent,
 	HomeComponent,
+	LeafletComponent,
 	MainNavComponent,
 	PostComponent,
 	RecoveryComponent,

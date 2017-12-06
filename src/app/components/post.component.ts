@@ -66,10 +66,9 @@ export class PostComponent implements OnInit {
 			.subscribe(status => {
 				this.status = status;
 				if(this.status.status === 200) {
-				this.loadDistrictById();
+					this.loadDistrictById();
 				}
 			});
 	}
 }
-
 

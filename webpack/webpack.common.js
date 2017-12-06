@@ -33,8 +33,15 @@ module.exports = {
 				test: /\.ts$/,
 				use: ["awesome-typescript-loader"]
 			}
+		],
+		loaders: [
+			{
+				test: /\.css$/,
+				loaders: [ 'style-loader', 'css-loader' ]
+			}
 		]
 	},
+
 
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({
