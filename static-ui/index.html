@@ -86,9 +86,6 @@
 		d3.json('http://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson', function(error, mapData) {
 			var features = mapData.features;
 
-
-
-
 			// Draw each district as a path
 			mapLayer.selectAll('path')
 				.data(features)
@@ -115,16 +112,12 @@
 				.attr('text-anchor',"middle")
 				.attr('font-size','15pt')
 				.attr('color', 'black');
-
-
 		});
 
 		// Get province name
 		function nameFn(d){
 			return d && d.properties ? d.properties.DISTRICTNUMBER : null;
 		}
-
-
 
 		// Get province color
 		function fillFn(d){

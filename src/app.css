@@ -101,3 +101,7 @@ html {
 .panel-footer {
 	background-color: unset;
 }
+
+.panel-default {
+	margin-bottom: .5em
+}

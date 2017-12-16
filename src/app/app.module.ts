@@ -3,10 +3,13 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
+
+
 import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
 
 import {ActivationService} from "./services/activation.service";
+
 import {CookieService} from "ng2-cookies";
 import {EditProfileService} from "./services/editprofile.service"
 import {ForgotService} from "./services/forgot.service";

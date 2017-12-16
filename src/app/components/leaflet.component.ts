@@ -1,48 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import * as esri from 'esri-leaflet';
-import * as L from 'leaflet';
-
-declare let $: any;
+import {PostService} from "../services/post.service";
+import {Component} from '@angular/core';
+import {latLng, LatLng, tileLayer} from 'leaflet';
 
 @Component({
 	selector: "leaflet",
 	templateUrl: "./templates/leaflet.html"
 })
 
-export class LeafletComponent implements OnInit {
+export class LeafletComponent {
 
-	constructor() {
-	}
+	options = {
+		layers: [
+			tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 25, attribution: '...' })
 
-	ngOnInit() {
+		],
+		zoom: 12,
+		center: latLng(35.1275061,-106.6257152)
+	};
 
-		let map = L.map('map');
-		L.esri.basemapLayer('Topographic').addTo(map);
 
-		L.esri.get('http://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson', {}, function(error, response) {
-			let features = response.operationalLayers[0].featureCollection.layers[0].featureSet.features;
-			let idField = response.operationalLayers[0].featureCollection.layers[0].layerDefinition.objectIdField;
-
-			// empty geojson feature collection
-			let featureCollection = {
-				type: 'FeatureCollection',
-				features: []
-			};
-
-			for(let i = features.length - 1; i >= 0; i--) {
-				// convert ArcGIS Feature to GeoJSON Feature
-				let feature = L.esri.Util.arcgisToGeoJSON(features[i], idField);
-
-				// unproject the web mercator coordinates to lat/lng
-				let latlng = L.Projection.Mercator.unproject(L.point(feature.geometry.coordinates));
-				feature.geometry.coordinates = [latlng.lng, latlng.lat];
-
-				featureCollection.features.push(feature);
-			}
-
-			let geojson = L.geoJSON(featureCollection).addTo(map);
-			map.fitBounds(geojson.getBounds());
-		});
-
-	}
 }
