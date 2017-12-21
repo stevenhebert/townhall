@@ -28,6 +28,7 @@ import {EditProfileService} from "./services/editprofile.service";
 import {VoteService} from "./services/vote.service";
 import {RecoveryService} from "./services/recovery.service";
 import {ForgotService} from "./services/forgot.service";
+import {LeafletService} from "./services/leaflet.service";
 
 import {APP_BASE_HREF} from "@angular/common";
 
@@ -55,7 +56,6 @@ export const routes: Routes = [
 	{path:  "", component: HomeComponent},
 	{path:  "about", component: AboutComponent},
 	{path:  "activation/:activation", component: ActivationComponent},
-	//{path:  "post", component: PostComponent},
 	{path:  "post/:postDistrictId", component: PostComponent},
 	{path:  "recovery/:recovery", component: RecoveryComponent},
 	{path:  "reply/:id", component: ReplyComponent},
@@ -76,6 +76,7 @@ export const appRoutingProviders: any[] = [
 	SignOutService,
 	SignUpService,
 	VoteService,
+	LeafletService
 ];
 
 export const routing = RouterModule.forRoot(routes);

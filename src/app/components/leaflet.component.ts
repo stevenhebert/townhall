@@ -1,22 +1,34 @@
-import {PostService} from "../services/post.service";
-import {Component} from '@angular/core';
-import {latLng, LatLng, tileLayer} from 'leaflet';
+import {Component, OnInit} from '@angular/core';
+import {LeafletService} from "../services/leaflet.service";
+import * as L from "leaflet";
+
 
 @Component({
 	selector: "leaflet",
-	templateUrl: "./templates/leaflet.html"
+	templateUrl: "./templates/leaflet.html",
+	providers: []
 })
 
-export class LeafletComponent {
+export class LeafletComponent implements OnInit {
 
-	options = {
-		layers: [
-			tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 25, attribution: '...' })
+	abqLayer: boolean;
+	public baseMaps: any;
 
-		],
-		zoom: 12,
-		center: latLng(35.1275061,-106.6257152)
-	};
+	constructor(private leafletService: LeafletService) {
+	}
 
+	ngOnInit() {
+		let map = L.map("map", {
+			center: L.latLng(35.0847321, -106.6467757),
+			zoom: 12,
+			minZoom: 4,
+			maxZoom: 19,
+			layers: [this.leafletService.baseMaps.OpenStreetMap]
+		});
+
+		L.control.layers(this.leafletService.baseMaps).addTo(map);
+
+		this.leafletService.map = map;
+	}
 
 }

@@ -4,7 +4,6 @@ import {Status} from "../classes/status";
 import {ForgotService} from "../services/forgot.service";
 import {Forgot} from "../classes/forgot";
 
-//declare $ for good old jquery
 declare let $: any;
 
 @Component({

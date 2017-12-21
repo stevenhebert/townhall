@@ -4,18 +4,18 @@
 			<user-nav></user-nav>
 			<div class="row">
 
-				<button class="btn btn-default" (click)="switchReply(post)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to district {{ posts[0].postDistrictId}}</button><br>
+				<button class="btn btn-default" (click)="switchReply(post)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to district {{ posts[0]?.postDistrictId }}</button><br>
 
 				<div class="col-md-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">by {{childPost.postProfileUserName}}</div>
+					<div class="panel-heading">by {{ childPost.postProfileUserName }}</div>
 
 					<div class="panel-body">
 						{{ childPost.postContent }}
 					</div>
 
 					<div class="panel panel-footer">
-						<em>{{childPost.postDateTime | date:"mediumDate"}} at {{childPost.postDateTime | date:"shortTime"}}</em>
+						<em>{{ childPost.postDateTime | date:"mediumDate" }} at {{ childPost.postDateTime | date:"shortTime" }}</em>
 					</div>
 				</div>
 				</div>
@@ -55,10 +55,10 @@
 					<!-- Thread of replies -->
 					<div class="panel panel-default" *ngFor="let post of posts">
 						<div class="panel-heading">
-							by {{post.postProfileUserName}}
+							by {{ post.postProfileUserName }}
 
-							<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{post.info.upVote}}</button>
-							<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{post.info.downVote}}</button>
+							<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{ post.info.upVote }}</button>
+							<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{ post.info.downVote }}</button>
 						</div>
 
 						<div class="panel-body">
@@ -66,7 +66,7 @@
 						</div>
 
 						<div class="panel panel-footer">
-							<em>{{post.postDateTime | date:"mediumDate"}} at {{post.postDateTime | date:"shortTime"}}</em>
+							<em>{{ post.postDateTime | date:"mediumDate" }} at {{ post.postDateTime | date:"shortTime" }}</em>
 						</div>
 					</div>
 

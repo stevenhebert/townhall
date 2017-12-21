@@ -5,12 +5,10 @@
 
 
 			<div class="jumbotron">
-				<h1 class="display-3">Welcome to district {{ posts[0].postDistrictId}}</h1>
+				<h1 class="display-3">Welcome to district {{ posts[0]?.postDistrictId }}</h1>
 
 				<p class="lead">Information about this district is highlighted on the map below</p>
 				<hr class="my-4">
-
-				<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
 				<leaflet></leaflet>
 			</div>
 
@@ -47,7 +45,23 @@
 				</div>
 
 				<div class="col-md-8">
-					<h2>All posts in district {{ posts[0].postDistrictId}}</h2>
+
+					<div class="test">
+
+						<h2>All posts in district {{ posts[0]?.postDistrictId }}</h2>
+
+						<!-- Sorting by -->
+						<div class="dropdown sorter">
+							<button class="btn btn-default dropdown-toggle sorter" type="button" id="dropdownMenu"
+									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort <span
+								class="caret"></span></button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+								<li><a href="#">Recent</a></li>
+								<li><a href="#">Most Votes</a></li>
+								<li><a href="#">Trending</a></li>
+							</ul>
+						</div>
+					</div>
 
 					<!-- Thread of posts -->
 					<div *ngFor="let post of posts;">
@@ -55,16 +69,20 @@
 						<div class="panel panel-default" *ngIf="this.post.postParentId == null">
 
 							<div class="panel-heading">
-								by {{post.postProfileUserName}}
+								by {{ post.postProfileUserName }}
 
-								<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{post.info.upVote}}</button>
-								<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{post.info.downVote}}</button>
+								<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i
+									class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{ post.info.upVote }}
+								</button>
+								<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i
+									class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{ post.info.downVote }}
+								</button>
 							</div>
 							<div class="panel-body">
 								{{ post.postContent }}
 							</div>
 							<div class="panel panel-footer">
-								<em>{{post.postDateTime | date:"mediumDate"}} at {{post.postDateTime | date:"shortTime"}}</em>
+								<em>{{ post.postDateTime | date:"mediumDate" }} at {{ post.postDateTime | date:"shortTime" }}</em>
 
 								<button class="pull-right" (click)="switchPost(post)">Reply</button>
 							</div>
