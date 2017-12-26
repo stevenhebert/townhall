@@ -1,37 +1,38 @@
+/// <reference path="../../typings/leaflet.vectorgrid.d.ts"/>
+
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import {BaseService} from "./base.service";
 import * as L from "leaflet";
 
-
 @Injectable()
-export class LeafletService extends BaseService {
-
-	 esri = require('esri-leaflet');
+export class LeafletService {
 
 	public map: L.Map;
 	public baseMaps: any;
-	public abqLayer: any;
+	vtLayer: any;
 
-	constructor(protected http: Http) {
-		super(http);
 
+	constructor(private http: Http) {
 		this.baseMaps = {
-			OpenStreetMap: L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {}),
-			Esri: L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}", {}),
-			CartoDB: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {}),
+			OpenStreetMap: L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"),
+			Esri: L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"),
+			CartoDB: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
 		};
+	}
 
-		this.abqLayer = this.esri.dynamicMapLayer({
-			url: "http://coagisweb.cabq.gov/arcgis/rest/services/public/adminboundaries/MapServer",
-			layers: "id:3",
-			opacity: 0.75,
-			useCors: false
-		})
+	disableMouseEvent(elementId: string) {
+		let element = <HTMLElement>document.getElementById(elementId);
 
+		L.DomEvent.disableClickPropagation(element);
+		L.DomEvent.disableScrollPropagation(element);
+	}
+
+	getGeoJSON() {
+		this.http.get('http://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson')
+			.subscribe(result => {
+				this.vtLayer = L.vectorGrid.slicer(result);
+				this.vtLayer.addTo(this.map);
+			});
 	}
 
 }
-
-
-

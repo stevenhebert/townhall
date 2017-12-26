@@ -15,8 +15,8 @@ import {SessionService} from "./services/session.service";
 import {SignInService} from "./services/signin.service";
 import {SignOutService} from "./services/signout.service"
 import {SignUpService} from "./services/signup.service";
-import {RecoveryService} from "./services/recovery.service";
 import {LeafletService} from "./services/leaflet.service";
+import {RecoveryService} from "./services/recovery.service";
 
 const moduleDeclarations = [AppComponent];
 

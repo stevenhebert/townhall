@@ -8,7 +8,6 @@ import "@angular/router";
 
 // Other Dependencies
 import "rxjs";
-import 'zone.js';
 
 // Other vendors for example Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
@@ -16,7 +15,3 @@ import "jquery";
 import "bootstrap-loader";
 import "font-awesome-webpack2";
 import 'leaflet/dist/leaflet.css';
-
-// This addresses a weird thing with how Leaflet handles icon URLs. See README for details.
-import 'leaflet/dist/images/marker-shadow.png';
-import 'leaflet/dist/images/marker-icon.png';
