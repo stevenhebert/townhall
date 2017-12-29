@@ -1,35 +1,5 @@
-<!--<div-->
-<!--leaflet-->
-<!--</div>-->
-
-<!--<h2>Basic Request</h2>-->
-<!--<button type="button" (click)="makeRequest()">Make Request</button>-->
-<!--<div *ngIf="loading">loading...</div>-->
-<!--<pre>Data Obtained is: {{ data | json }}</pre>-->
-
-<div class="card-body">
-
-	<div class="row">
-		<form class="col">
-
-			<button id="toggle-layer"
-					  type="button"
-					  class="btn btn-default on-map"
-					  [class.btn-primary]="abqLayerAdded"
-					  title="Toggle the airport layer"
-					  (click)="getGeoJSON()">districts
-			</button>
-
-		</form>
-	</div>
-
-	<!-- Map -->
 	<div
 		id="map"
 		leaflet
-		style="height: 500px;"
-		[leafletOptions]="options"
-		[leafletLayers]="markers">
+		style="height: 500px;">
 	</div>
-
-</div>

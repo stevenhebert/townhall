@@ -4,7 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
 import {Post} from "../classes/post";
 import {Status} from "../classes/status";
-import {ObjectUnsubscribedError} from "rxjs/Rx";
+
 
 @Injectable()
 export class PostService extends BaseService {
