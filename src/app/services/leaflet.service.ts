@@ -4,7 +4,10 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import * as L from "leaflet";
 
-@Injectable()
+import * as rewind from 'geojson-rewind';
+
+
+	@Injectable()
 export class LeafletService {
 
 	public map: L.Map;
@@ -30,6 +33,8 @@ export class LeafletService {
 	getGeoJSON() {
 		this.http.get('http://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson')
 			.subscribe(result => {
+				rewind(result, clockwise);
+				this.vtLayer = L.vectorGrid.slicer(result);
 				this.vtLayer = L.vectorGrid.slicer(result);
 				this.vtLayer.addTo(this.map);
 			});
