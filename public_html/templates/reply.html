@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="col-md-4">
-					<h2>Create a reply</h2>
+					<h3>Create a reply</h3>
 
 					<!-- Create a new reply -->
 					<form #postForm="ngForm" id="postForm" (submit)="createPost(); postForm.reset();">
@@ -50,7 +50,23 @@
 				</div>
 
 				<div class="col-md-8">
-					<h2>All replies to this post</h2>
+
+					<div class="test">
+
+						<h3>All replies to this post</h3>
+
+						<!-- Sorting by -->
+						<div class="dropdown pull-right">
+							<button class="btn btn-default dropdown-toggle sorter" type="button" id="dropdownMenu"
+									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+								<li><a href="#">Recent</a></li>
+								<li><a href="#">Most Votes</a></li>
+								<li><a href="#">Trending</a></li>
+							</ul>
+						</div>
+					</div>
+
 
 					<!-- Thread of replies -->
 					<div class="panel panel-default" *ngFor="let post of posts">

@@ -5,9 +5,9 @@
 
 
 			<div class="jumbotron">
-				<h1 class="display-3">City council district {{ posts[0]?.postDistrictId }}</h1>
+				<h2 class="display-3">Welcome to city council district {{ posts[0]?.postDistrictId }}</h2>
 
-				<p class="lead">Information about this district is highlighted on the map below</p>
+				<p class="lead">Information about your district is contained in the map below</p>
 				<hr class="my-4">
 				<leaflet></leaflet>
 			</div>
@@ -16,7 +16,7 @@
 			<div class="row">
 
 				<div class="col-md-4">
-					<h2>Create a new post </h2>
+					<h3>Create a new post </h3>
 
 					<!-- Create a new post -->
 					<form #postForm="ngForm" id="postForm" (submit)="createPost(); postForm.reset();">
@@ -48,13 +48,12 @@
 
 					<div class="test">
 
-						<h2>District {{ posts[0]?.postDistrictId }} posts</h2>
+						<h3>District {{ posts[0]?.postDistrictId }} posts</h3>
 
 						<!-- Sorting by -->
-						<div class="dropdown sorter">
+						<div class="dropdown pull-right">
 							<button class="btn btn-default dropdown-toggle sorter" type="button" id="dropdownMenu"
-									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort <span
-								class="caret"></span></button>
+									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
 								<li><a href="#">Recent</a></li>
 								<li><a href="#">Most Votes</a></li>
@@ -71,21 +70,19 @@
 							<div class="panel-heading">
 								by {{ post.postProfileUserName }}
 
-								<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i
-									class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{ post.info.upVote }}
-								</button>
-								<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i
-									class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{ post.info.downVote }}
-								</button>
+								<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote }}</button>
+								<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{ post.info.downVote }}</button>
 							</div>
+
 							<div class="panel-body">
 								{{ post.postContent }}
 							</div>
+
 							<div class="panel panel-footer">
 								<em>{{ post.postDateTime | date:"mediumDate" }} at {{ post.postDateTime | date:"shortTime" }}</em>
-
 								<button class="pull-right" (click)="switchPost(post)">Reply</button>
 							</div>
+
 						</div>
 
 					</div>
