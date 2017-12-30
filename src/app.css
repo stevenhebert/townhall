@@ -54,6 +54,10 @@ header {
 	color: #ffffff;
 }
 
+.navbar-brand {
+	margin-left: .5rem;
+}
+
 h2 {
 	display: inline-block;
 }
@@ -121,4 +125,12 @@ html {
 
 .panel-default {
 	margin-bottom: .5em
+}
+
+#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper > div > img {
+	width: 50px;
+}
+
+#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper {
+	text-align: center;
 }

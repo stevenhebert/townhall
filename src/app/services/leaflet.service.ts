@@ -1,24 +1,16 @@
 /// <reference path="../../typings/leaflet.vectorgrid.d.ts"/>
 
+import {BaseService} from "./base.service";
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import * as L from "leaflet";
-import {Observable} from "rxjs/Observable";
-import {Post} from "../classes/post";
-import {BaseService} from "./base.service";
-
-// import * as rewind from 'geojson-rewind';
-
 
 @Injectable()
-export class LeafletService extends BaseService{
+export class LeafletService extends BaseService {
 
 	public map: L.Map;
 	public baseMaps: any;
-	// public geoJSON: any;
-	// vtLayer: any;
 	abqLayer: any;
-
 
 	constructor(protected http: Http) {
 		super(http);
@@ -30,41 +22,27 @@ export class LeafletService extends BaseService{
 		};
 	}
 
-	// disableMouseEvent(elementId: string) {
-	// 	let element = <HTMLElement>document.getElementById(elementId);
-	//
-	// 	L.DomEvent.disableClickPropagation(element);
-	// 	L.DomEvent.disableScrollPropagation(element);
-	// }
-
-	// getGeoJSON() {
-	//
-	// 	this.http.get('http://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson')
-	// 		.map(res => res.json())
-	// 		.subscribe(result => {
-	//
-	// 			this.abqLayer = L.geoJSON(result, {
-	// 				onEachFeature(feature, layer) {
-	// 					layer.bindPopup(feature.properties);
-	// 				}
-	// 			}).addTo(this.map);
-	// 		})
-	// }
-
 	getDistrictMap() {
-			this.http.get('https://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson')
-				.map(res => res.json())
-				.subscribe(result => {
+		this.http.get('https://data-cabq.opendata.arcgis.com/datasets/679907ead15d415a8e1afbb29c8be988_3.geojson')
+			.map(res => res.json())
+			.subscribe(result => {
 
-					this.abqLayer = L.geoJSON(result, {
-						onEachFeature(feature, layer) {
-							layer.bindPopup(feature.properties);
-						}
-					}).addTo(this.map);
-				})
-		}
+				this.abqLayer = L.geoJSON(result, {
+					onEachFeature: function(feature, layer) {
 
-	// this.vtLayer = L.vectorGrid.slicer(result);
-	// this.vtLayer.addTo(this.map);
-	// rewind(result, clockwise);
+						let popupHTML = (
+							"<img src='" + feature.properties.PICTURE + "'" + "class=popupImage" + "><br/>" +
+							"<b><a href='" + feature.properties.WEBPAGE + "'>" + feature.properties.COUNCILORNAME + "</a> - <a href='" + "mailto:" + feature.properties.COUNCILOREMAIL+ "'>@cabq.gov</a><br/></b>" +
+							"<br/>" +
+							"<b>Contact Analyst: </b>" + feature.properties.POLICYANALYST + "<br/>" +
+							"<b>Contact Email: </b>" + "<a href='" + "mailto:" + feature.properties.ANALYSTEMAIL + "'>" + feature.properties.ANALYSTEMAIL + "</a><br/>" +
+							"<b>Contact Phone: </b>" + feature.properties.ANALYSTPHONE + "<br/>"
+						);
+
+						layer.bindPopup(popupHTML);
+					}
+				}).addTo(this.map);
+			})
+	}
+
 }

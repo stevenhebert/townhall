@@ -5,8 +5,6 @@ import {SignOutService} from "../services/signout.service";
 import {SignInService} from "../services/signin.service";
 import {CookieService} from "ng2-cookies";
 
-declare var $: any;
-
 @Component({
 	selector: "user-nav",
 	templateUrl: "./templates/user-nav.html"
@@ -22,7 +20,6 @@ export class UserNavComponent {
 
 	ngOnChanges(): void{
 		this.isSignedIn = this.SignInService.isSignedIn;
-
 	}
 
 	signOut() : void {
