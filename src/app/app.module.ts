@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
+import {OrderModule} from 'ngx-order-pipe';
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 
 import {AppComponent} from "./app.component";
@@ -21,7 +22,7 @@ import {RecoveryService} from "./services/recovery.service";
 const moduleDeclarations = [AppComponent];
 
 @NgModule({
-	imports:      [BrowserModule, FormsModule, HttpModule, routing, LeafletModule.forRoot()],
+	imports:      [BrowserModule, FormsModule, HttpModule, routing, OrderModule, LeafletModule.forRoot()],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
 	providers: [

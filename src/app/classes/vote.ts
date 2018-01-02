@@ -3,5 +3,6 @@ export class Vote {
 					public voteProfileId: number,
 					public voteDateTime: Date,
 					public voteValue: number) {
+
 	}
 }

@@ -15,14 +15,16 @@ export class VoteComponent implements OnInit {
 
 	constructor(protected voteService: VoteService) {}
 
-	ngOnInit() : void {
+	ngOnInit(): void {
 		this.getAllVotes();
 	}
 
-	getAllVotes() : void {
+	getAllVotes(): void {
 		this.voteService.getAllVotes()
 			.subscribe(votes => this.votes = votes);
 	}
+
+
 
 
 }

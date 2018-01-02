@@ -19,7 +19,7 @@ export class PostComponent implements OnInit {
 	newPost: Post = new Post(null, null, null, null, null, null, null);
 	posts: Post[] = [];
 	status: Status = null;
-	newVote:  Vote = new Vote(null, null, null, null);
+	newVote: Vote = new Vote(null, null, null, null);
 
 	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute, protected voteService: VoteService) {
 	}
@@ -58,7 +58,7 @@ export class PostComponent implements OnInit {
 			});
 	}
 
-	createVote(postId: number, voteValue: number) : void {
+	createVote(postId: number, voteValue: number): void {
 		this.newVote.votePostId = postId;
 		this.newVote.voteValue = voteValue;
 
@@ -70,5 +70,16 @@ export class PostComponent implements OnInit {
 				}
 			});
 	}
-}
 
+	sortPost(by: string): void {
+		if(by === 'vote') {
+			this.posts.sort((a: any, b: any) => {
+				return a.voteValue - b.voteValue;
+			});
+		} else if(by === 'date') {
+			this.posts.sort((a: any, b: any) => {
+				return b.postDateTime - a.postDateTime;
+			});
+		}
+	}
+}

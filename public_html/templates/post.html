@@ -52,30 +52,37 @@
 
 						<!-- Sorting by -->
 						<div class="dropdown pull-right">
-							<button class="btn btn-default dropdown-toggle sorter" type="button" id="dropdownMenu"
-									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
+						<button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenu"
+									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort</button>
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-								<li><a href="#">Recent</a></li>
-								<li><a href="#">Most Votes</a></li>
-								<li><a href="#">Trending</a></li>
+								<li (click)="sortPost('votes')">votes</li>
+								<li (click)="sortPost('date')">date</li>
 							</ul>
 						</div>
 					</div>
 
 					<!-- Thread of posts -->
-					<div *ngFor="let post of posts;">
+					<div *ngFor="let post of posts | orderBy:postDateTime:true;">
 
 						<div class="panel panel-default" *ngIf="this.post.postParentId == null">
 
 							<div class="panel-heading">
 								by {{ post.postProfileUserName }}
-
-								<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote }}</button>
-								<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{ post.info.downVote }}</button>
 							</div>
 
 							<div class="panel-body">
-								{{ post.postContent }}
+								<div class="row">
+
+									<div class="well col-xs-2">
+										<button type="button" (click)="createVote(this.post.postId, 1);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote }}</button>
+										<p *ngFor= "let votes of votePostId | sum;"></p>
+										<button type="button" (click)="createVote(this.post.postId, -1);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{ post.info.downVote }}</button>
+									</div>
+
+									<div class="col-xs-6">
+										{{ post.postContent }}
+									</div>
+								</div>
 							</div>
 
 							<div class="panel panel-footer">
