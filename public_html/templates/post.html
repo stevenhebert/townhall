@@ -52,8 +52,9 @@
 
 						<!-- Sorting by -->
 						<div class="dropdown pull-right">
-						<button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenu"
-									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort</button>
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu"
+									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort
+							</button>
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
 								<li (click)="sortPost('votes')">votes</li>
 								<li (click)="sortPost('date')">date</li>
@@ -71,22 +72,28 @@
 							</div>
 
 							<div class="panel-body">
-								<div class="row">
 
-									<div class="well col-xs-2">
-										<button type="button" (click)="createVote(this.post.postId, 1);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote }}</button>
-										<p *ngFor= "let votes of votePostId | sum;"></p>
-										<button type="button" (click)="createVote(this.post.postId, -1);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{ post.info.downVote }}</button>
+									<div class="well btn-group-vertical pull-left">
+										<div class="col-xs-2">
+											<button type="button" (click)="createVote(this.post.postId, 1);"><span
+												class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote
+												}}
+											</button>
+											<button type="button" (click)="createVote(this.post.postId, -1);"><span
+												class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{
+												post.info.downVote }}
+											</button>
+										</div>
 									</div>
 
 									<div class="col-xs-6">
 										{{ post.postContent }}
 									</div>
-								</div>
 							</div>
 
 							<div class="panel panel-footer">
-								<em>{{ post.postDateTime | date:"mediumDate" }} at {{ post.postDateTime | date:"shortTime" }}</em>
+								<em>{{ post.postDateTime | date:"mediumDate" }} at {{ post.postDateTime | date:"shortTime"
+									}}</em>
 								<button class="pull-right" (click)="switchPost(post)">Reply</button>
 							</div>
 
