@@ -2,8 +2,7 @@
 
 import {Injectable} from "@angular/core";
 import * as L from "leaflet";
-import {Http, Response} from "@angular/http";
-import {Observable} from "rxjs/Observable";
+import {Http} from "@angular/http";
 
 @Injectable()
 export class LeafletService {

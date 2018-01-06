@@ -3,9 +3,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LeafletService} from "../services/leaflet.service";
 import * as L from "leaflet";
-import {Feature} from "geojson";
-import {ActivatedRoute, Router} from "@angular/router";
-import {map} from "leaflet";
 
 
 @Component({
@@ -18,7 +15,7 @@ export class LeafletComponent implements OnInit {
 
 	public result: any;
 
-	constructor(private leafletService: LeafletService, private router: Router, private route: ActivatedRoute) {
+	constructor(private leafletService: LeafletService) {
 	}
 
 	ngOnInit() {
@@ -63,10 +60,10 @@ export class LeafletComponent implements OnInit {
 			"<b>Contact Phone: </b>" + feature.properties.ANALYSTPHONE + "<br/>"
 		);
 		layer.bindPopup(popupHTML);
-		layer.on({mouseover: this.highlightFeature, mouseout: this.resetHighlight, click: this.zoomToFeature});
+		// layer.on({mouseover: this.highlightFeature, mouseout: this.resetHighlight, click: this.zoomToFeature});
 	};
 
-	highlightFeature = function(e: any) {
+	highlightFeature(e: any) {
 		let layer = e.target;
 
 		layer.setStyle({
@@ -81,16 +78,15 @@ export class LeafletComponent implements OnInit {
 		}
 	};
 
-	resetHighlight = function(e: any) {
+	resetHighlight(e: any) {
 		L.geoJSON().resetStyle(e.target);
 	};
 
-	zoomToFeature = function(e: any) {
-		this.map.fitBounds(e.target.getBounds())
+	zoomToFeature(e: any) {
+		this.leafletService.map.fitBounds(e.target.getBounds())
 	};
 
 	Style(feature: any) {
-
 		return {
 			weight: 2,
 			opacity: 1,

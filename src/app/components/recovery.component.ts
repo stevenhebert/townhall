@@ -19,8 +19,8 @@ export class RecoveryComponent {
 	createRecovery(): void {
 		this.route.params
 			.subscribe((params: Params) => {
-			this.recovery.profileRecoveryToken = (params['recovery'])
-		});
+				this.recovery.profileRecoveryToken = (params['recovery'])
+			});
 		this.recoveryService.createRecovery(this.recovery)
 			.subscribe(status => {
 				this.status = status;
