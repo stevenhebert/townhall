@@ -8,7 +8,8 @@ export class Profile{
 		public profileFirstName: string,
 		public profileLastName: string,
 		public profileState: string,
-		public profileUserName: string,
+		public profilePassword: string,
+		public profilePasswordConfirm: string,
 		public profileZip: string
 	){
 	}

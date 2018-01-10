@@ -6,7 +6,6 @@ import {SignIn} from "../classes/signin";
 import {SessionService} from "../services/session.service";
 import {CookieService} from "ng2-cookies";
 
-
 @Component({
 	selector: "sign-in",
 	templateUrl: "./templates/signin.html"

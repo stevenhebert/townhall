@@ -7,7 +7,7 @@
 
 				<h1>Create a New ABQ Town Hall Account</h1>
 
-				<form class="form-horizontal" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
+				<form class="form-horizontal" #signupForm="ngForm" #captchaProtectedForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
 
 					<!-- abq town hall first name -->
 					<div class="form-group">
@@ -105,10 +105,20 @@
 						</div>
 					</div>
 
+					<re-captcha
+						[(ngModel)]="SignUpComponent.captcha"
+						name="captcha"
+						#captchaRef="reCaptcha"
+						(resolved)="$event && submit($event)"
+						size="invisible"
+						#captchaControl="ngModel"
+					></re-captcha>
+
 					<!-- Submit button -->
-					<button type="submit" id="submit" name="signup" class="btn btn-success">Sign Up</button>
-					<button routerLink="" type="button" class="btn btn-warning">Cancel</button>
+					<button type="submit" id="submit" name="signup" class="btn btn-success" (click)="captchaRef.execute()">Sign Up</button>
+					<button routerLink="" type="button" class="btn btn-warning" (click)="captchaRef.reset()">Cancel</button>
 				</form>
+				<pre>reCAPTCHA response log: {{captchaResponse || '(empty)'}}</pre>
 
 				<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
 					<button type="button" class="close" aria-label="Close" (click)="status = null;"><span

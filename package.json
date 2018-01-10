@@ -41,8 +41,10 @@
     "esri-leaflet": "^2.1.1",
     "jquery": "^3.2.1",
     "leaflet": "^1.2.0",
+    "ng-recaptcha": "^3.0.3",
     "ng2-cookies": "^1.0.12",
     "ngx-order-pipe": "^1.1.1",
+    "ngx-tweet": "^1.0.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.18"
   },

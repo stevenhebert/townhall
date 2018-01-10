@@ -9,10 +9,10 @@ import {PostVote} from "../classes/postvote";
 import {Vote} from "../classes/vote";
 import {VoteService} from "../services/vote.service";
 
-
 @Component({
 	templateUrl: "./templates/post.html"
 })
+
 
 export class PostComponent implements OnInit {
 

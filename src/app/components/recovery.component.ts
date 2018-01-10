@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 import {ActivatedRoute, Router, Params} from "@angular/router";
 import {Status} from "../classes/status";
 import {RecoveryService} from "../services/recovery.service";
-import {Recovery} from "../classes/recovery";
+import {Recovery} from "../classes/recovery"
 
 @Component({
 	templateUrl: "./templates/recovery.html"
@@ -10,7 +10,7 @@ import {Recovery} from "../classes/recovery";
 
 export class RecoveryComponent {
 
-	recovery: Recovery = new Recovery(null, null, null);
+	recovery: Recovery = new Recovery(null, null, null, null);
 	status: Status = null;
 
 	constructor(private recoveryService: RecoveryService, private router: Router, private route: ActivatedRoute) {

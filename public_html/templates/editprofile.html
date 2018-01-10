@@ -7,7 +7,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 					aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Edit your ABQ Town Hall account</h4>
+				<h5 class="modal-title">Edit your ABQ Town Hall account</h5>
 			</div>
 
 			<div class="modal-body">
@@ -17,18 +17,18 @@
 
 					<!-- abq town hall first name -->
 					<div class="form-group">
-						<label for="profileFirstName" class="col-sm-2 control-label">First Name</label>
+						<label for="editProfileFirstName" class="col-sm-2 control-label">First Name</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileFirstName" name="profileFirstName" class="form-control" required
+							<input type="text" id="editProfileFirstName" name="editProfileFirstName" class="form-control" required
 									 [(ngModel)]="profile.profileFirstName" #profileFirstName="ngModel">
 						</div>
 					</div>
 
 					<!-- abq town hall last name-->
 					<div class="form-group">
-						<label for="profileLastName" class="col-sm-2 control-label">Last Name </label>
+						<label for="editProfileLastName" class="col-sm-2 control-label">Last Name </label>
 						<div class="col-sm-10">
-							<input type="text" id="profileLastName" name="profileLastName" class="form-control input-sm"
+							<input type="text" id="editProfileLastName" name="editProfileLastName" class="form-control input-sm"
 									 required
 									 [(ngModel)]="profile.profileLastName" #profileLastName="ngModel">
 						</div>
@@ -36,9 +36,9 @@
 
 					<!-- abq town hall address 1 -->
 					<div class="form-group">
-						<label for="profileAddress1" class="col-sm-2 control-label">Street Address</label>
+						<label for="editProfileAddress1" class="col-sm-2 control-label">Street Address</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileAddress1" name="profileAddress1" class="form-control input-sm"
+							<input type="text" id="editProfileAddress1" name="editProfileAddress1" class="form-control input-sm"
 									 required
 									 [(ngModel)]="profile.profileAddress1" #profileAddress1="ngModel">
 						</div>
@@ -46,9 +46,9 @@
 
 					<!-- abq town hall address 2 -->
 					<div class="form-group">
-						<label for="profileAddress2" class="col-sm-2 control-label">Unit Number</label>
+						<label for="editProfileAddress2" class="col-sm-2 control-label">Unit Number</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileAddress2" name="profileAddress2" class="form-control input-sm"
+							<input type="text" id="editProfileAddress2" name="editProfileAddress2" class="form-control input-sm"
 									 required
 									 [(ngModel)]="profile.profileAddress2" #profileAddress2="ngModel">
 						</div>
@@ -56,61 +56,61 @@
 
 					<!--abq town hall city -->
 					<div class="form-group">
-						<label for="profileCity" class="col-sm-2 control-label">City</label>
+						<label for="editProfileCity" class="col-sm-2 control-label">City</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileCity" name="profileCity" class="form-control input-sm"
+							<input type="text" id="editProfileCity" name="editProfileCity" class="form-control input-sm"
 									 required [(ngModel)]="profile.profileCity" #profileCity="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall state -->
 					<div class="form-group">
-						<label for="profileState" class="col-sm-2 control-label">State Abbreviation</label>
+						<label for="editProfileState" class="col-sm-2 control-label">State Abbreviation</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileState" name="profileState" class="form-control input-sm"
+							<input type="text" id="editProfileState" name="editProfileState" class="form-control input-sm"
 									 required [(ngModel)]="profile.profileState" #profileState="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall zip -->
 					<div class="form-group">
-						<label for="profileZip" class="col-sm-2 control-label">Zipcode</label>
+						<label for="editProfileZip" class="col-sm-2 control-label">Zipcode</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileZip" name="profileZip" class="form-control input-sm"
+							<input type="text" id="editProfileZip" name="editProfileZip" class="form-control input-sm"
 									 required [(ngModel)]="profile.profileZip" #profileZip="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall email -->
 					<div class="form-group">
-						<label for="profileEmail" class="col-sm-2 control-label">Email Address</label>
+						<label for="editProfileEmail" class="col-sm-2 control-label">Email Address</label>
 						<div class="col-sm-10">
-							<input type="text" id="profileEmail" name="profileEmail" class="form-control input-sm"
+							<input type="text" id="editProfileEmail" name="editProfileEmail" class="form-control input-sm"
 									 required [(ngModel)]="profile.profileEmail" #profileEmail="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall password -->
 					<div class="form-group">
-						<label for="profilePassword" class="col-sm-2 control-label">Password</label>
+						<label for="editProfilePassword" class="col-sm-2 control-label">Change Password</label>
 						<div class="col-sm-10">
-							<input type="password" id="profilePassword" name="profilePassword" class="form-control input-sm"
+							<input type="password" id="editProfilePassword" name="editProfilePassword" class="form-control input-sm"
 									 required [(ngModel)]="profile.profilePassword" #profilePassword="ngModel">
 						</div>
 					</div>
 
 					<!--abq town hall password confirm -->
 					<div class="form-group">
-						<label for="profilePasswordConfirm" class="col-sm-2 control-label">Confirm Password</label>
+						<label for="editProfilePasswordConfirm" class="col-sm-2 control-label">Confirm Password</label>
 						<div class="col-sm-10">
-							<input type="password" id="profilePasswordConfirm" name="profilePasswordConfirm"
+							<input type="password" id="editProfilePasswordConfirm" name="editProfilePasswordConfirm"
 									 class="form-control input-sm"
 									 required [(ngModel)]="profile.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
 						</div>
 					</div>
 
 					<!-- Submit button -->
-					<button type="submit" id="submit" name="editprofile" class="btn btn-success">Save</button>
+					<button type="submit" id="submitEdit" name="submitEdit" class="btn btn-success">Save</button>
 					<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
 				</form>
 			</div>

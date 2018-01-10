@@ -106,7 +106,7 @@ try {
 		 * change the password if requested
 		 */
 		// enforce that the current password and new password are present
-		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestObject->Confirm) === false) {
+		if(empty($requestObject->profilePassword) === false && empty($requestObject->profilePasswordConfirm) === false) {
 
 			// make sure of new password and enforce the password exists
 			if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
@@ -124,7 +124,7 @@ try {
 			$newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
 			$profile->setProfileHash($newPasswordHash);
 			$profile->setProfileSalt($newPasswordSalt);
-			$reply->message = "Your profile has been updated";
+			$reply->message = "Your password has been updated";
 		}
 
 		/**

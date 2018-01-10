@@ -8,12 +8,12 @@
 				<h4>Enter your ABQ Town Hall account email and a new password</h4>
 
 				<form class="form-horizontal" #recoverPasswordForm="ngForm" id="recoverPasswordForm"
-						name="recoverPasswordForm" (submit)="createRecovery();">
+						name="recoverPasswordForm" (ngSubmit)="createRecovery();">
 
 					<!--abq town hall email -->
 					<div class="form-group">
 						<div class="col-sm-10">
-							<input class="form-control" type="email" id="profileEmail" name="profileEmail" placeholder="E-Mail"
+							<input class="form-control" type="email" id="recoveryProfileEmail" name="recoveryProfileEmail" placeholder="E-Mail"
 									 required
 									 [(ngModel)]="recovery.profileEmail" #profileEmail="ngModel">
 						</div>
@@ -22,7 +22,7 @@
 					<!--abq town hall password -->
 					<div class="form-group">
 						<div class="col-sm-10">
-							<input class="form-control" type="password" id="profilePassword" name="profilePassword"
+							<input class="form-control" type="password" id="recoveryProfilePassword" name="recoveryProfilePassword"
 									 placeholder="New password" required
 									 [(ngModel)]="recovery.profilePassword" #profilePassword="ngModel">
 						</div>
@@ -31,14 +31,14 @@
 					<!--abq town hall password confirm -->
 					<div class="form-group">
 						<div class="col-sm-10">
-							<input class="form-control" type="password" id="profilePasswordConfirm"
-									 name="profilePasswordConfirm" placeholder="Re-enter password" required
+							<input class="form-control" type="password" id="recoveryProfilePasswordConfirm"
+									 name="recoveryProfilePasswordConfirm" placeholder="Re-enter password" required
 									 [(ngModel)]="recovery.profilePasswordConfirm" #profilePasswordConfirm="ngModel">
 						</div>
 					</div>
 
 					<!-- Submit button -->
-					<button type="submit" id="submit" name="submitRecovery" class="btn btn-success">Save</button>
+					<button type="submit" id="submitRecovery" name="submitRecovery" class="btn btn-success">Save</button>
 					<button class="btn btn-warning" type="reset">Reset</button>
 				</form>
 

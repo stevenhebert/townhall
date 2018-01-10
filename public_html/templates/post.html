@@ -44,6 +44,11 @@
 					</div>
 				</div>
 
+
+				<ngxc-tweet>
+					<a class="twitter-timeline" href="https://twitter.com/ABQCityCouncil?ref_src=twsrc%5Etfw">Tweets by ABQCityCouncil</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+				</ngxc-tweet>
+
 				<div class="col-md-8">
 
 					<div class="test">
@@ -51,15 +56,15 @@
 						<h3>District {{ posts[0]?.postDistrictId }} posts</h3>
 
 						<!-- Sorting by -->
-						<div class="dropdown pull-right">
-							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu"
-									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort
-							</button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-								<li (click)="sortPost('votes')">votes</li>
-								<li (click)="sortPost('date')">date</li>
-							</ul>
-						</div>
+						<!--<div class="dropdown pull-right">-->
+							<!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu"-->
+									  <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort-->
+							<!--</button>-->
+							<!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu">-->
+								<!--<li (click)="sortPost('votes')">votes</li>-->
+								<!--<li (click)="sortPost('date')">date</li>-->
+							<!--</ul>-->
+						<!--</div>-->
 					</div>
 
 					<!-- Thread of posts -->
@@ -86,7 +91,7 @@
 										</div>
 									</div>
 
-									<div class="col-xs-6">
+									<div class="col-xs-8">
 										{{ post.postContent }}
 									</div>
 							</div>

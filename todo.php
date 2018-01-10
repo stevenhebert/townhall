@@ -4,8 +4,7 @@ TODO:
 
 NOW: 
 
-Resend activation
-Show district number even if there are no posts
+Show district number even if there are no posts -> edit test sql file to initialize a post for each district
 Prioritize posts by vote / determine best method to sort
 Port to mobile with ionic by January 4, 2018
 Add flare for officials accounts
@@ -15,7 +14,7 @@ Add flare for officials accounts
 SOON:
 
 Prevent mail@abqtownhall from getting marked as spam
-Limit activation token life span (24 hour expire)
+Limit activation token life span (24 hour expire) / Resend activation
 Wire up contact form
 Change state from a text field to a drop down so that only state abbreviations can be entered (sign-up & edit profile)
 Show number of replies to parentPosts in parent header

@@ -9,6 +9,7 @@ import {PostVote} from "../classes/postvote";
 import {Vote} from "../classes/vote";
 import {VoteService} from "../services/vote.service";
 
+
 @Component({
 	templateUrl: "./templates/reply.html"
 })
@@ -16,15 +17,15 @@ import {VoteService} from "../services/vote.service";
 
 export class ReplyComponent implements OnInit {
 
-	post : Post = new Post(null, null, null, null, null, null, null);
+	post: Post = new Post(null, null, null, null, null, null, null);
 	childPost: Post = new Post(null, null, null, null, null, null, null);
 	newPost: Post = new Post(null, null, null, null, null, null, null);
 	posts: Post[] = [];
 	status: Status = null;
-	newVote:  Vote = new Vote(null, null, null, null);
+	newVote: Vote = new Vote(null, null, null, null);
 
 
-	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute,  protected voteService:  VoteService) {
+	constructor(protected postService: PostService, protected router: Router, protected activatedRoute: ActivatedRoute, protected voteService: VoteService) {
 	}
 
 
@@ -62,6 +63,8 @@ export class ReplyComponent implements OnInit {
 		this.postService.createPost(this.newPost)
 			.subscribe(status => {
 				this.status = status;
+				this.loadPostParentPostId();
+				this.loadPostsByParentPostId();
 			});
 	}
 
@@ -71,13 +74,17 @@ export class ReplyComponent implements OnInit {
 			.subscribe(post => this.childPost = post);
 	}
 
-	createVote(postId: number, voteValue: number) : void {
+	createVote(postId: number, voteValue: number): void {
 		this.newVote.votePostId = postId;
 		this.newVote.voteValue = voteValue;
 
 		this.voteService.createVote(this.newVote)
 			.subscribe(status => {
 				this.status = status;
+				if(this.status.status === 200) {
+					this.loadPostParentPostId();
+					this.loadPostsByParentPostId();
+				}
 			});
 	}
 

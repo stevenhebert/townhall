@@ -13,8 +13,8 @@ export class SignUpService extends BaseService {
 
 	private signUpUrl = "api/sign-up/";
 
-	createSignUp(signUp:SignUp) : Observable<Status> {
-		return(this.http.post(this.signUpUrl, signUp)
+	createSignUp(signUp: SignUp, captchaResponse: string): Observable<Status> {
+		return (this.http.post(this.signUpUrl, {signUp, captcha: captchaResponse})
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}

@@ -56,15 +56,15 @@
 						<h3>All replies</h3>
 
 						<!-- Sorting by -->
-						<div class="dropdown pull-right">
-							<button class="btn btn-default dropdown-toggle sorter" type="button" id="dropdownMenu"
-									  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-								<li><a href="#">Recent</a></li>
-								<li><a href="#">Most Votes</a></li>
-								<li><a href="#">Trending</a></li>
-							</ul>
-						</div>
+						<!--<div class="dropdown pull-right">-->
+							<!--<button class="btn btn-default dropdown-toggle sorter" type="button" id="dropdownMenu"-->
+									  <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></button>-->
+							<!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu">-->
+								<!--<li><a href="#">Recent</a></li>-->
+								<!--<li><a href="#">Most Votes</a></li>-->
+								<!--<li><a href="#">Trending</a></li>-->
+							<!--</ul>-->
+						<!--</div>-->
 					</div>
 
 
@@ -73,8 +73,8 @@
 						<div class="panel-heading">
 							by {{ post.postProfileUserName }}
 
-							<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{ post.info.upVote }}</button>
-							<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>{{ post.info.downVote }}</button>
+							<button class="pull-right" type="button" (click)="createVote(this.post.postId, 1);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote }}</button>
+							<button class="pull-right" type="button" (click)="createVote(this.post.postId, -1);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{ post.info.downVote }}</button>
 						</div>
 
 						<div class="panel-body">

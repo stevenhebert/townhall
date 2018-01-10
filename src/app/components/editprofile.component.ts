@@ -1,12 +1,10 @@
 import {Component, ViewChild, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable"
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {EditProfileService} from "../services/editprofile.service";
 import {Profile} from "../classes/profile";
 import {CookieService} from "ng2-cookies";
 
-//declare $ for good old jquery
 declare let $: any;
 
 @Component({
@@ -17,7 +15,7 @@ declare let $: any;
 export class EditProfileComponent implements OnInit {
 
 	@ViewChild("editProfileForm") editProfileForm: any;
-	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null);
+	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null, null);
 	status: Status = null;
 	cookieJar: any = {};
 
