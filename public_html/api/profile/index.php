@@ -170,6 +170,9 @@ try {
 			$profile->setProfileState($requestObject->profileState);
 			$profile->setProfileZip($requestObject->profileZip);
 
+			$_SESSION["profile"] = $profile;
+			setcookie("profileDistrictId", $profile->getProfileDistrictId(), 0,"/");
+
 			$reply->message = "Your profile has been updated";
 		}
 

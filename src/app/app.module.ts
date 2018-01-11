@@ -4,10 +4,10 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {OrderModule} from 'ngx-order-pipe';
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
-import {TweetModule} from "ngx-tweet/lib/ngx-tweet.module";
 import {RecaptchaModule} from 'ng-recaptcha';
 import {RecaptchaFormsModule} from 'ng-recaptcha/forms';
 import {RECAPTCHA_SETTINGS, RecaptchaSettings} from 'ng-recaptcha';
+import {NgxTwitterTimelineModule} from 'ngx-twitter-timeline';
 
 import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
@@ -26,7 +26,7 @@ import {RecoveryService} from "./services/recovery.service";
 const moduleDeclarations = [AppComponent];
 
 @NgModule({
-	imports:      [BrowserModule, FormsModule, HttpModule, routing, OrderModule, LeafletModule.forRoot(), RecaptchaModule.forRoot(), RecaptchaFormsModule, TweetModule],
+	imports:      [BrowserModule, FormsModule, HttpModule, routing, OrderModule, LeafletModule.forRoot(), RecaptchaModule.forRoot(), RecaptchaFormsModule, NgxTwitterTimelineModule],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
 	providers: [
@@ -41,7 +41,8 @@ const moduleDeclarations = [AppComponent];
 		LeafletService,
 		{provide: RECAPTCHA_SETTINGS, useValue: {siteKey: '<6Leotz8UAAAAAAhuEUZE9pExCKvfqyu1JE6T_Gd5>', } as RecaptchaSettings}
 	]})
-export class AppModule {	cookieJar : any = {};
+
+export class AppModule {cookieJar : any = {};
 
 	constructor(protected cookieService: CookieService, protected sessionService: SessionService) {}
 

@@ -42,12 +42,13 @@
 						</button>
 						{{ status.message }}
 					</div>
+
+					<ngx-twitter-timeline
+						[data]="{url: 'https://twitter.com/ABQCityCouncil'}" [opts]="{tweetLimit: 4}">
+					</ngx-twitter-timeline>
+
 				</div>
 
-
-				<ngxc-tweet>
-					<a class="twitter-timeline" href="https://twitter.com/ABQCityCouncil?ref_src=twsrc%5Etfw">Tweets by ABQCityCouncil</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-				</ngxc-tweet>
 
 				<div class="col-md-8">
 
@@ -57,13 +58,13 @@
 
 						<!-- Sorting by -->
 						<!--<div class="dropdown pull-right">-->
-							<!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu"-->
-									  <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort-->
-							<!--</button>-->
-							<!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu">-->
-								<!--<li (click)="sortPost('votes')">votes</li>-->
-								<!--<li (click)="sortPost('date')">date</li>-->
-							<!--</ul>-->
+						<!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu"-->
+						<!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">sort-->
+						<!--</button>-->
+						<!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu">-->
+						<!--<li (click)="sortPost('votes')">votes</li>-->
+						<!--<li (click)="sortPost('date')">date</li>-->
+						<!--</ul>-->
 						<!--</div>-->
 					</div>
 
@@ -78,22 +79,22 @@
 
 							<div class="panel-body">
 
-									<div class="well btn-group-vertical pull-left">
-										<div class="col-xs-2">
-											<button type="button" (click)="createVote(this.post.postId, 1);"><span
-												class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote
-												}}
-											</button>
-											<button type="button" (click)="createVote(this.post.postId, -1);"><span
-												class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{
-												post.info.downVote }}
-											</button>
-										</div>
+								<div class="well btn-group-vertical pull-left">
+									<div class="col-xs-2">
+										<button type="button" (click)="createVote(this.post.postId, 1);"><span
+											class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{ post.info.upVote
+											}}
+										</button>
+										<button type="button" (click)="createVote(this.post.postId, -1);"><span
+											class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>{{
+											post.info.downVote }}
+										</button>
 									</div>
+								</div>
 
-									<div class="col-xs-8">
-										{{ post.postContent }}
-									</div>
+								<div class="col-xs-8">
+									{{ post.postContent }}
+								</div>
 							</div>
 
 							<div class="panel panel-footer">

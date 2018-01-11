@@ -2,6 +2,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {LeafletService} from "../services/leaflet.service";
+import {CookieService} from "ng2-cookies";
 import * as L from "leaflet";
 
 
@@ -14,11 +15,15 @@ import * as L from "leaflet";
 export class LeafletComponent implements OnInit {
 
 	public result: any;
+	districtId: number = null;
+	cookieJar: any = {};
 
-	constructor(private leafletService: LeafletService) {
+	constructor(private leafletService: LeafletService, private cookieService: CookieService) {
 	}
 
 	ngOnInit() {
+		this.cookieJar = this.cookieService.getAll();
+		this.districtId = this.cookieJar['profileDistrictId'];
 
 		let map = L.map("map", {
 			center: L.latLng(35.0955795, -106.6914833),
@@ -36,20 +41,20 @@ export class LeafletComponent implements OnInit {
 	}
 
 	createDistrictMap() {
-
 		this.leafletService.getDistrictMap()
 			.subscribe(result => {
 				this.result = L.geoJSON(result,
 					{
 						onEachFeature: this.OnEachFeature,
 						style: this.Style
+
 					})
 					.addTo(this.leafletService.map);
 			});
 	}
 
 
-	OnEachFeature = function(feature: any, layer: any) {
+	OnEachFeature(feature: any, layer: any) {
 
 		let popupHTML = (
 			"<img src='" + feature.properties.PICTURE + "'" + "class=popupImage" + "><br/>" +
@@ -57,45 +62,32 @@ export class LeafletComponent implements OnInit {
 			"<br/>" +
 			"<b>Contact Analyst: </b>" + feature.properties.POLICYANALYST + "<br/>" +
 			"<b>Contact Email: </b>" + "<a href='" + "mailto:" + feature.properties.ANALYSTEMAIL + "'>" + feature.properties.ANALYSTEMAIL + "</a><br/>" +
-			"<b>Contact Phone: </b>" + feature.properties.ANALYSTPHONE + "<br/>"
-		);
+			"<b>Contact Phone: </b>" + feature.properties.ANALYSTPHONE + "<br/>");
+
 		layer.bindPopup(popupHTML);
-		// layer.on({mouseover: this.highlightFeature, mouseout: this.resetHighlight, click: this.zoomToFeature});
 	};
 
-	highlightFeature(e: any) {
-		let layer = e.target;
-
-		layer.setStyle({
-			weight: 5,
-			color: '#666',
-			dashArray: '',
-			fillOpacity: 0.7
-		});
-
-		if(!L.Browser.ie && !L.Browser.opera12 && !L.Browser.edge) {
-			layer.bringToFront()
-		}
-	};
-
-	resetHighlight(e: any) {
-		L.geoJSON().resetStyle(e.target);
-	};
-
-	zoomToFeature(e: any) {
-		this.leafletService.map.fitBounds(e.target.getBounds())
-	};
 
 	Style(feature: any) {
-		return {
-			weight: 2,
-			opacity: 1,
-			color: 'white',
-			dashArray: '3',
-			fillOpacity: 0.75,
-			fillColor: '#F7C744'
+		if(feature.properties.DISTRICTNUMBER == 2) {
+			return {
+				weight: 2,
+				color: '#333',
+				dashArray: '',
+				fillOpacity: 0.75,
+				fillColor: '#008B8B'
+			}
 		}
-	}
-
+		else {
+			return {
+				weight: 2,
+				opacity: 1,
+				color: '#333',
+				dashArray: '3',
+				fillOpacity: 0.75,
+				fillColor: '#F7C744'
+			}
+		}
+	};
 
 }

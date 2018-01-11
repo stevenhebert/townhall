@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnChanges} from "@angular/core";
 import {Router} from "@angular/router";
 import {Status} from "../classes/status";
 import {SignOutService} from "../services/signout.service";
@@ -10,7 +10,7 @@ import {CookieService} from "ng2-cookies";
 	templateUrl: "./templates/user-nav.html"
 })
 
-export class UserNavComponent {
+export class UserNavComponent implements OnChanges {
 
 	status: Status = null;
 

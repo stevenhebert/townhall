@@ -17,7 +17,7 @@ export class ForgotComponent {
 	forgot: Forgot = new Forgot(null);
 	status: Status = null;
 
-	constructor(private forgotService: ForgotService, private router: Router) {
+	constructor(private forgotService: ForgotService) {
 	}
 
 	createForgot(): void {

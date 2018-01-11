@@ -41,7 +41,7 @@ h4 {
 }
 
 .btn {
-	margin: 1.5rem;
+	margin: 1rem;
 }
 
 
@@ -179,4 +179,21 @@ footer a:hover {
 input, textarea {
 	-webkit-appearance: none;
 	-webkit-border-radius: 0;
+}
+
+#editprofile-modal > div > div > div.modal-body > div {
+	background-color: #dff0d8;
+	color: #3c763d;
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+
+/**************************************************
+* tweeter
+**************************************************/
+.timeline-Widget.timeline-Widget--edge {
+	margin-top: 1rem;
 }
